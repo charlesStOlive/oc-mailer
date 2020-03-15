@@ -1,0 +1,22 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    sector:
+        label: waka.mailer::lang.content.sector
+        type: dropdown
+        options: listNestedSector
+    data: 
+        label: waka.mailer::lang.objtext.data
+        type: repeater
+        prompt: waka.mailer::lang.objtext.data_prompt
+        form:
+            fields:
+                value:
+                    label: waka.mailer::lang.objtext.value
+                    type: textarea
+                    size: small
+                jump:
+                    label: waka.mailer::lang.objtext.jump
+                    type: checkbox

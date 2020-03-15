@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Bloc Type
+
+# Model Form Field configuration
+form: $/waka/mailer/models/bloctype/fields.yaml
+
+# Model Class name
+modelClass: Waka\Mailer\Models\BlocType
+
+# Default redirect location
+defaultRedirect: waka/mailer/bloctypes
+
+# Create page
+create:
+    title: Create Bloc Type
+    redirect: waka/mailer/bloctypes/update/:id
+    redirectClose: waka/mailer/bloctypes
+
+# Update page
+update:
+    title: Edit Bloc Type
+    redirect: waka/mailer/bloctypes
+    redirectClose: waka/mailer/bloctypes
+
+# Preview page
+preview:
+    title: Preview Bloc Type

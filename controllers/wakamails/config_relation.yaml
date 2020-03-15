@@ -1,0 +1,20 @@
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+
+
+
+blocs:
+    label: waka.mailer::lang.bloc.code
+    manage:
+        form: $/waka/mailer/models/bloc/fields.yaml
+    view:
+        list: $/waka/mailer/models/bloc/columns_for_wakamail.yaml
+        toolbarButtons: delete
+        defaultSort:
+            column: sort_order
+            direction: asc
+
+
+

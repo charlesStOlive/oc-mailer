@@ -1,0 +1,21 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: waka.mailer::lang.bloc.name
+        comment: waka.mailer::lang.bloc.name_ex
+    code@create:
+        label: waka.utils::lang.global.code
+    code@update:
+        label: waka.utils::lang.global.code
+        readOnly: true
+    bloc_type@create:
+        label: waka.mailer::lang.bloc.bloc_type
+        type: relation
+    bloc_type@update:
+        label: waka.mailer::lang.bloc.bloc_type
+        type: relation
+        readOnly: true
+    
