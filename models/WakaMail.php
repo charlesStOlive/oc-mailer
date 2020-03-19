@@ -86,6 +86,15 @@ class WakaMail extends Model
     public $morphOne = [];
     public $morphMany = [
         'informs' => ['Waka\Informer\Models\Inform', 'name' => 'informeable'],
+
+    ];
+    public $morphToMany = [
+        'scope_functions' => [
+            'Waka\Utils\Models\ScopeFunction',
+            'name' => 'scope_functionable',
+            'table' => 'waka_utils_scope_functionables',
+            'pivot' => ['options'],
+        ],
     ];
     public $attachOne = [];
     public $attachMany = [];
@@ -100,7 +109,7 @@ class WakaMail extends Model
     }
     public function beforeSave()
     {
-        //transformation du mjmm en html via api mailjet. 
+        //transformation du mjmm en html via api mailjet.
         $applicationId = env('MJML_API_ID');
         $secretKey = env('MJML_API_SECRET');
         $client = new MjmlClient($applicationId, $secretKey);

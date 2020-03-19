@@ -16,5 +16,20 @@ blocs:
             column: sort_order
             direction: asc
 
+scope_functions:
+    label: waka.utils::lang.scope_functions.name
+    manage:
+        toolbarButtons: add|remove
+        list: $/waka/utils/models/scopefunction/columns.yaml
+        form: $/waka/utils/models/scopefunction/pivot.yaml
+    view:
+        list: $/waka/utils/models/scopefunction/columns.yaml
+    pivot:
+        form:
+            fields:
+                pivot[options]:
+                    label: Options
+        
+
 
 
