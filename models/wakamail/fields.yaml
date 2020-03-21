@@ -72,48 +72,48 @@ fields:
                     span: auto
                     type: checkbox
                     #cssClass: input-group-sm p-a-1
-    # model_functions:
-    #         label: Créer des collections à partir des fonctions du modèle
-    #         type: functionslist
-    model_functions: 
-        type: repeater
-        prompt: waka.mailer::lang.wakamail.add_fields.model_functions
-        span: full
-        form:
-            fields:
-                code:
-                    label: code
-                    span: auto
-                functioncode:
-                    label: Choisissez une fonction
-                    span: auto
-                    type: dropdown
-                    placeholder: --Choisissez une fonction--
-                    options: getFunctionsList
-                v1:
-                    label: Inutile
-                    readOnly: true
-                    span: storm
-                    cssClass: col-sm-3 col-xs-12
-                    dependsOn: functioncode
-                v2:
-                    label: Inutile
-                    readOnly: true
-                    span: storm
-                    cssClass: col-sm-3 col-xs-12
-                    dependsOn: functioncode
-                v3:
-                    label: Inutile
-                    readOnly: true
-                    span: storm
-                    cssClass: col-sm-3 col-xs-12
-                    dependsOn: functioncode
-                v4:
-                    label: Inutile
-                    readOnly: true
-                    span: storm
-                    cssClass: col-sm-3 col-xs-12
-                    dependsOn: functioncode
+    model_functions:
+            label: Créer des collections à partir des fonctions du modèle
+            type: functionslist
+    # model_functions: 
+    #     type: repeater
+    #     prompt: waka.mailer::lang.wakamail.add_fields.model_functions
+    #     span: full
+    #     form:
+    #         fields:
+    #             code:
+    #                 label: code
+    #                 span: auto
+    #             functioncode:
+    #                 label: Choisissez une fonction
+    #                 span: auto
+    #                 type: dropdown
+    #                 placeholder: --Choisissez une fonction--
+    #                 options: getFunctionsList
+    #             v1:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+    #             v2:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+    #             v3:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+    #             v4:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
 
 
 

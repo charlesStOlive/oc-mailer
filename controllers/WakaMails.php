@@ -17,7 +17,6 @@ class WakaMails extends Controller
         'Backend.Behaviors.RelationController',
         'Waka.Informer.Behaviors.PopupInfo',
         'Waka.Mailer.Behaviors.MailBehavior',
-        'Waka.Utils.Behaviors.FunctionsBehavior',
     ];
 
     public $formConfig = 'config_form.yaml';
