@@ -96,20 +96,26 @@ class MailBehavior extends ControllerBehavior
 
         $options = $this->getPartialOptions($model, $modelId);
 
-        $contact = $dataSource->getContact($modelId);
+        trace_log("avant contact");
+        $contact = $dataSource->getContact('ask_to', $modelId);
+        trace_log($contact);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
-        $cc = $dataSource->getCcContact('ask_cc', $modelId);
+        $cc = $dataSource->getContact('ask_cc', $modelId);
+        trace_log($cc);
         $this->mailBehaviorWidget->getField('cc')->options = $cc;
 
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
         $this->vars['modelId'] = $modelId;
         $this->vars['options'] = $options;
 
+        trace_log('yo mister');
+
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_popup.htm');
     }
     public function onLoadMailBehaviorContentForm()
     {
+        trace_log("fuck");
         $model = post('model');
         $modelId = post('modelId');
 
@@ -117,10 +123,12 @@ class MailBehavior extends ControllerBehavior
 
         $options = $this->getPartialOptions($model, $modelId);
 
-        $contact = $dataSource->getContact($modelId);
+        $contact = $dataSource->getContact('ask_to', $modelId);
+
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
-        $cc = $dataSource->getCcContact('ask_cc', $modelId);
+        $cc = $dataSource->getContact('ask_cc', $modelId);
+
         $this->mailBehaviorWidget->getField('cc')->options = $cc;
 
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
