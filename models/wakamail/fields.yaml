@@ -72,7 +72,7 @@ fields:
                     span: auto
                     type: checkbox
                     #cssClass: input-group-sm p-a-1
-    model_functions:
+    model_functions@update:
             label: Créer des collections à partir des fonctions du modèle
             type: functionslist
     # model_functions: 
