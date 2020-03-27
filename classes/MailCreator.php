@@ -26,7 +26,7 @@ class MailCreator
         $this->dataSourceAdditionalParams = $this->dataSourceModel->hasRelationArray;
         // $this->keyBlocs = $this->getKeyGroups('bloc');
         // $this->keyRows = $this->getKeyGroups('row');
-        $this->dotedValues = $this->getDotedValues();
+        //$this->dotedValues = $this->getDotedValues();
     }
     public function setAdditionalParams($additionalParams)
     {
