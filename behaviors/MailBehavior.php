@@ -156,11 +156,10 @@ class MailBehavior extends ControllerBehavior
 
         $options = $this->getPartialOptions($model, $modelId);
 
-        $contact = $dataSource->getContact($modelId);
+        $contact = $dataSource->getContact('ask_to', $modelId);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
-        $cc = $dataSource->getCcContact('ask_cc', $modelId);
-
+        $cc = $dataSource->getContact('ask_cc', $modelId);
         $this->mailBehaviorWidget->getField('cc')->hidden = true;
 
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
