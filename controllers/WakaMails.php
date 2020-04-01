@@ -3,7 +3,6 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
-use Yaml;
 
 /**
  * WakaMails Back-end Controller
@@ -37,121 +36,121 @@ class WakaMails extends Controller
 
     }
 
-    public function onTestList()
-    {
-        $model = \Waka\Mailer\Models\WakaMail::find($this->params[0]);
-    }
+    // public function onTestList()
+    // {
+    //     $model = \Waka\Mailer\Models\WakaMail::find($this->params[0]);
+    // }
 
-    public function onCreateItem()
-    {
-        $bloc = $this->getBlocModel();
+    // public function onCreateItem()
+    // {
+    //     $bloc = $this->getBlocModel();
 
-        $data = post($bloc->bloc_type->code . 'Form');
-        $sk = post('_session_key');
-        $bloc->delete_informs();
+    //     $data = post($bloc->bloc_type->code . 'Form');
+    //     $sk = post('_session_key');
+    //     $bloc->delete_informs();
 
-        $model = new \Waka\Mailer\Models\Content;
-        $model->fill($data);
-        $model->save();
+    //     $model = new \Waka\Mailer\Models\Content;
+    //     $model->fill($data);
+    //     $model->save();
 
-        $bloc->contents()->add($model, $sk);
+    //     $bloc->contents()->add($model, $sk);
 
-        return $this->refreshOrderItemList($sk);
-    }
+    //     return $this->refreshOrderItemList($sk);
+    // }
 
-    public function onUpdateContent()
-    {
-        $bloc = $this->getBlocModel();
+    // public function onUpdateContent()
+    // {
+    //     $bloc = $this->getBlocModel();
 
-        $recordId = post('record_id');
-        $data = post($bloc->bloc_type->code . 'Form');
-        $sk = post('_session_key');
+    //     $recordId = post('record_id');
+    //     $data = post($bloc->bloc_type->code . 'Form');
+    //     $sk = post('_session_key');
 
-        $model = \Waka\Mailer\Models\Content::find($recordId);
-        $model->fill($data);
-        $model->save();
+    //     $model = \Waka\Mailer\Models\Content::find($recordId);
+    //     $model->fill($data);
+    //     $model->save();
 
-        return $this->refreshOrderItemList($sk);
-    }
+    //     return $this->refreshOrderItemList($sk);
+    // }
 
-    public function onDeleteItem()
-    {
-        $recordId = post('record_id');
-        $sk = post('_session_key');
+    // public function onDeleteItem()
+    // {
+    //     $recordId = post('record_id');
+    //     $sk = post('_session_key');
 
-        $model = \Waka\Mailer\Models\Content::find($recordId);
+    //     $model = \Waka\Mailer\Models\Content::find($recordId);
 
-        $bloc = $this->getBlocModel();
-        $bloc->contents()->remove($model, $sk);
+    //     $bloc = $this->getBlocModel();
+    //     $bloc->contents()->remove($model, $sk);
 
-        return $this->refreshOrderItemList($sk);
-    }
+    //     return $this->refreshOrderItemList($sk);
+    // }
 
-    protected function refreshOrderItemList($sk)
-    {
-        $bloc = $this->getBlocModel();
-        $contents = $bloc->contents()->withDeferred($sk)->get();
+    // protected function refreshOrderItemList($sk)
+    // {
+    //     $bloc = $this->getBlocModel();
+    //     $contents = $bloc->contents()->withDeferred($sk)->get();
 
-        $this->vars['contents'] = $contents;
-        $this->vars['bloc_type'] = $bloc->bloc_type;
-        return [
-            '#contentList' => $this->makePartial('content_list'),
-        ];
-    }
+    //     $this->vars['contents'] = $contents;
+    //     $this->vars['bloc_type'] = $bloc->bloc_type;
+    //     return [
+    //         '#contentList' => $this->makePartial('content_list'),
+    //     ];
+    // }
 
-    public function getBlocModel()
-    {
-        $manageId = post('manage_id');
+    // public function getBlocModel()
+    // {
+    //     $manageId = post('manage_id');
 
-        $bloc = $manageId
-        ? \Waka\Mailer\Models\Bloc::find($manageId)
-        : new \Waka\Mailer\Models\Bloc;
+    //     $bloc = $manageId
+    //     ? \Waka\Mailer\Models\Bloc::find($manageId)
+    //     : new \Waka\Mailer\Models\Bloc;
 
-        return $bloc;
-    }
-    public function relationExtendManageWidget($widget, $field, $model)
-    {
-        $widget->bindEvent('form.extendFields', function () use ($widget) {
+    //     return $bloc;
+    // }
+    // public function relationExtendManageWidget($widget, $field, $model)
+    // {
+    //     $widget->bindEvent('form.extendFields', function () use ($widget) {
 
-            if (!$widget->model->bloc_type) {
-                return;
-            }
+    //         if (!$widget->model->bloc_type) {
+    //             return;
+    //         }
 
-            $options = [];
+    //         $options = [];
 
-            $yaml = Yaml::parse($widget->model->bloc_type->config);
+    //         $yaml = Yaml::parse($widget->model->bloc_type->config);
 
-            $modelOptions = $yaml['model']['options'] ?? false;
-            if ($modelOptions) {
-                foreach ($modelOptions as $key => $opt) {
-                    $options[$key] = $opt;
-                }
-            }
+    //         $modelOptions = $yaml['model']['options'] ?? false;
+    //         if ($modelOptions) {
+    //             foreach ($modelOptions as $key => $opt) {
+    //                 $options[$key] = $opt;
+    //             }
+    //         }
 
-            $fields = $yaml['fields'];
-            foreach ($fields as $field) {
-                if ($field['options'] ?? false) {
-                    foreach ($field['options'] as $key => $opt) {
-                        $options[$key] = $opt;
-                    }
+    //         $fields = $yaml['fields'];
+    //         foreach ($fields as $field) {
+    //             if ($field['options'] ?? false) {
+    //                 foreach ($field['options'] as $key => $opt) {
+    //                     $options[$key] = $opt;
+    //                 }
 
-                }
-            }
-            if (count($options) > 0 ?? false) {
-                $fieldtoAdd = [
-                    'bloc_form' => [
-                        'tab' => 'content',
-                        'type' => 'nestedform',
-                        'usePanelStyles' => false,
-                        'form' => [
-                            'fields' => $options,
-                        ],
-                    ],
-                ];
-                $widget->addTabFields($fieldtoAdd);
-            }
+    //             }
+    //         }
+    //         if (count($options) > 0 ?? false) {
+    //             $fieldtoAdd = [
+    //                 'bloc_form' => [
+    //                     'tab' => 'content',
+    //                     'type' => 'nestedform',
+    //                     'usePanelStyles' => false,
+    //                     'form' => [
+    //                         'fields' => $options,
+    //                     ],
+    //                 ],
+    //             ];
+    //             $widget->addTabFields($fieldtoAdd);
+    //         }
 
-        });
-    }
+    //     });
+    // }
 
 }

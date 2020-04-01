@@ -142,20 +142,20 @@ class Plugin extends PluginBase
                 'label' => Lang::get('waka.mailer::lang.menu.wakamails'),
                 'description' => Lang::get('waka.mailer::lang.menu.wakamails_description'),
                 'category' => Lang::get('waka.mailer::lang.menu.settings_category'),
-                'icon' => 'icon-file-word-o',
+                'icon' => 'icon-envelope',
                 'url' => Backend::url('waka/mailer/wakamails'),
                 'permissions' => ['waka.mailer.admin'],
                 'order' => 1,
             ],
-            'bloc_types' => [
-                'label' => Lang::get('waka.mailer::lang.menu.bloc_type'),
-                'description' => Lang::get('waka.mailer::lang.menu.bloc_type_description'),
-                'category' => Lang::get('waka.mailer::lang.menu.settings_category'),
-                'icon' => 'icon-th-large',
-                'url' => Backend::url('waka/mailer/bloctypes'),
-                'permissions' => ['waka.mailer.admin'],
-                'order' => 1,
-            ],
+            // 'bloc_types' => [
+            //     'label' => Lang::get('waka.mailer::lang.menu.bloc_type'),
+            //     'description' => Lang::get('waka.mailer::lang.menu.bloc_type_description'),
+            //     'category' => Lang::get('waka.mailer::lang.menu.settings_category'),
+            //     'icon' => 'icon-th-large',
+            //     'url' => Backend::url('waka/mailer/bloctypes'),
+            //     'permissions' => ['waka.mailer.admin'],
+            //     'order' => 1,
+            // ],
         ];
     }
 }

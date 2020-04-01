@@ -44,19 +44,46 @@ class MailBehavior extends ControllerBehavior
     {
         $result = false;
 
-        foreach ($scopes as $scope) {
+        $conditions = $scopes['conditions'] ?? null;
+        $mode = $scopes['mode'] ?? 'all';
+
+        trace_log("'mode : " . $mode);
+
+        if (!$conditions) {
+            //si on ne retrouve pas les conditions on retourne true pour valider le model
+            return true;
+        }
+
+        $nbConditions = count($conditions);
+        $conditionsOk = [];
+
+        foreach ($conditions as $condition) {
             $test = false;
-            if ($scope['target'] != 'self') {
-                $test = $myModel->{$scope['target']}->id == $scope['id'];
+            if (!$condition['self']) {
+                $model = $this->getStringModelRelation($myModel, $condition['target']);
+                $test = in_array($model->id, $condition['ids']);
             } else {
-                $test = $myModel->id == $scope['id'];
-            }
-            if ($test) {
-                return true;
+                trace_log($condition['ids']);
+                $test = in_array($myModel->id, $condition['ids']);
+
             }
 
+            if ($test) {
+                if ($mode == 'one') {
+                    //si le test est bon et que le mode est 'one' a la première bonne valeur on retourne oui
+                    return true;
+                }
+                //si le test est bon mais que toutes les conditions doivent être bonne  on le met dans le tableau des OK
+                array_push($conditionsOk, $test);
+            }
         }
-        return false;
+        trace_log("nbConditions : " . $nbConditions);
+        trace_log("count(conditionsOk) : " . count($conditionsOk));
+        if ($nbConditions == count($conditionsOk)) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

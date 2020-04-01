@@ -3,12 +3,12 @@
 return [
     'menu' => [
         'title' => 'Contenu',
-        'wakamails' => 'Templates Mails',
+        'wakamails' => 'Mails',
         'wakamails_description' => 'Gestion des emails et de leurs blocs',
         'bloc_name' => 'Blocs emails',
         'bloc_type' => 'types de blocs emails',
         'bloc_type_description' => 'Administration des types de blocs et exemples',
-        'settings_category' => 'Wakaari mailer',
+        'settings_category' => 'Wakaari Modèle',
     ],
     'bloc' => [
         'name' => 'Intitulé',
