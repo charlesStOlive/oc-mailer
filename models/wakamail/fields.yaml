@@ -34,6 +34,11 @@ fields:
     model_functions@update:
             label: Créer des collections à partir des fonctions du modèle
             type: functionslist
+            span: auto
+    images@update:
+            label: Créer des collections à partir des fonctions du modèle
+            type: imageslist
+            span: auto
     scopes:
         label: waka.compilator::lang.document.scopes.title
         type: nestedform

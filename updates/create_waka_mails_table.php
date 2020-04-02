@@ -21,6 +21,7 @@ class CreateWakaMailsTable extends Migration
 
             $table->text('scopes')->nullable();
             $table->text('model_functions')->nullable();
+            $table->text('images')->nullable();
             $table->text('add_fields')->nullable();
 
             $table->integer('sort_order')->default(0);

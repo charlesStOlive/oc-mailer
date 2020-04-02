@@ -1,6 +1,6 @@
 1.0.1: 
- - create_bloc_types_table.php
- - create_blocs_table.php
+#  - create_bloc_types_table.php
+#  - create_blocs_table.php
  - create_waka_mails_table.php 
  - seed_tables.php
   

@@ -13,7 +13,6 @@ class WakaMails extends Controller
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
         'Backend.Behaviors.ReorderController',
-        'Backend.Behaviors.RelationController',
         'Waka.Informer.Behaviors.PopupInfo',
         'Waka.Mailer.Behaviors.MailBehavior',
     ];
@@ -21,7 +20,6 @@ class WakaMails extends Controller
     public $formConfig = 'config_form.yaml';
     public $listConfig = 'config_list.yaml';
     //public $duplicateConfig = 'config_duplicate.yaml';
-    public $relationConfig = 'config_relation.yaml';
 
     public $reorderConfig = 'config_reorder.yaml';
     public $contextContent;

@@ -54,7 +54,9 @@ class MailCreator
         //$data['collections'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail);
         $data = [];
         $data['model'] = $this->wakamail->data_source->getValues($dataSourceId);
-        $data['images'] = $this->wakamail->data_source->getAllPictures($dataSourceId);
+        //$data['images'] = $this->wakamail->data_source->getAllPictures($dataSourceId);
+        trace_log($this->wakamail->data_source->getAllPictureUrlFromDoted($this->wakamail->images, $dataSourceId));
+
         $data['collections'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail);
         $data['settings'] = null;
 

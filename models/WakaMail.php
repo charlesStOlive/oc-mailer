@@ -50,7 +50,7 @@ class WakaMail extends Model
     /**
      * @var array Attributes to be cast to JSON
      */
-    protected $jsonable = ['scopes', 'add_fields', 'model_functions'];
+    protected $jsonable = ['scopes', 'images', 'model_functions'];
 
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
@@ -100,7 +100,7 @@ class WakaMail extends Model
     }
     public function beforeSave()
     {
-        //transformation du mjmm en html via api mailjet. 
+        //transformation du mjmm en html via api mailjet.
         $applicationId = env('MJML_API_ID');
         $secretKey = env('MJML_API_SECRET');
         $client = new MjmlClient($applicationId, $secretKey);
