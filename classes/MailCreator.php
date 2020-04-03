@@ -54,10 +54,10 @@ class MailCreator
         //$data['collections'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail);
         $data = [];
         $data['model'] = $this->wakamail->data_source->getValues($dataSourceId);
-        //$data['images'] = $this->wakamail->data_source->getAllPictures($dataSourceId);
-        trace_log($this->wakamail->data_source->getAllPictureUrlFromDoted($this->wakamail->images, $dataSourceId));
+        $data['images'] = $this->wakamail->data_source->getPicturesUrl($dataSourceId, $this->wakamail->images);
+        //trace_log($data['images']);
 
-        $data['collections'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail);
+        $data['collections'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail->model_functions);
         $data['settings'] = null;
 
         //trace_log(compact('data'));
@@ -189,7 +189,7 @@ class MailCreator
                 $rel = $this->wakamail->data_source->getDotedRelationValues($this->dataSourceId, $this->additionalParams);
                 //trace_log($rel);
                 $array = array_merge($array, $rel);
-                trace_log($array);
+                //trace_log($array);
             }
         }
 

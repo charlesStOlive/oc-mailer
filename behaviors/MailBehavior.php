@@ -47,7 +47,7 @@ class MailBehavior extends ControllerBehavior
         $conditions = $scopes['conditions'] ?? null;
         $mode = $scopes['mode'] ?? 'all';
 
-        trace_log("'mode : " . $mode);
+        //trace_log("'mode : " . $mode);
 
         if (!$conditions) {
             //si on ne retrouve pas les conditions on retourne true pour valider le model
@@ -63,7 +63,7 @@ class MailBehavior extends ControllerBehavior
                 $model = $this->getStringModelRelation($myModel, $condition['target']);
                 $test = in_array($model->id, $condition['ids']);
             } else {
-                trace_log($condition['ids']);
+                //trace_log($condition['ids']);
                 $test = in_array($myModel->id, $condition['ids']);
 
             }
@@ -77,8 +77,8 @@ class MailBehavior extends ControllerBehavior
                 array_push($conditionsOk, $test);
             }
         }
-        trace_log("nbConditions : " . $nbConditions);
-        trace_log("count(conditionsOk) : " . count($conditionsOk));
+        //trace_log("nbConditions : " . $nbConditions);
+        //trace_log("count(conditionsOk) : " . count($conditionsOk));
         if ($nbConditions == count($conditionsOk)) {
             return true;
         } else {
@@ -123,26 +123,26 @@ class MailBehavior extends ControllerBehavior
 
         $options = $this->getPartialOptions($model, $modelId);
 
-        trace_log("avant contact");
+        //trace_log("avant contact");
         $contact = $dataSource->getContact('ask_to', $modelId);
-        trace_log($contact);
+        //trace_log($contact);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
         $cc = $dataSource->getContact('ask_cc', $modelId);
-        trace_log($cc);
+        //trace_log($cc);
         $this->mailBehaviorWidget->getField('cc')->options = $cc;
 
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
         $this->vars['modelId'] = $modelId;
         $this->vars['options'] = $options;
 
-        trace_log('yo mister');
+        //trace_log('yo mister');
 
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_popup.htm');
     }
     public function onLoadMailBehaviorContentForm()
     {
-        trace_log("fuck");
+        //trace_log("fuck");
         $model = post('model');
         $modelId = post('modelId');
 
@@ -191,7 +191,7 @@ class MailBehavior extends ControllerBehavior
 
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
 
-        $this->getFieldFromWakaMail($wakaMail);
+        //$this->getFieldFromWakaMail($wakaMail);
 
         $this->vars['wakamailId'] = $wakamailId;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
@@ -224,7 +224,7 @@ class MailBehavior extends ControllerBehavior
 
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
 
-        $this->getFieldFromWakaMail($wakaMail);
+        //$this->getFieldFromWakaMail($wakaMail);
 
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
 

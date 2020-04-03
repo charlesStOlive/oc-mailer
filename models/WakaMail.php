@@ -127,8 +127,8 @@ class WakaMail extends Model
         $fnc = $this->data_source->getFunctionClass();
 
         $baseAttributes = $fnc->getFunctionAttribute($functionCode);
-        trace_log("Base Attribut");
-        trace_log($baseAttributes);
+        //trace_log("Base Attribut");
+        //trace_log($baseAttributes);
         if (!$baseAttributes) {
             return;
         }
