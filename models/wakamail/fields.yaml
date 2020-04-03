@@ -36,11 +36,11 @@ fields:
             type: functionslist
             span: auto
     images@update:
-            label: Créer des collections à partir des fonctions du modèle
+            label: Injecter des images à partir du modèle
             type: imageslist
             span: auto
     scopes:
-        label: waka.compilator::lang.document.scopes.title
+        label: waka.worder::lang.document.scopes.title
         type: nestedform
         form:
             fields:
@@ -52,30 +52,30 @@ fields:
                         all: Toutes les conditions doivent être vrai
                         one: Une seul condition doit être vrai
                 conditions:
-                    label: waka.compilator::lang.document.scopes.conditions
+                    label: waka.worder::lang.document.scopes.conditions
                     type: repeater
-                    prompt: waka.compilator::lang.document.scopes.prompt
+                    prompt: waka.worder::lang.document.scopes.prompt
                     span: full
                     form:
                         fields:
                             self: 
-                                label: waka.compilator::lang.document.scopes.self
+                                label: waka.worder::lang.document.scopes.self
                                 type: checkbox
                                 span: full
                                 default: true
                             target:
-                                label: waka.compilator::lang.document.scopes.target
-                                commentAbove: waka.compilator::lang.document.scopes.target_com
+                                label: waka.worder::lang.document.scopes.target
+                                commentAbove: waka.worder::lang.document.scopes.target_com
                                 span: auto
                                 trigger:
                                     action: disable
                                     field: self
                                     condition: checked
                             ids:
-                                label: waka.compilator::lang.document.scopes.id
+                                label: waka.worder::lang.document.scopes.id
                                 type: taglist
                                 mode: array
-                                commentAbove: waka.compilator::lang.document.scopes.id_com
+                                commentAbove: waka.worder::lang.document.scopes.id_com
                                 span: auto
     # add_fields:
     #     label: waka.mailer::lang.wakamail.add_fields.name
