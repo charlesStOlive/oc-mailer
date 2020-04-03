@@ -55,12 +55,10 @@ class MailCreator
         $data = [];
         $data['model'] = $this->wakamail->data_source->getValues($dataSourceId);
         $data['images'] = $this->wakamail->data_source->getPicturesUrl($dataSourceId, $this->wakamail->images);
-        //trace_log($data['images']);
-
         $data['collections'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail->model_functions);
         $data['settings'] = null;
 
-        //trace_log(compact('data'));
+        trace_log(compact('data'));
 
         $html = \Twig::parse($this->wakamail->template, compact('data'));
 
