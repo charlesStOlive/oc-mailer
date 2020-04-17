@@ -15,6 +15,7 @@ class WakaMails extends Controller
         'Backend.Behaviors.ReorderController',
         'Waka.Informer.Behaviors.PopupInfo',
         'Waka.Mailer.Behaviors.MailBehavior',
+        'Waka.Utils.Behaviors.DuplicateModel',
     ];
 
     public $formConfig = 'config_form.yaml';
@@ -22,6 +23,7 @@ class WakaMails extends Controller
     //public $duplicateConfig = 'config_duplicate.yaml';
 
     public $reorderConfig = 'config_reorder.yaml';
+    public $duplicateConfig = 'config_duplicate.yaml';
     public $contextContent;
 
     public function __construct()

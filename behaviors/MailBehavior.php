@@ -7,6 +7,7 @@ use Waka\Mailer\Models\WakaMail;
 
 class MailBehavior extends ControllerBehavior
 {
+    use \Waka\Utils\Classes\Traits\StringRelation;
     protected $mailBehaviorWidget;
     protected $mailDataWidget;
 
