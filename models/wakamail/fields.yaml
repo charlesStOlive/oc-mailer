@@ -39,7 +39,7 @@ fields:
             label: Injecter des images à partir du modèle
             type: imageslist
             span: auto
-    scopes:
+    scopes@update:
         label: waka.worder::lang.document.scopes.title
         type: nestedform
         form:

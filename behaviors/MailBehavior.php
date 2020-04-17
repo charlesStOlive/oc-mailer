@@ -210,7 +210,7 @@ class MailBehavior extends ControllerBehavior
         // $modelId = post('modelId');
         $wakaMail = WakaMail::find($wakamailId);
         $model = $wakaMail->data_source->modelClass;
-        $modelId = $model::first()->id;
+        $modelId = $wakaMail->data_source->test_id;
         $wc = new MailCreator($wakamailId);
         $this->vars['html'] = $wc->renderMail($modelId, true);
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
