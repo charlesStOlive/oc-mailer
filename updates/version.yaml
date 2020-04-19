@@ -1,6 +1,6 @@
-1.0.1: 
-#  - create_bloc_types_table.php
-#  - create_blocs_table.php
- - create_waka_mails_table.php 
- - seed_tables.php
-  
+1.0.1:
+    - create_waka_mails_table.php
+    - seed_tables.php
+1.0.2:
+    - 'add is mjml'
+    - create_waka_mails_table_u102.php

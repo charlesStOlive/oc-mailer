@@ -27,10 +27,6 @@ fields:
         select: name
         span: auto
         disabled: true
-    mjml:
-        label: waka.mailer::lang.wakamail.mjml
-        type: codeeditor
-        language: xml
     model_functions@update:
             label: Créer des collections à partir des fonctions du modèle
             type: functionslist
@@ -39,6 +35,29 @@ fields:
             label: Injecter des images à partir du modèle
             type: imageslist
             span: auto
+    is_mjml:
+        label: waka.mailer::lang.wakamail.is_mjml
+        comment: waka.mailer::lang.wakamail.is_mjml_com
+        type: checkbox
+        default: 1
+    template:
+        label: waka.mailer::lang.wakamail.template
+        type: richeditor
+        size: giant
+        trigger:
+            action: show
+            field: is_mjml
+            condition: unchecked
+
+    mjml:
+        label: waka.mailer::lang.wakamail.mjml
+        type: codeeditor
+        language: xml
+        size: giant
+        trigger:
+            action: show
+            field: is_mjml
+            condition: checked
     scopes@update:
         label: waka.worder::lang.document.scopes.title
         type: nestedform

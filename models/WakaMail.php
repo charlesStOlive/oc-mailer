@@ -39,7 +39,6 @@ class WakaMail extends Model
     public $rules = [
         'data_source' => 'required',
         'name' => 'required',
-        'mjml' => 'required',
     ];
 
     /**
@@ -100,11 +99,14 @@ class WakaMail extends Model
     }
     public function beforeSave()
     {
-        //transformation du mjmm en html via api mailjet.
-        $applicationId = env('MJML_API_ID');
-        $secretKey = env('MJML_API_SECRET');
-        $client = new MjmlClient($applicationId, $secretKey);
-        $this->template = $client->render($this->mjml);
+        if ($this->is_mjml && $this->mjml) {
+            //transformation du mjmm en html via api mailjet.
+            $applicationId = env('MJML_API_ID');
+            $secretKey = env('MJML_API_SECRET');
+            $client = new MjmlClient($applicationId, $secretKey);
+            $this->template = $client->render($this->mjml);
+        }
+
     }
     //
     public function listContacts()

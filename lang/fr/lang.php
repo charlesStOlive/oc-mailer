@@ -69,8 +69,11 @@ return [
         'subject' => "Sujet de l'email",
         'slug' => "Slug ou code",
         'mjml' => "Code MJML",
+        'is_mjml' => "Template MJML",
+        'is_mjml_com' => "Attention, si activé, le code HTML sera écrasé par le MJML",
         'addFunction' => 'Ajouter une fonction/collection',
         'test' => "Tester",
+        'template' => "Code HTML",
         'show' => "Voir",
 
     ],
