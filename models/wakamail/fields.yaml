@@ -2,100 +2,122 @@
 #  Form Field Definitions
 # ===================================
 
-fields:
-
-    name:
-        label: waka.mailer::lang.wakamail.name
-        span: auto
-    slug:
-         label: waka.mailer::lang.wakamail.slug   
-         preset: name
-         span: auto
-    subject:
-        label: waka.mailer::lang.wakamail.subject
-        span: auto  
-    data_source@create:
-        label: waka.mailer::lang.wakamail.data_source
-        placeholder: waka.mailer::lang.wakamail.data_source_placeholder
-        type: relation
-        select: name
-        span: auto 
-    data_source@update:
-        label: waka.mailer::lang.wakamail.data_source
-        placeholder: waka.mailer::lang.wakamail.data_source_placeholder
-        type: relation
-        select: name
-        span: auto
-        disabled: true
-    model_functions@update:
-            label: Créer des collections à partir des fonctions du modèle
-            type: functionslist
+tabs:
+    defaultTab: waka.mailer::lang.wakamail.tab_info
+    icons: 
+        waka.mailer::lang.wakamail.tab_info: icon-info-circle
+        waka.mailer::lang.wakamail.tab_edit: icon-pencil
+        waka.mailer::lang.wakamail.tab_scopes: icon-filter  
+        waka.mailer::lang.wakamail.tab_fnc: icon-address-card-o
+    fields:
+        name@create:
+            label: waka.mailer::lang.wakamail.name
             span: auto
-    images@update:
-            label: Injecter des images à partir du modèle
-            type: imageslist
+        slug@create:
+            label: waka.mailer::lang.wakamail.slug   
+            preset: name
             span: auto
-    is_mjml:
-        label: waka.mailer::lang.wakamail.is_mjml
-        comment: waka.mailer::lang.wakamail.is_mjml_com
-        type: checkbox
-        default: 1
-    template:
-        label: waka.mailer::lang.wakamail.template
-        type: richeditor
-        size: giant
-        trigger:
-            action: show
-            field: is_mjml
-            condition: unchecked
-
-    mjml:
-        label: waka.mailer::lang.wakamail.mjml
-        type: codeeditor
-        language: xml
-        size: giant
-        trigger:
-            action: show
-            field: is_mjml
-            condition: checked
-    scopes@update:
-        label: waka.worder::lang.document.scopes.title
-        type: nestedform
-        form:
-            fields:
-                mode: 
-                    type: radio
-                    default: [all]
-                    cssClass: 'inline-options'
-                    options:
-                        all: Toutes les conditions doivent être vrai
-                        one: Une seul condition doit être vrai
-                conditions:
-                    label: waka.worder::lang.document.scopes.conditions
-                    type: repeater
-                    prompt: waka.worder::lang.document.scopes.prompt
-                    span: full
-                    form:
-                        fields:
-                            self: 
-                                label: waka.worder::lang.document.scopes.self
-                                type: checkbox
-                                span: full
-                                default: true
-                            target:
-                                label: waka.worder::lang.document.scopes.target
-                                commentAbove: waka.worder::lang.document.scopes.target_com
-                                span: auto
-                                trigger:
-                                    action: disable
-                                    field: self
-                                    condition: checked
-                            ids:
-                                label: waka.worder::lang.document.scopes.id
-                                type: taglist
-                                mode: array
-                                commentAbove: waka.worder::lang.document.scopes.id_com
-                                span: auto
+        subject:
+            label: waka.mailer::lang.wakamail.subject
+            span: auto
+            tab: waka.mailer::lang.wakamail.tab_edit  
+        data_source@create:
+            label: waka.mailer::lang.wakamail.data_source
+            placeholder: waka.mailer::lang.wakamail.data_source_placeholder
+            type: relation
+            select: name
+            span: auto 
+       
+        
+        is_mjml:
+            label: waka.mailer::lang.wakamail.is_mjml
+            comment: waka.mailer::lang.wakamail.is_mjml_com
+            type: checkbox
+            default: 1
+            tab: waka.mailer::lang.wakamail.tab_edit
+        template:
+            label: waka.mailer::lang.wakamail.template
+            type: textarea
+            size: giant
+            tab: waka.mailer::lang.wakamail.tab_edit
+            trigger:
+                action: show
+                field: is_mjml
+                condition: unchecked
+        mjml:
+            label: waka.mailer::lang.wakamail.mjml
+            type: codeeditor
+            language: xml
+            size: giant
+            tab: waka.mailer::lang.wakamail.tab_edit
+            trigger:
+                action: show
+                field: is_mjml
+                condition: checked
+        model_functions@update:
+                label: Créer des collections à partir des fonctions du modèle
+                type: functionslist
+                span: auto
+                tab: waka.mailer::lang.wakamail.tab_fnc
+        images@update:
+                label: Injecter des images à partir du modèle
+                type: imageslist
+                span: auto
+                tab: waka.mailer::lang.wakamail.tab_fnc
+        
+        name@update:
+            label: waka.mailer::lang.wakamail.name
+            span: auto
+        slug@update:
+            label: waka.mailer::lang.wakamail.slug   
+            preset: name
+            span: auto
+        data_source@update:
+            label: waka.mailer::lang.wakamail.data_source
+            placeholder: waka.mailer::lang.wakamail.data_source_placeholder
+            type: relation
+            select: name
+            span: auto
+            disabled: true
+        scopes@update:
+            label: waka.worder::lang.document.scopes.title
+            type: nestedform
+            tab: waka.mailer::lang.wakamail.tab_scopes
+            form:
+                fields:
+                    mode: 
+                        type: radio
+                        default: [all]
+                        cssClass: 'inline-options'
+                        options:
+                            all: Toutes les conditions doivent être vrai
+                            one: Une seul condition doit être vrai
+                    conditions:
+                        label: waka.worder::lang.document.scopes.conditions
+                        type: repeater
+                        prompt: waka.worder::lang.document.scopes.prompt
+                        span: full
+                        form:
+                            fields:
+                                self: 
+                                    label: waka.worder::lang.document.scopes.self
+                                    type: checkbox
+                                    span: full
+                                    default: true
+                                target:
+                                    label: waka.worder::lang.document.scopes.target
+                                    commentAbove: waka.worder::lang.document.scopes.target_com
+                                    span: auto
+                                    trigger:
+                                        action: disable
+                                        field: self
+                                        condition: checked
+                                ids:
+                                    label: waka.worder::lang.document.scopes.id
+                                    type: taglist
+                                    mode: array
+                                    commentAbove: waka.worder::lang.document.scopes.id_com
+                                    span: auto
     # add_fields:
     #     label: waka.mailer::lang.wakamail.add_fields.name
     #     type: repeater

@@ -50,14 +50,21 @@ class MailCreator
     {
         $this->prepareCreatorVars($dataSourceId);
 
-        $model = [];
-        $model = $this->wakamail->data_source->getValues($dataSourceId);
-        $model['IMG'] = $this->wakamail->data_source->getPicturesUrl($dataSourceId, $this->wakamail->images);
-        $model['FNC'] = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail->model_functions);
+        $varName = strtolower($this->wakamail->data_source->model);
 
-        trace_log(compact('model'));
+        $doted = $this->wakamail->data_source->getValues($dataSourceId);
+        $img = $this->wakamail->data_source->getPicturesUrl($dataSourceId, $this->wakamail->images);
+        $fnc = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail->model_functions);
 
-        $html = \Twig::parse($this->wakamail->template, compact('model'));
+        $model = [
+            $varName => $doted,
+            'IMG' => $img,
+            'FNC' => $fnc,
+        ];
+
+        //trace_log($model);
+
+        $html = \Twig::parse($this->wakamail->template, $model);
 
         if ($test) {
             return $html;

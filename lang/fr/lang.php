@@ -45,6 +45,10 @@ return [
         'datasource_accepted_comment' => 'Vide si fonctionne avec tous les modèles',
     ],
     'wakamail' => [
+        'tab_info' => "Info",
+        'tab_edit' => "Edit",
+        'tab_scopes' => "Limites",
+        'tab_fnc' => "Images et fonctions",
         'name' => 'Nom',
         'path' => 'Fichier source',
         'analyze' => "Log d'analyse des codes du fichier source",

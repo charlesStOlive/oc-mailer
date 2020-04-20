@@ -26,6 +26,8 @@ class WakaMails extends Controller
     public $duplicateConfig = 'config_duplicate.yaml';
     public $contextContent;
 
+    public $sidebarAttributes;
+
     public function __construct()
     {
         parent::__construct();
@@ -34,6 +36,16 @@ class WakaMails extends Controller
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Waka.Mailer', 'wakamails');
 
+        $this->sidebarAttributes = new \Waka\Utils\Widgets\SidebarAttributes($this);
+        $this->sidebarAttributes->alias = 'SideBarAttributes';
+        $this->sidebarAttributes->type = 'twig';
+        $this->sidebarAttributes->bindToController();
+
+    }
+    public function update($id)
+    {
+        $this->bodyClass = 'compact-container';
+        return $this->asExtension('FormController')->update($id);
     }
 
     // public function onTestList()
