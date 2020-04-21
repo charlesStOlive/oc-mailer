@@ -4,3 +4,6 @@
 1.0.2:
     - 'add is mjml'
     - create_waka_mails_table_u102.php
+1.0.3:
+    - 'add template htm'
+    - create_waka_mails_table_u103.php

@@ -35,9 +35,9 @@ tabs:
             type: checkbox
             default: 1
             tab: waka.mailer::lang.wakamail.tab_edit
-        template:
+        template_htm:
             label: waka.mailer::lang.wakamail.template
-            type: textarea
+            type: richeditor
             size: giant
             tab: waka.mailer::lang.wakamail.tab_edit
             trigger:

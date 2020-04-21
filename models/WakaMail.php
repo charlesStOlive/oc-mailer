@@ -106,6 +106,10 @@ class WakaMail extends Model
             $client = new MjmlClient($applicationId, $secretKey);
             $this->template = $client->render($this->mjml);
         }
+        if (!$this->is_mjml && $this->template_htm) {
+            //transformation du mjmm en html via api mailjet.
+            $this->template = $this->template_htm;
+        }
 
     }
     //
