@@ -111,15 +111,15 @@ class Plugin extends PluginBase
     {
         return [
             'waka.mailer.admin.super' => [
-                'tab' => 'Waka',
-                'label' => 'Administrateur de Mailer',
+                'tab' => 'Waka - Mailer',
+                'label' => 'Super Administrateur de Mailer',
             ],
-            'waka.mailer.admin' => [
-                'tab' => 'Waka',
+            'waka.mailer.admin.base' => [
+                'tab' => 'Waka - Mailer',
                 'label' => 'Administrateur de Mailer',
             ],
             'waka.mailer.user' => [
-                'tab' => 'Waka',
+                'tab' => 'Waka - Mailer',
                 'label' => 'Utilisateur de Mailer',
             ],
         ];
@@ -144,7 +144,7 @@ class Plugin extends PluginBase
                 'category' => Lang::get('waka.mailer::lang.menu.settings_category'),
                 'icon' => 'icon-envelope',
                 'url' => Backend::url('waka/mailer/wakamails'),
-                'permissions' => ['waka.mailer.admin'],
+                'permissions' => ['waka.mailer.admin.*'],
                 'order' => 1,
             ],
             // 'bloc_types' => [
