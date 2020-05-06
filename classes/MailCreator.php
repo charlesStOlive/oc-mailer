@@ -50,6 +50,16 @@ class MailCreator
     {
         $this->prepareCreatorVars($dataSourceId);
 
+        $dataSession = \Session::pull('emailData');
+
+        $uniqueKey = uniqid() . str_Random(8);
+        $log = new \Waka\Utils\Models\SourceLog();
+        $log->key = $uniqueKey;
+        $log->send_targeteable_id = $dataSourceId;
+        $log->send_targeteable_type = $this->wakamail->data_source->modelClass;
+        $log->datas = $dataSession;
+        $test = $this->wakamail->sends()->add($log);
+
         $varName = strtolower($this->wakamail->data_source->model);
 
         $doted = $this->wakamail->data_source->getValues($dataSourceId);
@@ -60,6 +70,7 @@ class MailCreator
             $varName => $doted,
             'IMG' => $img,
             'FNC' => $fnc,
+            'key' => $uniqueKey,
         ];
 
         //trace_log($model);
@@ -69,7 +80,6 @@ class MailCreator
         if ($test) {
             return $html;
         } else {
-            $dataSession = \Session::pull('emailData');
 
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
                 $message->to($dataSession['mailBehavior_array']['email']);
