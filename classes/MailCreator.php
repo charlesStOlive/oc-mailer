@@ -53,12 +53,7 @@ class MailCreator
         $dataSession = \Session::pull('emailData');
 
         $uniqueKey = uniqid() . str_Random(8);
-        $log = new \Waka\Utils\Models\SourceLog();
-        $log->key = $uniqueKey;
-        $log->send_targeteable_id = $dataSourceId;
-        $log->send_targeteable_type = $this->wakamail->data_source->modelClass;
-        $log->datas = $dataSession;
-        $test = $this->wakamail->sends()->add($log);
+        
 
         $varName = strtolower($this->wakamail->data_source->model);
 
@@ -80,6 +75,12 @@ class MailCreator
         if ($test) {
             return $html;
         } else {
+            $log = new \Waka\Utils\Models\SourceLog();
+            $log->key = $uniqueKey;
+            $log->send_targeteable_id = $dataSourceId;
+            $log->send_targeteable_type = $this->wakamail->data_source->modelClass;
+            $log->datas = $dataSession;
+            $test = $this->wakamail->sends()->add($log);
 
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
                 $message->to($dataSession['mailBehavior_array']['email']);
