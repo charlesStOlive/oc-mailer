@@ -38,10 +38,6 @@
                 data-handler="onMailTestShow">
                 <?= e(trans('waka.mailer::lang.wakamail.show')) ?> </button>
         </div>
-        <button type="button" data-request="onLoadAddFunction" data-request-data="id:<?=$this->params[0]?>"
-            class="btn btn-default">
-            <?= e(trans('waka.mailer::lang.wakamail.addFunction')) ?>
-        </button>
         <span class="btn-text">
             or <a
                 href="<?= Backend::url('waka/mailer/wakamails') ?>"><?= e(trans('waka.utils::lang.global.cancel')) ?></a>
