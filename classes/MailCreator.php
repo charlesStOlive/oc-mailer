@@ -70,7 +70,7 @@ class MailCreator
             $varName => $doted,
             'IMG' => $img,
             'FNC' => $fnc,
-            'key' => $logKey ? $logKey->getKey() : null,
+            'log' => $logKey ? $logKey->log : null,
         ];
 
         //trace_log($model);

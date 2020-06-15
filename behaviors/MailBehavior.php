@@ -112,10 +112,7 @@ class MailBehavior extends ControllerBehavior
         return $optionsList;
 
     }
-    /**
-     * LOAD DES POPUPS
-     */
-    public function onLoadMailBehaviorPopupForm()
+    public function getPostContent()
     {
         $model = post('model');
         $modelId = post('modelId');
@@ -136,36 +133,19 @@ class MailBehavior extends ControllerBehavior
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
         $this->vars['modelId'] = $modelId;
         $this->vars['options'] = $options;
-
-        //trace_log('yo mister');
-
+    }
+    /**
+     * LOAD DES POPUPS
+     */
+    public function onLoadMailBehaviorPopupForm()
+    {
+        $this->getPostContent();
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_popup.htm');
     }
     public function onLoadMailBehaviorContentForm()
     {
-        //trace_log("fuck");
-        $model = post('model');
-        $modelId = post('modelId');
-
-        $dataSource = $this->getDataSourceFromModel($model);
-
-        $options = $this->getPartialOptions($model, $modelId);
-
-        $contact = $dataSource->getContact('ask_to', $modelId);
-
-        $this->mailBehaviorWidget->getField('email')->options = $contact;
-
-        $cc = $dataSource->getContact('ask_cc', $modelId);
-
-        $this->mailBehaviorWidget->getField('cc')->options = $cc;
-
-        $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
-        $this->vars['modelId'] = $modelId;
-        $this->vars['options'] = $options;
-
-        return [
-            '#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_content.htm'),
-        ];
+        $this->getPostContent();
+        return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_content.htm')];
     }
     /**
      * Cette fonction est utilisé lors du test depuis le controller wakamail.
