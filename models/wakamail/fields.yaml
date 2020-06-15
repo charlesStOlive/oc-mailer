@@ -9,6 +9,7 @@ tabs:
         waka.mailer::lang.wakamail.tab_edit: icon-pencil
         waka.mailer::lang.wakamail.tab_scopes: icon-filter  
         waka.mailer::lang.wakamail.tab_fnc: icon-address-card-o
+        waka.lp::lang.source_log.tab_lp: icon-file
     fields:
         name@create:
             label: waka.mailer::lang.wakamail.name
@@ -27,8 +28,6 @@ tabs:
             type: relation
             select: name
             span: auto 
-       
-        
         is_mjml:
             label: waka.mailer::lang.wakamail.is_mjml
             comment: waka.mailer::lang.wakamail.is_mjml_com
@@ -54,6 +53,7 @@ tabs:
                 action: show
                 field: is_mjml
                 condition: checked
+
         model_functions@update:
                 label: Créer des collections à partir des fonctions du modèle
                 type: functionslist
@@ -77,6 +77,10 @@ tabs:
             select: name
             span: auto
             disabled: true
+
+
+
+
         scopes@update:
             label: waka.worder::lang.document.scopes.title
             type: nestedform

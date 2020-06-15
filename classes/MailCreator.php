@@ -52,8 +52,13 @@ class MailCreator
 
         $dataSession = \Session::pull('emailData');
 
-        $uniqueKey = uniqid() . str_Random(8);
-        
+        $logKey = null;
+        if (class_exists('\Waka\Lp\Classes\LogKey')) {
+            if ($this->wakamail->use_key) {
+                $logKey = new \Waka\Lp\Classes\LogKey($dataSourceId, $this->wakamail);
+                $logKey->add();
+            }
+        }
 
         $varName = strtolower($this->wakamail->data_source->model);
 
@@ -65,7 +70,7 @@ class MailCreator
             $varName => $doted,
             'IMG' => $img,
             'FNC' => $fnc,
-            'key' => $uniqueKey,
+            'key' => $logKey ? $logKey->getKey() : null,
         ];
 
         //trace_log($model);
@@ -75,13 +80,6 @@ class MailCreator
         if ($test) {
             return $html;
         } else {
-            $log = new \Waka\Utils\Models\SourceLog();
-            $log->key = $uniqueKey;
-            $log->send_targeteable_id = $dataSourceId;
-            $log->send_targeteable_type = $this->wakamail->data_source->modelClass;
-            $log->datas = $dataSession;
-            $test = $this->wakamail->sends()->add($log);
-
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
                 $message->to($dataSession['mailBehavior_array']['email']);
                 $message->subject($dataSession['mailData_array']['subject']);
