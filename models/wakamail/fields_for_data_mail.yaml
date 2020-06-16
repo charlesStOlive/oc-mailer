@@ -5,6 +5,10 @@
 fields:
     subject:
         label: Sujet
+    send_with_gmail:
+        label: Envoyer avec GMAIL
+        type: checkbox
+        
 
     
     

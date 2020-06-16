@@ -1,6 +1,7 @@
 <?php namespace Waka\Mailer\Classes;
 
 use Waka\Mailer\Models\WakaMail;
+use Zaxbux\GmailMailerDriver\Classes\GmailMail;
 
 class MailCreator
 {
@@ -79,6 +80,16 @@ class MailCreator
 
         if ($test) {
             return $html;
+        }
+        if ($dataSession['mailData_array']['send_with_gmail'] ?? false) {
+            $gmail = new GmailMail();
+            $gmail->send(
+                $dataSession['mailBehavior_array']['email'],
+                $dataSession['mailData_array']['subject'],
+                'charles.stolive@mail.talktob.com', 'Charles Saint-Olive',
+                $html
+            );
+
         } else {
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
                 $message->to($dataSession['mailBehavior_array']['email']);
@@ -94,11 +105,11 @@ class MailCreator
                 //     $headers->addTextHeader('X-Mailgun-Variables', '{"email": "'. $contact->email . '", ' .'"campaign_id": "' . $dataCampaign['id'] . '"}');
                 // }
             });
-            \Flash::info("Le(s) email(s) ont bien été envoyés ! ");
-
-            return \Redirect::back();
-
         }
+
+        \Flash::info("Le(s) email(s) ont bien été envoyés ! ");
+
+        return \Redirect::back();
 
     }
 
