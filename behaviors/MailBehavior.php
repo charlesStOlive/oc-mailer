@@ -126,6 +126,15 @@ class MailBehavior extends ControllerBehavior
         //trace_log($contact);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
+        if (class_exists('Zaxbux\GmailMailerDriver\Classes\GmailTransport')) {
+            $this->mailBehaviorWidget->addFields([
+                'send_with_gmail' => [
+                    'label' => ' Envoyer avec GMAIL',
+                    'type' => 'checkbox',
+                ],
+            ]);
+        }
+
         $cc = $dataSource->getContact('ask_cc', $modelId);
         //trace_log($cc);
         $this->mailBehaviorWidget->getField('cc')->options = $cc;

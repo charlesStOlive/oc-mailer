@@ -84,9 +84,8 @@ class MailCreator
         if ($test) {
             return $html;
         }
-        if ($dataSession['mailData_array']['send_with_gmail'] ?? false) {
+        if ($dataSession['mailBehavior_array']['send_with_gmail'] ?? false) {
             //$backup = Mail::getSwiftMailer();
-            //$transport = new Swift_SmtpTransport(new GmailTransport());
             $gmail = new Swift_Mailer(new GmailTransport());
             // Set the mailer as gmail
             Mail::setSwiftMailer($gmail);
@@ -95,25 +94,8 @@ class MailCreator
                 $message->to($dataSession['mailBehavior_array']['email']);
                 $message->subject($dataSession['mailData_array']['subject']);
                 $message->from('charles.stolive@mail.talktob.com', 'Charles Saint-Olive');
-                // if ($addPj) {
-                //     $message->attach(storage_path('app/media/cv/' . $contact->cv_name . '.pdf'));
-                // }
-                //$message->attach(storage_path('app/media/cv/'.$contact->cv_name.'.pdf'));
-                // if(!$isTest) {
-                // //Si ce n'est pas un test on met les headers.
-                //     $headers = $message->getHeaders();
-                //     $headers->addTextHeader('X-Mailgun-Variables', '{"email": "'. $contact->email . '", ' .'"campaign_id": "' . $dataCampaign['id'] . '"}');
-                // }
-
             });
             //Mail::setSwiftMailer($backup);
-            // $gmail = new GmailMail();
-            // $gmail->send(
-            //     $dataSession['mailBehavior_array']['email'],
-            //     $dataSession['mailData_array']['subject'],
-            //     'charles.stolive@mail.talktob.com', 'Charles Saint-Olive',
-            //     $html
-            // );
 
         } else {
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
