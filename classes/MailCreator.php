@@ -93,7 +93,6 @@ class MailCreator
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
                 $message->to($dataSession['mailBehavior_array']['email']);
                 $message->subject($dataSession['mailData_array']['subject']);
-                $message->from('charles.stolive@mail.talktob.com', 'Charles Saint-Olive');
             });
             //Mail::setSwiftMailer($backup);
 
@@ -101,7 +100,6 @@ class MailCreator
             \Mail::raw(['html' => $html], function ($message) use ($dataSession) {
                 $message->to($dataSession['mailBehavior_array']['email']);
                 $message->subject($dataSession['mailData_array']['subject']);
-                $message->from('charles.stolive@mail.talktob.com', 'Charles Saint-Olive');
                 // if ($addPj) {
                 //     $message->attach(storage_path('app/media/cv/' . $contact->cv_name . '.pdf'));
                 // }
