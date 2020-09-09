@@ -9,7 +9,7 @@ list: $/waka/mailer/models/wakamail/columns.yaml
 modelClass: Waka\Mailer\Models\WakaMail
 
 # List Title
-title: Manage WakaMails
+title: Gerer les emails
 
 # Link URL for each record
 recordUrl: waka/mailer/wakamails/update/:id

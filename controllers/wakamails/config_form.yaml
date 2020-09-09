@@ -16,13 +16,13 @@ defaultRedirect: waka/mailer/wakamails
 
 # Create page
 create:
-    title: Create WakaMail
+    title: Nouveau modèle email
     redirect: waka/mailer/wakamails/update/:id
     redirectClose: waka/mailer/wakamails
 
 # Update page
 update:
-    title: Edit WakaMail
+    title: Editer modèle email
     redirect: waka/mailer/wakamails
     redirectClose: waka/mailer/wakamails
 
