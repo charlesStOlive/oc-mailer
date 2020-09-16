@@ -47,7 +47,7 @@ return [
     'wakamail' => [
         'tab_info' => "Info",
         'tab_edit' => "Edit",
-        'tab_scopes' => "Limites",
+        'tab_scopes' => "Restrictions",
         'tab_fnc' => "Images et fonctions",
         'name' => 'Nom',
         'path' => 'Fichier source',

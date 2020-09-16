@@ -81,9 +81,11 @@ tabs:
 
         is_scope: 
             label: waka.utils::lang.scopes.is_scope
-            type: checkbox
+            tab: waka.mailer::lang.wakamail.tab_scopes
+            type: switch
         scopes:
             type: scopeslist
+            tab: waka.mailer::lang.wakamail.tab_scopes
             trigger:
                 action: hide
                 field: is_scope
