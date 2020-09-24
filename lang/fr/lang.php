@@ -8,7 +8,6 @@ return [
         'bloc_name' => 'Blocs emails',
         'bloc_type' => 'types de blocs emails',
         'bloc_type_description' => 'Administration des types de blocs et exemples',
-        'settings_category' => 'Wakaari Modèle',
     ],
     'bloc' => [
         'name' => 'Intitulé',
