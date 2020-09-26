@@ -1,7 +1,7 @@
 <?php namespace Waka\Mailer\Behaviors;
 
 use Backend\Classes\ControllerBehavior;
-use Redirect;
+use Session;
 use Waka\Mailer\Classes\MailCreator;
 use Waka\Mailer\Models\WakaMail;
 
@@ -22,108 +22,22 @@ class MailBehavior extends ControllerBehavior
      * METHODES
      */
 
-    public function getDataSourceClassName(String $model)
-    {
-        $modelClassDecouped = explode('\\', $model);
-        return array_pop($modelClassDecouped);
-
-    }
-
     public function getDataSourceFromModel(String $model)
     {
-        $modelClassName = $this->getDataSourceClassName($model);
-        //On recherche le data Source depuis le nom du model
+        $modelClassDecouped = explode('\\', $model);
+        $modelClassName = array_pop($modelClassDecouped);
         return \Waka\Utils\Models\DataSource::where('model', '=', $modelClassName)->first();
     }
 
-    public function getModel($model, $modelId)
-    {
-        $myModel = $model::find($modelId);
-        return $myModel;
-    }
-    public function checkScopes($myModel, $scopes)
-    {
-        $result = false;
-
-        $conditions = $scopes['conditions'] ?? null;
-        $mode = $scopes['mode'] ?? 'all';
-
-        //trace_log("'mode : " . $mode);
-
-        if (!$conditions) {
-            //si on ne retrouve pas les conditions on retourne true pour valider le model
-            return true;
-        }
-
-        $nbConditions = count($conditions);
-        $conditionsOk = [];
-
-        foreach ($conditions as $condition) {
-            $test = false;
-            if (!$condition['self']) {
-                $model = $this->getStringModelRelation($myModel, $condition['target']);
-                $test = in_array($model->id, $condition['ids']);
-            } else {
-                //trace_log($condition['ids']);
-                $test = in_array($myModel->id, $condition['ids']);
-
-            }
-
-            if ($test) {
-                if ($mode == 'one') {
-                    //si le test est bon et que le mode est 'one' a la première bonne valeur on retourne oui
-                    return true;
-                }
-                //si le test est bon mais que toutes les conditions doivent être bonne  on le met dans le tableau des OK
-                array_push($conditionsOk, $test);
-            }
-        }
-        //trace_log("nbConditions : " . $nbConditions);
-        //trace_log("count(conditionsOk) : " . count($conditionsOk));
-        if ($nbConditions == count($conditionsOk)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public function getPartialOptions($model, $modelId)
-    {
-        $modelClassName = $this->getDataSourceClassName($model);
-
-        $options = WakaMail::whereHas('data_source', function ($query) use ($modelClassName) {
-            $query->where('model', '=', $modelClassName);
-        });
-
-        $myModel = $this->getModel($model, $modelId);
-
-        $optionsList = [];
-
-        foreach ($options->get() as $option) {
-            if ($option->scopes) {
-                if ($this->checkScopes($myModel, $option->scopes)) {
-                    $optionsList[$option->id] = $option->name;
-                }
-            } else {
-                $optionsList[$option->id] = $option->name;
-            }
-        }
-        return $optionsList;
-
-    }
     public function getPostContent()
     {
         $model = post('model');
         $modelId = post('modelId');
 
         $dataSource = $this->getDataSourceFromModel($model);
+        $options = $dataSource->getPartialOptions($modelId, 'Waka\Mailer\Models\WakaMail');
 
-        $options = $this->getPartialOptions($model, $modelId);
-
-        //trace_log("avant contact");
         $contact = $dataSource->getContact('ask_to', $modelId);
-        //trace_log($contact);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
         if (class_exists('Zaxbux\GmailMailerDriver\Classes\GmailTransport')) {
@@ -156,6 +70,41 @@ class MailBehavior extends ControllerBehavior
         $this->getPostContent();
         return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_content.htm')];
     }
+
+    /**
+     * Traitement par lot
+     */
+    public function onLotWord()
+    {
+        $lists = $this->controller->makeLists();
+        $widget = $lists[0] ?? reset($lists);
+        $query = $widget->prepareQuery();
+        $results = $query->get();
+
+        $checkedIds = post('checked');
+
+        $countCheck = null;
+        if (is_countable($checkedIds)) {
+            $countCheck = count($checkedIds);
+        }
+        Session::put('lotWord.listId', $results->lists('id'));
+        Session::put('lotWord.checkedIds', $checkedIds);
+
+        $model = post('model');
+        $dataSource = $this->getDataSourceFromModel($model);
+        $options = $dataSource->getPartialIndexOptions('Waka\Mailer\Models\WakaMail');
+
+        $this->vars['options'] = $options;
+        $this->vars['mailDataWidget'] = $this->mailDataWidget;
+        $this->vars['all'] = $model::count();
+        $this->vars['model'] = $model;
+        $this->vars['filtered'] = $query->count();
+        $this->vars['countCheck'] = $countCheck;
+
+        return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_lot.htm');
+
+    }
+
     /**
      * Cette fonction est utilisé lors du test depuis le controller wakamail.
      */
@@ -242,31 +191,58 @@ class MailBehavior extends ControllerBehavior
 
     public function onMailBehaviorPartialValidation()
     {
+
         $datas = post();
-        //trace_log($datas);
-        // $contacts = $this->mailBehaviorWidget->getSaveData();
-        // $datas = $this->mailDataWidget->getSaveData();
-
         $errors = $this->CheckValidation($datas);
-
-        \Session::put('emailData', $datas);
 
         if ($errors) {
             throw new \ValidationException(['error' => $errors]);
         }
 
-        //trace_log($datas);
-
         $wakamailId = $datas['wakamailId'];
         $modelId = $datas['modelId'];
+        $datasEmail = [
+            'emails' => $datas['mailBehavior_array']['email'],
+            'subject' => $datas['mailData_array']['subject'],
+        ];
 
         if (post('testHtml')) {
             $wc = new MailCreator($wakamailId);
-            $this->vars['html'] = $wc->renderMail($modelId, true);
+            $this->vars['html'] = $wc->renderMail($modelId, $datasEmail, true);
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
-            return Redirect::to('/backend/waka/mailer/wakamails/makemail/?wakamailId=' . $wakamailId . '&modelId=' . $modelId);
+            $wc = new MailCreator($wakamailId);
+            return $wc->renderMail($modelId, $datasEmail);
         }
+
+    }
+
+    public function onLotWordValidation()
+    {
+        $errors = $this->CheckIndexValidation(\Input::all());
+        if ($errors) {
+            throw new \ValidationException(['error' => $errors]);
+        }
+        trace_log(\Input::all());
+
+        $lotType = post('lotType');
+        $wakamailId = post('wakamailId');
+        $listIds = null;
+        if ($lotType == 'filtered') {
+            $listIds = Session::get('lotWord.listId');
+        } elseif ($lotType == 'checked') {
+            $listIds = Session::get('lotWord.checkedIds');
+        }
+        Session::forget('lotWord.listId');
+        Session::forget('lotWord.checkedIds');
+
+        $datas = [
+            'listIds' => $listIds,
+            'wakamailId' => $wakamailId,
+            'subject' => post('mailData_array.subject'),
+        ];
+        $jobId = \Queue::push('\Waka\Mailer\Classes\MailQueueCreator', $datas);
+        \Event::fire('job.create.imp', [$jobId, 'Import en attente ']);
 
     }
 
@@ -280,6 +256,21 @@ class MailBehavior extends ControllerBehavior
             'mailBehavior_array.email' => 'required',
             'mailData_array.subject' => 'required | min:3',
             'modelId' => 'required',
+        ];
+
+        $validator = \Validator::make($inputs, $rules);
+
+        if ($validator->fails()) {
+            return $validator->messages()->first();
+        } else {
+            return false;
+        }
+    }
+    public function CheckIndexValidation($inputs)
+    {
+        $rules = [
+            'wakamailId' => 'required',
+            'mailData_array.subject' => 'required | min:3',
         ];
 
         $validator = \Validator::make($inputs, $rules);
@@ -305,14 +296,12 @@ class MailBehavior extends ControllerBehavior
         }
     }
 
-    public function makemail()
-    {
-        $wakamailId = post('wakamailId');
-        $modelId = post('modelId');
+    // public function makemail()
+    // {
+    //     $wakamailId = post('wakamailId');
+    //     $modelId = post('modelId');
 
-        $wc = new MailCreator($wakamailId);
-        return $wc->renderMail($modelId);
-    }
+    // }
 
     public function makeDemo()
     {

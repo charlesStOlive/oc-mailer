@@ -8,6 +8,7 @@ return [
         'bloc_name' => 'Blocs emails',
         'bloc_type' => 'types de blocs emails',
         'bloc_type_description' => 'Administration des types de blocs et exemples',
+        "btn_lot" => "Lot Email",
     ],
     'bloc' => [
         'name' => 'Intitulé',
@@ -98,6 +99,13 @@ return [
         'version_for_sector' => 'Version pour le secteur : ',
         'sector' => 'Secteur de cette version',
         'reminder_content' => "Choisisir ou créer une version dans le tableau du dessus. Mettre à jour avant de quitter",
+    ],
+    'lot' => [
+        "title" => "Créer des lots word",
+        "all" => "Tout",
+        "filtered" => "Liste filtrée",
+        "checked" => "Lignes cochées",
+
     ],
 
 ];

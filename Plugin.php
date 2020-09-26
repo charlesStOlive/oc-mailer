@@ -85,6 +85,22 @@ class Plugin extends PluginBase
                 return View::make('waka.mailer::publishMailContent')->withData($data);;
             }
         });
+        Event::listen('backend.top.index', function ($controller) {
+            $user = \BackendAuth::getUser();
+            if (!$user->hasAccess('waka.importexport.exp.*')) {
+                return;
+            }
+            if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
+                return;
+            }
+            if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
+                $data = [
+                    'model' => $modelClass = str_replace('\\', '\\\\', $controller->listGetConfig()->modelClass),
+                    //'modelId' => $controller->formGetModel()->id
+                ];
+                return View::make('waka.mailer::lot_mail')->withData($data);;
+            }
+        });
 
     }
 
