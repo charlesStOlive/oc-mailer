@@ -3,6 +3,7 @@
 use Mail;
 use Swift_Mailer;
 use Waka\Mailer\Models\WakaMail;
+use Waka\Utils\Classes\DataSource;
 use Zaxbux\GmailMailerDriver\Classes\GmailTransport;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
@@ -23,51 +24,24 @@ class MailCreator
         $this->wakamail = $wakamail;
     }
 
-    public function prepareCreatorVars($dataSourceId)
+    public function renderMail($modelId, $datasEmail, $test = false)
     {
-        $this->dataSourceModel = $this->linkModelSource($dataSourceId);
-        $this->dataSourceAdditionalParams = $this->dataSourceModel->hasRelationArray;
-    }
-    public function setAdditionalParams($additionalParams)
-    {
-        if ($additionalParams) {
-            $this->additionalParams = $additionalParams;
-        }
-    }
-    private function linkModelSource($dataSourceId)
-    {
-        $this->dataSourceId = $dataSourceId;
-        // si vide on puise dans le test
-        if (!$this->dataSourceId) {
-            $this->dataSourceId = $this->wakamail->data_source->test_id;
-        }
-        //on enregistre le modèle
-        //trace_log($this->wakamail->data_source->modelClass);
-        return $this->wakamail->data_source->modelClass::find($this->dataSourceId);
-    }
-
-    public function getModelEmails($dataSourceId)
-    {
-        return $this->wakamail->data_source->getContact('ask_to', $dataSourceId);
-    }
-
-    public function renderMail($dataSourceId, $datasEmail, $test = false)
-    {
-        $this->prepareCreatorVars($dataSourceId);
+        $dataSourceId = $this->wakamail->data_source_id;
+        $ds = new DataSource($dataSourceId, 'id');
 
         $logKey = null;
         if (class_exists('\Waka\Lp\Classes\LogKey')) {
             if ($this->wakamail->use_key) {
-                $logKey = new \Waka\Lp\Classes\LogKey($dataSourceId, $this->wakamail);
+                $logKey = new \Waka\Lp\Classes\LogKey($modelId, $this->wakamail);
                 $logKey->add();
             }
         }
 
-        $varName = strtolower($this->wakamail->data_source->model);
+        $varName = strtolower($ds->name);
 
-        $doted = $this->wakamail->data_source->getValues($dataSourceId);
-        $img = $this->wakamail->data_source->getPicturesUrl($dataSourceId, $this->wakamail->images);
-        $fnc = $this->wakamail->data_source->getFunctionsCollections($dataSourceId, $this->wakamail->model_functions);
+        $doted = $ds->getValues($modelId);
+        $img = $ds->getPicturesUrl($modelId, $this->wakamail->images);
+        $fnc = $ds->getFunctionsCollections($modelId, $this->wakamail->model_functions);
 
         $model = [
             $varName => $doted,
