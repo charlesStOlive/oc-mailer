@@ -28,7 +28,7 @@ class MailBehavior extends ControllerBehavior
         $model = post('model');
         $modelId = post('modelId');
 
-        trace_log($model);
+        //trace_log($model);
 
         $ds = new DataSource($model, 'class');
         $options = $ds->getPartialOptions($modelId, 'Waka\Mailer\Models\WakaMail');
@@ -235,7 +235,7 @@ class MailBehavior extends ControllerBehavior
         if ($errors) {
             throw new \ValidationException(['error' => $errors]);
         }
-        trace_log(\Input::all());
+        //trace_log(\Input::all());
 
         $lotType = post('lotType');
         $wakamailId = post('wakamailId');
