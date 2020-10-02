@@ -11,7 +11,7 @@ class MailQueueCreator
             Event::fire('job.start.email', [$job, 'Envoi email ']);
         }
 
-        trace_log($data);
+        //trace_log($data);
 
         $listIds = $data['listIds'];
         $wakamailId = $data['wakamailId'];

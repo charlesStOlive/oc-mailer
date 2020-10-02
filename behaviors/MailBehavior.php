@@ -4,6 +4,7 @@ use Backend\Classes\ControllerBehavior;
 use Session;
 use Waka\Mailer\Classes\MailCreator;
 use Waka\Mailer\Models\WakaMail;
+use Waka\Utils\Classes\DataSource;
 
 class MailBehavior extends ControllerBehavior
 {
@@ -22,22 +23,17 @@ class MailBehavior extends ControllerBehavior
      * METHODES
      */
 
-    public function getDataSourceFromModel(String $model)
-    {
-        $modelClassDecouped = explode('\\', $model);
-        $modelClassName = array_pop($modelClassDecouped);
-        return \Waka\Utils\Models\DataSource::where('model', '=', $modelClassName)->first();
-    }
-
     public function getPostContent()
     {
         $model = post('model');
         $modelId = post('modelId');
 
-        $dataSource = $this->getDataSourceFromModel($model);
-        $options = $dataSource->getPartialOptions($modelId, 'Waka\Mailer\Models\WakaMail');
+        //trace_log($model);
 
-        $contact = $dataSource->getContact('ask_to', $modelId);
+        $ds = new DataSource($model, 'class');
+        $options = $ds->getPartialOptions($modelId, 'Waka\Mailer\Models\WakaMail');
+        $contact = $ds->getContact('to', $modelId);
+        //
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
         if (class_exists('Zaxbux\GmailMailerDriver\Classes\GmailTransport')) {
@@ -49,7 +45,7 @@ class MailBehavior extends ControllerBehavior
             ]);
         }
 
-        $cc = $dataSource->getContact('ask_cc', $modelId);
+        $cc = $ds->getContact('cc', $modelId);
         //trace_log($cc);
         $this->mailBehaviorWidget->getField('cc')->options = $cc;
 
@@ -91,8 +87,8 @@ class MailBehavior extends ControllerBehavior
         Session::put('lotWord.checkedIds', $checkedIds);
 
         $model = post('model');
-        $dataSource = $this->getDataSourceFromModel($model);
-        $options = $dataSource->getPartialIndexOptions('Waka\Mailer\Models\WakaMail');
+        $ds = new DataSource($model, 'class');
+        $options = $ds->getPartialIndexOptions('Waka\Mailer\Models\WakaMail');
 
         $this->vars['options'] = $options;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
@@ -111,21 +107,18 @@ class MailBehavior extends ControllerBehavior
     public function onLoadMailTestForm()
     {
         $wakamailId = post('wakamailId');
-        // $model = post('model');
-        // $modelId = post('modelId');
 
         $wakaMail = WakaMail::find($wakamailId);
-        $model = $wakaMail->data_source->modelClass;
-        $modelId = $model::first()->id;
 
-        $dataSource = $wakaMail->data_source;
+        $dataSourceId = $wakaMail->data_source_id;
+        $ds = new DataSource($dataSourceId, 'id');
 
-        $options = $this->getPartialOptions($model, $modelId);
+        $options = $ds->getPartialOptions(null, 'Waka\Mailer\Models\WakaMail');
 
-        $contact = $dataSource->getContact('ask_to', $modelId);
+        $contact = $ds->getContact('to', null);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
 
-        $cc = $dataSource->getContact('ask_cc', $modelId);
+        $cc = $ds->getContact('cc', null);
         $this->mailBehaviorWidget->getField('cc')->hidden = true;
 
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
@@ -136,24 +129,10 @@ class MailBehavior extends ControllerBehavior
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
 
-        $this->vars['modelId'] = $modelId;
+        $this->vars['modelId'] = null;
         $this->vars['options'] = $options;
 
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_test.htm');
-    }
-
-    public function onMailTestShow()
-    {
-        $wakamailId = post('wakamailId');
-        // $model = post('model');
-        // $modelId = post('modelId');
-        $wakaMail = WakaMail::find($wakamailId);
-        $model = $wakaMail->data_source->modelClass;
-        $modelId = $wakaMail->data_source->test_id;
-        $wc = new MailCreator($wakamailId);
-        $this->vars['html'] = $wc->renderMail($modelId, true);
-        return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
-
     }
 
     public function onSelectWakaMail()
@@ -162,8 +141,6 @@ class MailBehavior extends ControllerBehavior
         $wakaMail = WakaMail::find($wakamailId);
 
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
-
-        //$this->getFieldFromWakaMail($wakaMail);
 
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
 
@@ -201,19 +178,54 @@ class MailBehavior extends ControllerBehavior
 
         $wakamailId = $datas['wakamailId'];
         $modelId = $datas['modelId'];
-        $datasEmail = [
-            'emails' => $datas['mailBehavior_array']['email'],
-            'subject' => $datas['mailData_array']['subject'],
-        ];
 
         if (post('testHtml')) {
             $wc = new MailCreator($wakamailId);
-            $this->vars['html'] = $wc->renderMail($modelId, $datasEmail, true);
+            $this->vars['html'] = $wc->renderMail($modelId, null, true);
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
+            $datasEmail = [
+                'emails' => $datas['mailBehavior_array']['email'],
+                'subject' => $datas['mailData_array']['subject'],
+            ];
             $wc = new MailCreator($wakamailId);
             return $wc->renderMail($modelId, $datasEmail);
         }
+
+    }
+
+    public function onMailBehaviorPartialTestValidation()
+    {
+
+        $datas = post();
+
+        $wakamailId = $datas['wakamailId'];
+        $modelId = null;
+
+        if (post('testHtml')) {
+            $wc = new MailCreator($wakamailId);
+            $this->vars['html'] = $wc->renderMail($modelId, null, true);
+            return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
+        } else {
+            $datasEmail = [
+                'emails' => $datas['mailBehavior_array']['email'],
+                'subject' => $datas['mailData_array']['subject'],
+            ];
+            $wc = new MailCreator($wakamailId);
+            return $wc->renderMail($modelId, $datasEmail);
+        }
+
+    }
+
+    public function onMailTestShow()
+    {
+        $wakamailId = post('wakamailId');
+        $modelId = null;
+        //
+        $wc = new MailCreator($wakamailId);
+        $this->vars['html'] = $wc->renderMail($modelId, null, true);
+        //
+        return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
 
     }
 
@@ -223,7 +235,7 @@ class MailBehavior extends ControllerBehavior
         if ($errors) {
             throw new \ValidationException(['error' => $errors]);
         }
-        trace_log(\Input::all());
+        //trace_log(\Input::all());
 
         $lotType = post('lotType');
         $wakamailId = post('wakamailId');
@@ -253,10 +265,13 @@ class MailBehavior extends ControllerBehavior
     {
         $rules = [
             'wakamailId' => 'required',
-            'mailBehavior_array.email' => 'required',
-            'mailData_array.subject' => 'required | min:3',
             'modelId' => 'required',
         ];
+        $is_test = $inputs['testHtml'] ?? false;
+        if (!$is_test) {
+            $rules['mailData_array.subject'] = 'required | min:3';
+            $rules['mailBehavior_array.email'] = 'required';
+        }
 
         $validator = \Validator::make($inputs, $rules);
 

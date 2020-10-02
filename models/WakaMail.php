@@ -37,7 +37,7 @@ class WakaMail extends Model
      * @var array Validation rules for attributes
      */
     public $rules = [
-        'data_source' => 'required',
+        'data_source_id' => 'required',
         'name' => 'required',
     ];
 
@@ -78,7 +78,7 @@ class WakaMail extends Model
         'blocs' => ['Waka\Mailer\Models\Bloc', 'delete' => true],
     ];
     public $belongsTo = [
-        'data_source' => ['Waka\Utils\Models\DataSource'],
+        //'data_source' => ['Waka\Utils\Models\DataSource'],
     ];
     public $belongsToMany = [];
     public $morphTo = [];
@@ -112,43 +112,11 @@ class WakaMail extends Model
         }
 
     }
-    //
-    public function listContacts()
+    /**
+     * LISTS
+     */
+    public function listDataSource()
     {
-        return \Waka\Crsm\Models\Contact::lists('name', 'id');
+        return \Waka\Utils\Classes\DataSourceList::lists();
     }
-
-    public function getFunctionsList()
-    {
-        return $this->data_source->getFunctionsList();
-    }
-
-    public function filterFields($fields, $context = null)
-    {
-        $functionCode = $fields->functioncode->value ?? false;
-        if (!$functionCode) {
-            // si on est pas dans le repeater qui a fonction code on quitte. A noter tous les repeater sont pris en compte
-            return;
-        }
-        $fnc = $this->data_source->getFunctionClass();
-
-        $baseAttributes = $fnc->getFunctionAttribute($functionCode);
-        //trace_log("Base Attribut");
-        //trace_log($baseAttributes);
-        if (!$baseAttributes) {
-            return;
-        }
-
-        foreach ($baseAttributes as $key => $attribute) {
-            $fields->{$key}->readOnly = false;
-            $fields->{$key}->label = $attribute;
-        }
-
-    }
-//     $this->bindEvent('model.form.filterFields', function ($formWidget, $fields, $context) {
-    //         // Skip nested form widgets (i.e. repeaters)
-    //         if ($formWidget->isNested) { return; }
-
-//         // do your field filtering here
-    //    });
 }
