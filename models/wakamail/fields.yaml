@@ -22,12 +22,12 @@ tabs:
             label: waka.mailer::lang.wakamail.subject
             span: auto
             tab: waka.mailer::lang.wakamail.tab_edit  
-        data_source@create:
-            label: waka.mailer::lang.wakamail.data_source
-            placeholder: waka.mailer::lang.wakamail.data_source_placeholder
-            type: relation
-            select: name
-            span: auto 
+        data_source_id@create:
+            label: waka.utils::lang.datasource.title
+            placeholder: waka.utils::lang.datasource.placeholder
+            type: dropdown
+            options: listDataSource
+            span: auto  
         is_mjml:
             label: waka.mailer::lang.wakamail.is_mjml
             comment: waka.mailer::lang.wakamail.is_mjml_com
@@ -70,12 +70,12 @@ tabs:
             label: waka.mailer::lang.wakamail.slug   
             preset: name
             span: auto
-        data_source@update:
-            label: waka.mailer::lang.wakamail.data_source
-            placeholder: waka.mailer::lang.wakamail.data_source_placeholder
-            type: relation
-            select: name
-            span: auto
+        data_source_id@update:
+            label: waka.utils::lang.datasource.title
+            placeholder: waka.utils::lang.datasource.placeholder
+            type: dropdown
+            options: listDataSource
+            span: auto  
             disabled: true
 
 
