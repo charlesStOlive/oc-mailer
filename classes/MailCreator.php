@@ -16,7 +16,7 @@ class MailCreator
     private $additionalParams;
     private $dataSourceAdditionalParams;
 
-    use \Waka\Cloudis\Classes\Traits\CloudisKey;
+    //use \Waka\Cloudis\Classes\Traits\CloudisKey;
 
     public function __construct($mail_id)
     {
@@ -40,7 +40,8 @@ class MailCreator
         $varName = strtolower($ds->name);
 
         $doted = $ds->getValues($modelId);
-        $img = $ds->getPicturesUrl($modelId, $this->wakamail->images);
+        //le modele est instancié avec getValus. inutile de l'instancier.
+        $img = $ds->wimages->getPicturesUrl($this->wakamail->images);
         $fnc = $ds->getFunctionsCollections($modelId, $this->wakamail->model_functions);
 
         $model = [
