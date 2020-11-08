@@ -1,0 +1,15 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Document
+
+# Model Class name
+modelClass: Waka\Mailer\Models\WakaMail
+type: email
+text_info: "Glissez une valeur dans la zone de saisie"
+
+
+
+
