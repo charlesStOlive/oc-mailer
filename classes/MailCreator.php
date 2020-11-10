@@ -39,13 +39,13 @@ class MailCreator
 
         $varName = strtolower($ds->name);
 
-        $doted = $ds->getValues($modelId);
+        $values = $ds->getValues($modelId);
         //le modele est instancié avec getValus. inutile de l'instancier.
         $img = $ds->wimages->getPicturesUrl($this->wakamail->images);
         $fnc = $ds->getFunctionsCollections($modelId, $this->wakamail->model_functions);
 
         $model = [
-            $varName => $doted,
+            $varName => $values,
             'IMG' => $img,
             'FNC' => $fnc,
             'log' => $logKey ? $logKey->log : null,
