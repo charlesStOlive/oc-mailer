@@ -1,0 +1,21 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    is_mjml:
+        label: waka.mailer::bloc.is_mjml
+        type: switch
+    name:
+        label: waka.mailer::bloc.name
+    contenu:
+        label: waka.mailer::bloc.contenu
+    is_data_source:
+        label: waka.mailer::bloc.is_data_source
+    data_source:
+        label: waka.mailer::bloc.data_source
+ 
+    updated_at:
+        label: waka.utils::lang.global.updated_at
+        type: timetense

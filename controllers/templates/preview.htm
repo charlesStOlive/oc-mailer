@@ -1,0 +1,20 @@
+<?php Block::put('breadcrumb') ?>
+<ul>
+    <li><a href="<?= Backend::url('waka/mailer/templates') ?>">Template</a></li>
+    <li><?= e($this->pageTitle) ?></li>
+</ul>
+<?php Block::endPut() ?>
+
+<?php if (!$this->fatalError): ?>
+
+<div class="form-preview">
+    <?= $this->formRenderPreview() ?>
+</div>
+
+<?php else: ?>
+
+<p class="flash-message static error"><?= e($this->fatalError) ?></p>
+<p><a href="<?= Backend::url('waka/mailer/templates') ?>"
+       class="btn btn-default">Return to template list</a></p>
+
+<?php endif ?>

@@ -1,0 +1,14 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    name:
+        label: waka.mailer::template.name
+    code:
+        label: waka.mailer::template.code
+ 
+    updated_at:
+        label: waka.utils::lang.global.updated_at
+        type: timetense

@@ -1,0 +1,30 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    
+    sort_order:
+        label: waka.utils::lang.global.sort_order
+        invisible: true
+    inform:
+        type: waka-icon-info
+        width: 25px
+        label : ' '
+        launch_request: true
+        show_null: true
+        clickable: false
+        searchable: false
+        sortable: false
+    name:
+        label: waka.mailer::lang.wakamail.name
+        searchable: true
+    data_source_id:
+        label: waka.utils::lang.datasource.title
+        type: datasource
+    is_scope:
+        label: waka.utils::lang.scopes.is_scope
+        type: switch
+    updated_at:
+        label: waka.utils::lang.global.updated_at
+        type: timetense

@@ -12,3 +12,7 @@
 1.0.5:
     - 'Nettoyage des anciens scopes'
     - clean_scopes.php
+1.1.0:
+    - 'Blocs de contenus'
+    - create_blocs_table.php
+    - create_templates_table.php

@@ -1,0 +1,206 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+tabs:
+    defaultTab: waka.mailer::lang.wakamail.tab_info
+    icons: 
+        waka.mailer::lang.wakamail.tab_info: icon-info-circle
+        waka.mailer::lang.wakamail.tab_edit: icon-pencil
+        waka.mailer::lang.wakamail.tab_scopes: icon-filter  
+        waka.mailer::lang.wakamail.tab_fnc: icon-address-card-o
+        waka.lp::lang.source_log.tab_lp: icon-file
+    fields:
+        name@create:
+            label: waka.mailer::lang.wakamail.name
+            span: auto
+        slug@create:
+            label: waka.mailer::lang.wakamail.slug   
+            preset: name
+            span: auto
+        subject:
+            label: waka.mailer::lang.wakamail.subject
+            span: auto
+            tab: waka.mailer::lang.wakamail.tab_edit  
+        data_source_id@create:
+            label: waka.utils::lang.datasource.title
+            placeholder: waka.utils::lang.datasource.placeholder
+            type: dropdown
+            options: listDataSource
+            span: auto  
+        is_mjml:
+            label: waka.mailer::lang.wakamail.is_mjml
+            comment: waka.mailer::lang.wakamail.is_mjml_com
+            type: checkbox
+            default: 1
+            tab: waka.mailer::lang.wakamail.tab_edit
+        template_htm:
+            label: waka.mailer::lang.wakamail.template
+            type: richeditor
+            size: giant
+            tab: waka.mailer::lang.wakamail.tab_edit
+            trigger:
+                action: show
+                field: is_mjml
+                condition: unchecked
+        mjml:
+            label: waka.mailer::lang.wakamail.mjml
+            type: codeeditor
+            language: xml
+            size: giant
+            tab: waka.mailer::lang.wakamail.tab_edit
+            trigger:
+                action: show
+                field: is_mjml
+                condition: checked
+
+        model_functions@update:
+                label: Créer des collections à partir des fonctions du modèle
+                type: functionslist
+                tab: waka.mailer::lang.wakamail.tab_fnc
+        images@update:
+                label: Injecter des images à partir du modèle
+                type: imageslist
+                tab: waka.mailer::lang.wakamail.tab_fnc
+        
+        name@update:
+            label: waka.mailer::lang.wakamail.name
+            span: auto
+        slug@update:
+            label: waka.mailer::lang.wakamail.slug   
+            preset: name
+            span: auto
+        data_source_id@update:
+            label: waka.utils::lang.datasource.title
+            placeholder: waka.utils::lang.datasource.placeholder
+            type: dropdown
+            options: listDataSource
+            span: auto  
+            disabled: true
+
+
+        is_scope: 
+            label: waka.utils::lang.scopes.is_scope
+            tab: waka.mailer::lang.wakamail.tab_scopes
+            type: switch
+        scopes:
+            type: scopeslist
+            tab: waka.mailer::lang.wakamail.tab_scopes
+            trigger:
+                action: hide
+                field: is_scope
+                condition: unchecked
+
+        # scopes@update:
+        #     label: waka.worder::lang.document.scopes.title
+        #     type: nestedform
+        #     tab: waka.mailer::lang.wakamail.tab_scopes
+        #     form:
+        #         fields:
+        #             mode: 
+        #                 type: radio
+        #                 default: [all]
+        #                 cssClass: 'inline-options'
+        #                 options:
+        #                     all: Toutes les conditions doivent être vrai
+        #                     one: Une seul condition doit être vrai
+        #             conditions:
+        #                 label: waka.worder::lang.document.scopes.conditions
+        #                 type: repeater
+        #                 prompt: waka.worder::lang.document.scopes.prompt
+        #                 span: full
+        #                 form:
+        #                     fields:
+        #                         self: 
+        #                             label: waka.worder::lang.document.scopes.self
+        #                             type: checkbox
+        #                             span: full
+        #                             default: true
+        #                         target:
+        #                             label: waka.worder::lang.document.scopes.target
+        #                             commentAbove: waka.worder::lang.document.scopes.target_com
+        #                             span: auto
+        #                             trigger:
+        #                                 action: disable
+        #                                 field: self
+        #                                 condition: checked
+        #                         ids:
+        #                             label: waka.worder::lang.document.scopes.id
+        #                             type: taglist
+        #                             mode: array
+        #                             commentAbove: waka.worder::lang.document.scopes.id_com
+        #                             span: auto
+    # add_fields:
+    #     label: waka.mailer::lang.wakamail.add_fields.name
+    #     type: repeater
+    #     prompt: waka.mailer::lang.wakamail.add_fields.prompt
+    #     span: auto
+    #     #cssClass: 
+    #     form:
+    #         fields:
+    #             label:
+    #                 label: waka.mailer::lang.wakamail.add_fields.label
+    #                 span: auto
+    #                 #cssClass: input-group-sm p-a-0
+    #             code:
+    #                 label: waka.mailer::lang.wakamail.add_fields.code
+    #                 span: auto
+    #                 #cssClass: input-group-sm p-a-0
+    #             type:
+    #                 label: waka.mailer::lang.wakamail.add_fields.type
+    #                 span: auto
+    #                 type: dropdown
+    #                 options:
+    #                    text: Texte
+    #                    richeditor: Eiteur HTML
+    #                 #cssClass: form-group-sm p-a-0
+    #             required:
+    #                 label: waka.mailer::lang.wakamail.add_fields.required
+    #                 span: auto
+    #                 type: checkbox
+    #                 #cssClass: input-group-sm p-a-1
+    
+    # model_functions: 
+    #     type: repeater
+    #     prompt: waka.mailer::lang.wakamail.add_fields.model_functions
+    #     span: full
+    #     form:
+    #         fields:
+    #             code:
+    #                 label: code
+    #                 span: auto
+    #             functioncode:
+    #                 label: Choisissez une fonction
+    #                 span: auto
+    #                 type: dropdown
+    #                 placeholder: --Choisissez une fonction--
+    #                 options: getFunctionsList
+    #             v1:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+    #             v2:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+    #             v3:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+    #             v4:
+    #                 label: Inutile
+    #                 readOnly: true
+    #                 span: storm
+    #                 cssClass: col-sm-3 col-xs-12
+    #                 dependsOn: functioncode
+
+
+
+    
+    

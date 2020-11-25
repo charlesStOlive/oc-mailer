@@ -1,0 +1,17 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields: 
+    email: 
+        label: e-Mail
+        type: taglist
+        
+    cc:
+        label: CC
+        type: taglist
+    
+        
+
+    
+    
