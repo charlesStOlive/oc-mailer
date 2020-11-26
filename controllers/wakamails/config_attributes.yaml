@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: Document
+name: WakaMail
 
 # Model Class name
 modelClass: Waka\Mailer\Models\WakaMail

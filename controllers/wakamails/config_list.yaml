@@ -9,7 +9,7 @@ list: $/waka/mailer/models/wakamail/columns.yaml
 modelClass: Waka\Mailer\Models\WakaMail
 
 # List Title
-title: Gerer les emails
+title: waka.mailer::wakamail.title
 
 # Link URL for each record
 recordUrl: waka/mailer/wakamails/update/:id
@@ -33,7 +33,9 @@ showSorting: true
 # defaultSort:
 #     column: created_at
 #     direction: desc
-
+defaultSort:
+    column: sort_order
+    direction: asc
 # Display checkboxes next to each record
 showCheckboxes: true
 

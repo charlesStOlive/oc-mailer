@@ -1,8 +1,10 @@
 <!-- Primary content -->
 <?php Block::put('breadcrumb') ?>
 <ul>
-    <li><a href="<?= Backend::url('system/settings/') ?>">Réglages</a></li>
-    <li><a href="<?= Backend::url('waka/mailer/wakamails') ?>">Modèles email</a></li>
+    <li><a href="<?= Backend::url('system/settings/') ?>"><?= e(trans('waka.utils::lang.global.settings')) ?></a></li>
+    <li><a
+           href="<?= Backend::url('waka/mailer/wakamails') ?>"><?= e(trans('waka.mailer::wakamail.title')) ?></a>
+    </li>
     <li><?= e($this->pageTitle) ?></li>
 </ul>
 <?php Block::endPut() ?>
@@ -11,22 +13,16 @@
 
 <?= Form::open(['class' => 'layout']) ?>
 
-<div class="form-buttons">
-    <?= $this->fireViewEvent('backend.update.tools') ?>
-    <?= $this->fireViewEvent('backend.top.update') ?>
-</div>
-
 <div class="layout-row">
     <?= $this->formRender() ?>
 </div>
-
 <div class="form-buttons">
     <div class="loading-indicator-container">
         <button type="submit"
                 data-request="onSave"
                 data-request-data="redirect:0"
                 data-hotkey="ctrl+s, cmd+s"
-                data-load-indicator="Saving WakaMail..."
+                data-load-indicator="<?= e(trans('waka.utils::lang.global.save_indicator')) ?>"
                 class="btn btn-primary">
             <?= e(trans('waka.utils::lang.global.save')) ?>
         </button>
@@ -34,53 +30,35 @@
                 data-request="onSave"
                 data-request-data="close:1"
                 data-hotkey="ctrl+enter, cmd+enter"
-                data-load-indicator="Saving WakaMail..."
+                data-load-indicator="<?= e(trans('waka.utils::lang.global.save_indicator')) ?>"
                 class="btn btn-default">
             <?= e(trans('waka.utils::lang.global.save_close')) ?>
         </button>
-        <?= $this->fireViewEvent('backend.update.prod') ?>
-        <button type="button"
+                <button type="button"
                 class="oc-icon-trash-o btn-icon danger pull-right"
                 data-request="onDelete"
-                data-load-indicator="Deleting WakaMail..."
-                data-request-confirm="Delete this wakamail?">
+                data-load-indicator="<?= e(trans('waka.utils::lang.global.delete_indicator')) ?>"
+                data-request-confirm="<?= e(trans('waka.utils::lang.global.delete')) ?>">
         </button>
-        <div class="btn-group">
-            <button href="javascript:;"
-                    class="btn btn-default oc-icon-external-link "
-                    data-request-data="redirect:0, wakamailId:<?=$this->params[0]?>"
-                    data-control="popup"
-                    data-handler="onLoadMailTestForm">
-                <?= e(trans('waka.mailer::lang.wakamail.test')) ?> </button>
-            <button type="button"
-                    class="btn btn-default oc-icon-eye"
-                    data-size="large"
-                    data-request-data="redirect:0, wakamailId:<?=$this->params[0]?>"
-                    data-control="popup"
-                    data-handler="onMailTestShow">
-                <?= e(trans('waka.mailer::lang.wakamail.show')) ?> </button>
-        </div>
+        <?= $this->fireViewEvent('backend.top.update') ?>
+        <?= $this->fireViewEvent('backend.down.update') ?>
+        <?= $this->fireViewEvent('backend.update.prod') ?>
         <span class="btn-text">
-            or <a
-               href="<?= Backend::url('waka/mailer/wakamails') ?>"><?= e(trans('waka.utils::lang.global.cancel')) ?></a>
+            <?= e(trans('waka.utils::lang.global.or')) ?>
+            <a href="<?= Backend::url('waka/mailer/wakamails') ?>">
+                <?= e(trans('waka.utils::lang.global.cancel')) ?></a>
         </span>
     </div>
 </div>
-
-<?= Form::close() ?>
-
-<?php else: ?>
-
-<p class="flash-message static error"><?= e($this->fatalError) ?></p>
-<p><a href="<?= Backend::url('waka/mailer/wakamails') ?>"
-       class="btn btn-default">Return to wakamails list</a></p>
-
-<?php endif ?>
 <?php Block::endPut() ?>
 
 <!-- Complimentary sidebar -->
-<?php Block::put('form-sidebar');?>
-<div id="sidebar_attributes"><?= $this->attributesRender() ?></div>
+<?php Block::put('form-sidebar') ?>
+<div class="hide-tabs">
+        <div id="sidebar_attributes"><?= $this->attributesRender() ?></div>
+        </div>
+
+
 <?php Block::endPut() ?>
 
 <!-- Layout execution -->
@@ -89,3 +67,14 @@
 <?= $this->makeLayout('form-with-sidebar') ?>
 <?= Form::close() ?>
 <?php Block::endPut() ?>
+
+<?php else: ?>
+<div class="control-breadcrumb">
+    <?= Block::placeholder('breadcrumb') ?>
+</div>
+<div class="padded-container">
+    <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+    <p><a href="<?= Backend::url('backend/users') ?>"
+           class="btn btn-default"><?= e(trans('backend::lang.user.return')) ?></a></p>
+</div>
+<?php endif ?>

@@ -6,8 +6,8 @@
 # Model Class name
 modelClass: Waka\Mailer\Models\WakaMail
 
-name: Email
-title: Dupliquer un email
+name: wakamails
+title: waka.utils::lang.global.duplicate_theWakaMail
 redirect: backend/waka/mailer/wakamails/update/
 
 duplication:
@@ -24,7 +24,7 @@ duplication:
     #Les champs qui seront modifié dans le formulaire du popup 
     fields:
         name:
-          label: Nom de l'email
+          label: waka.mailer::wakamail.name 
 
         # _keep:
         #   label: Dupliquer dans ce projet

@@ -1,18 +1,5 @@
 1.0.1:
+    - 'Version avancé de mailer'
     - create_waka_mails_table.php
-1.0.2:
-    - 'add is mjml'
-    - create_waka_mails_table_u102.php
-1.0.3:
-    - 'add template htm'
-    - create_waka_mails_table_u103.php
-1.0.4:
-    - 'ajout su scope type'
-    - create_waka_mails_table_u104.php
-1.0.5:
-    - 'Nettoyage des anciens scopes'
-    - clean_scopes.php
-1.1.0:
-    - 'Blocs de contenus'
     - create_blocs_table.php
     - create_templates_table.php

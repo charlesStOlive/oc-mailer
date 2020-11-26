@@ -8,32 +8,31 @@ class CreateWakaMailsTable extends Migration
 {
     public function up()
     {
-        Schema::create('waka_mailer_wakamails', function (Blueprint $table) {
+        Schema::create('waka_mailer_waka_mails', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
             $table->string('subject');
-            $table->text('template')->nullable();
+            $table->integer('data_source_id');
+            $table->boolean('is_mjml')->nullable();
             $table->text('mjml')->nullable();
-
-            $table->integer('data_source_id')->unsigned()->nullable();
-
-            $table->text('scopes')->nullable();
+            $table->text('mjml_html')->nullable();
+            $table->text('html')->nullable();
             $table->text('model_functions')->nullable();
             $table->text('images')->nullable();
-            $table->text('add_fields')->nullable();
-
+            $table->boolean('is_scope')->nullable();
+            $table->text('scopes')->nullable();
+            //reorder
             $table->integer('sort_order')->default(0);
-
+            //softDelete
             $table->softDeletes();
-
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('waka_mailer_wakamails');
+        Schema::dropIfExists('waka_mailer_waka_mails');
     }
 }

@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: WakaMail
+name: waka.mailer::wakamail.form_name
 
 # Model Form Field configuration
 form: $/waka/mailer/models/wakamail/fields.yaml
@@ -16,16 +16,16 @@ defaultRedirect: waka/mailer/wakamails
 
 # Create page
 create:
-    title: Nouveau modèle email
+    title: waka.mailer::wakamail.create
     redirect: waka/mailer/wakamails/update/:id
     redirectClose: waka/mailer/wakamails
 
 # Update page
 update:
-    title: Editer modèle email
+    title: waka.mailer::wakamail.update
     redirect: waka/mailer/wakamails
     redirectClose: waka/mailer/wakamails
 
 # Preview page
 preview:
-    title: Preview WakaMail
+    title: waka.mailer::wakamail.preview_name

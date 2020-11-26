@@ -1,27 +1,21 @@
 <?php namespace Waka\Mailer\Models;
 
-use BackendAuth;
-use Mjml\Client as MjmlClient;
 use Model;
 
 /**
- * WakaMail Model
+ * wakaMail Model
  */
+
 class WakaMail extends Model
 {
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\SoftDelete;
     use \October\Rain\Database\Traits\Sortable;
-    //
-    use \Waka\Informer\Classes\Traits\InformerTrait;
-
-    use \October\Rain\Database\Traits\Sluggable;
-    protected $slugs = ['slug' => 'name'];
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'waka_mailer_wakamails';
+    public $table = 'waka_mailer_waka_mails';
 
     /**
      * @var array Guarded fields
@@ -37,8 +31,10 @@ class WakaMail extends Model
      * @var array Validation rules for attributes
      */
     public $rules = [
-        'data_source_id' => 'required',
         'name' => 'required',
+        'slug' => 'required | unique:waka_mailer_waka_mails',
+        'subject' => 'required',
+        'data_source_id' => 'required',
     ];
 
     /**
@@ -49,12 +45,18 @@ class WakaMail extends Model
     /**
      * @var array Attributes to be cast to JSON
      */
-    protected $jsonable = ['scopes', 'images', 'model_functions'];
+    protected $jsonable = [
+        'html',
+        'model_functions',
+        'images',
+        'scopes',
+    ];
 
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = [];
+    protected $appends = [
+    ];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
@@ -74,45 +76,41 @@ class WakaMail extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+    ];
+    public $hasOneThrough = [];
+    public $hasManyThrough = [];
     public $belongsTo = [
-        //'data_source' => ['Waka\Utils\Models\DataSource'],
     ];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
-    public $morphMany = [
-        'informs' => ['Waka\Informer\Models\Inform', 'name' => 'informeable'],
-    ];
+    public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
 
-    public function afterCreate()
+    /**
+     *EVENTS
+     **/
+    public function afterSave()
     {
-        if (BackendAuth::getUser()) {
-        }
 
     }
-    public function beforeSave()
-    {
-        if ($this->is_mjml && $this->mjml) {
-            //transformation du mjmm en html via api mailjet.
-            $applicationId = env('MJML_API_ID');
-            $secretKey = env('MJML_API_SECRET');
-            $client = new MjmlClient($applicationId, $secretKey);
-            $this->template = $client->render($this->mjml);
-        }
-        if (!$this->is_mjml && $this->template_htm) {
-            //transformation du mjmm en html via api mailjet.
-            $this->template = $this->template_htm;
-        }
 
-    }
+    /**
+     * GETTER
+     **/
+
     /**
      * LISTS
-     */
+     **/
     public function listDataSource()
     {
         return \Waka\Utils\Classes\DataSourceList::lists();
     }
+
+    /**
+     * SCOPES
+     */
+
 }
