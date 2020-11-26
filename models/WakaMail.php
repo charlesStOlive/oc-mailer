@@ -17,6 +17,7 @@ class WakaMail extends Model
      */
     public $table = 'waka_mailer_waka_mails';
 
+
     /**
      * @var array Guarded fields
      */
@@ -35,6 +36,7 @@ class WakaMail extends Model
         'slug' => 'required | unique:waka_mailer_waka_mails',
         'subject' => 'required',
         'data_source_id' => 'required',
+        'template' => 'required',
     ];
 
     /**
@@ -46,7 +48,6 @@ class WakaMail extends Model
      * @var array Attributes to be cast to JSON
      */
     protected $jsonable = [
-        'html',
         'model_functions',
         'images',
         'scopes',
@@ -81,6 +82,7 @@ class WakaMail extends Model
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [
+        'template' => 'Waka\Mailer\Models\Template',
     ];
     public $belongsToMany = [];
     public $morphTo = [];
@@ -92,10 +94,11 @@ class WakaMail extends Model
     /**
      *EVENTS
      **/
-    public function afterSave()
+    public function afterSave() 
     {
 
     }
+
 
     /**
      * GETTER
@@ -106,11 +109,12 @@ class WakaMail extends Model
      **/
     public function listDataSource()
     {
-        return \Waka\Utils\Classes\DataSourceList::lists();
+        return [];
     }
+
 
     /**
      * SCOPES
      */
-
+     
 }

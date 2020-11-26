@@ -17,4 +17,12 @@
         <?= e(trans('waka.utils::lang.global.delete_selected')) ?>
     </button>
     <?= $this->fireViewEvent('backend.top.index') ?>
+    <a href="<?= Backend::url('waka/mailer/blocs') ?>"
+       class="btn btn-default oc-icon-th-large">
+        <?= e(trans('waka.mailer::bloc.title')) ?>
+    </a>
+    <a href="<?= Backend::url('waka/mailer/templates') ?>"
+       class="btn btn-default oc-icon-picture-o">
+        <?= e(trans('waka.mailer::template.title')) ?>
+    </a>
 </div>

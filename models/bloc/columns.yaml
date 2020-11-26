@@ -9,12 +9,10 @@ columns:
         type: switch
     name:
         label: waka.mailer::bloc.name
+    slug:
+        label: waka.mailer::bloc.slug
     contenu:
         label: waka.mailer::bloc.contenu
-    is_data_source:
-        label: waka.mailer::bloc.is_data_source
-    data_source:
-        label: waka.mailer::bloc.data_source
  
     updated_at:
         label: waka.utils::lang.global.updated_at

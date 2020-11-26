@@ -8,6 +8,11 @@ columns:
         label: waka.mailer::wakamail.name
     data_source_id:
         label: waka.mailer::wakamail.data_source_id
+    template_r:
+        label: waka.mailer::wakamail.template
+        searchable: true
+        relation: template
+        select: name
     is_mjml:
         label: waka.mailer::wakamail.is_mjml
         type: switch

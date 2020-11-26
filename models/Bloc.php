@@ -32,7 +32,9 @@ class Bloc extends Model
      */
     public $rules = [
         'name' => 'required',
+        'slug' => 'required',
         'contenu' => 'required',
+        'copy' => 'required',
     ];
 
     /**
@@ -85,11 +87,6 @@ class Bloc extends Model
     /**
      *EVENTS
      **/
-    public function afterSave() 
-    {
-
-    }
-
 
     /**
      * GETTER

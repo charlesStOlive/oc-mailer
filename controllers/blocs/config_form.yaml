@@ -16,13 +16,13 @@ defaultRedirect: waka/mailer/blocs
 
 # Create page
 create:
-    title: Create Bloc
+    title: waka.mailer::bloc.create
     redirect: waka/mailer/blocs/update/:id
     redirectClose: waka/mailer/blocs
 
 # Update page
 update:
-    title: Edit Bloc
+    title: waka.mailer::bloc.update
     redirect: waka/mailer/blocs
     redirectClose: waka/mailer/blocs
 

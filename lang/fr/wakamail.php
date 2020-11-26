@@ -1,10 +1,11 @@
 <?php
 
 return [
-    'name' => 'Nom du template',
+    'name' => 'Nom email',
     'slug' => 'Code/Slug',
     'subject' => 'Sujet',
     'data_source_id' => 'Source des données',
+    'template' => 'Template',
     'is_mjml' => 'En MJML ?',
     'mjml' => 'Code MJML',
     'mjml_html' => 'HTML',

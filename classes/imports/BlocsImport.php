@@ -14,9 +14,9 @@ class BlocsImport implements ToCollection, WithHeadingRow
             $bloc->id = $row['id'] ?? null;
             $bloc->is_mjml = $row['is_mjml'] ?? null;
             $bloc->name = $row['name'] ?? null;
+            $bloc->slug = $row['slug'] ?? null;
             $bloc->contenu = $row['contenu'] ?? null;
-            $bloc->is_data_source = $row['is_data_source'] ?? null;
-            $bloc->data_source_id = $row['data_source_id'] ?? null;
+            $bloc->copy = $row['copy'] ?? null;
             $bloc->save();
         }
     }

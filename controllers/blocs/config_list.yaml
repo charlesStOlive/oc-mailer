@@ -9,7 +9,7 @@ list: $/waka/mailer/models/bloc/columns.yaml
 modelClass: Waka\Mailer\Models\Bloc
 
 # List Title
-title: Manage Blocs
+title: waka.mailer::bloc.title
 
 # Link URL for each record
 recordUrl: waka/mailer/blocs/update/:id

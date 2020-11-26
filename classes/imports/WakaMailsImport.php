@@ -16,6 +16,7 @@ class WakaMailsImport implements ToCollection, WithHeadingRow
             $wakaMail->slug = $row['slug'] ?? null;
             $wakaMail->subject = $row['subject'] ?? null;
             $wakaMail->data_source_id = $row['data_source_id'] ?? null;
+            $wakaMail->template_id = $row['template_id'] ?? null;
             $wakaMail->is_mjml = $row['is_mjml'] ?? null;
             $wakaMail->mjml = $row['mjml'] ?? null;
             $wakaMail->mjml_html = $row['mjml_html'] ?? null;

@@ -2,10 +2,10 @@
 
 return [
     'is_mjml' => 'MJML',
-    'name' => 'Nom du template',
+    'name' => 'Nom du bloc de contenu',
+    'slug' => 'Code',
     'contenu' => 'Contenu',
-    'is_data_source' => 'Liée à un dataSource',
-    'data_source' => 'DataSource',
+    'copy' => 'Valeur à copier',
     'title' => 'Gestion des blocs',
     'create' => 'Créer un bloc',
     'edit' => 'Éditer un bloc',

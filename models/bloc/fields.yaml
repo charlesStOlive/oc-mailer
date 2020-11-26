@@ -2,30 +2,36 @@
 #  Form Field Definitions
 # ===================================
 
-fields:
+fields:    
     is_mjml:
         label: waka.mailer::bloc.is_mjml
         span: left
         type: switch
-        default: true
+        default: false
 
     name:
         label: waka.mailer::bloc.name
         span: left
         required: true
 
+    slug:
+        label: waka.mailer::bloc.slug
+        span: auto
+        required: true
+        preset: name
+
     contenu:
         label: waka.mailer::bloc.contenu
         span: full
-        type: textarea
         required: true
+        type: codeeditor
+        size: giant
 
-    is_data_source:
-        label: waka.mailer::bloc.is_data_source
-        span: left
-
-    data_source:
-        label: waka.mailer::bloc.data_source
-        span: left
+    copy:
+        label: waka.mailer::bloc.copy
+        span: auto
+        required: true
+        type: codeeditor
+        size: small
 
  

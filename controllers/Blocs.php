@@ -22,6 +22,7 @@ class Blocs extends Controller
     {
         parent::__construct();
         BackendMenu::setContext('October.System', 'system', 'settings');
-        SettingsManager::setContext('Waka.Mailer', 'wakamails');
+        SettingsManager::setContext('Waka.Mailer', 'WakaMails');
     }
+
 }

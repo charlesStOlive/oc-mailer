@@ -35,6 +35,14 @@ tabs:
             placeholder: waka.utils::lang.datasource.placeholder
             options: listDataSource
 
+        template:
+            label: waka.mailer::wakamail.template
+            span: left
+            type: relation
+            placeholder: waka.utils::lang.global.placeholder
+            nameFrom: name
+            required: true
+
         is_mjml:
             label: waka.mailer::wakamail.is_mjml
             span: left
@@ -57,7 +65,7 @@ tabs:
         html:
             label: waka.mailer::wakamail.html
             span: full
-            type: repeater
+            type: codeeditor
             size: giant
             tab: waka.mailer::wakamail.tab_edit
             trigger:

@@ -13,8 +13,9 @@ class CreateBlocsTable extends Migration
             $table->increments('id');
             $table->boolean('is_mjml')->nullable();
             $table->string('name');
+            $table->string('slug');
             $table->text('contenu');
-            $table->integer('data_source_id')->unsigned()->nullable();
+            $table->text('copy');
             //reorder
             $table->integer('sort_order')->default(0);
             $table->timestamps();
