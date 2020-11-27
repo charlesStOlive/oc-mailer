@@ -1,0 +1,31 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:    
+    name:
+        label: waka.mailer::layout.name
+        span: left
+        required: true
+
+    contenu:
+        label: waka.mailer::layout.contenu
+        span: full
+        required: true
+        type: codeeditor
+        size: giant
+
+    baseCss:
+        label: waka.mailer::layout.baseCss
+        span: left
+        required: true
+        type: dropdown
+        options: listWconfigLayout
+
+    AddCss:
+        label: waka.mailer::layout.AddCss
+        span: full
+        type: codeeditor
+        size: giant
+
+ 

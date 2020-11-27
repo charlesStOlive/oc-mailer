@@ -15,6 +15,7 @@ class MailCreator
     private $dataSourceId;
     private $additionalParams;
     private $dataSourceAdditionalParams;
+    private $forceTo;
 
     //use \Waka\Cloudis\Classes\Traits\CloudisKey;
 
@@ -24,8 +25,15 @@ class MailCreator
         $this->wakamail = $wakamail;
     }
 
-    public function renderMail($modelId, $datasEmail, $test = false)
+    public function setForceTo(array $data)
     {
+        $this->forceTo = $value;
+    }
+
+    public function renderMail($modelId, $dataFromPopup, $test = false)
+    {
+        $dataFromPopup = $dataFromPopup;
+
         $dataSourceId = $this->wakamail->data_source_id;
         $ds = new DataSource($dataSourceId, 'id');
 
@@ -51,24 +59,43 @@ class MailCreator
             'log' => $logKey ? $logKey->log : null,
         ];
         //trace_log($model);
-        $html = \Twig::parse($this->wakamail->template, $model);
+        $htmlContent = \Twig::parse($this->wakamail->html, $model);
+
+        //trace_log($htmlContent);
+        $data = [
+            'content' => $htmlContent,
+            'baseCss' => \File::get(plugins_path() . $this->wakamail->layout->baseCss),
+            'AddCss' => $this->wakamail->layout->Addcss,
+        ];
+        $htmlLayout = \Twig::parse($this->wakamail->layout->contenu, $data);
 
         if ($test) {
-            return $html;
+            return $htmlLayout;
         }
+        if (!$dataFromPopup) {
+            if ($this->forceTo) {
+                $dataFromPopup = $this->forceTo;
+            } else {
+                throw new ApplicationException("Impossible d'envoyer des données email sans les données du popup ou un forceTo");
+            }
+        }
+        if ($this->forceTo) {
+            $datasEmail['emails'] = $this->forceTo;
+        }
+
         if ($dataSession['send_with_gmail'] ?? false) {
             //$backup = Mail::getSwiftMailer();
             $gmail = new Swift_Mailer(new GmailTransport());
             // Set the mailer as gmail
             Mail::setSwiftMailer($gmail);
 
-            \Mail::raw(['html' => $html], function ($message) use ($datasEmail) {
+            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
                 $message->to($datasEmail['emails']);
                 $message->subject($datasEmail['subject']);
             });
             //Mail::setSwiftMailer($backup);
         } else {
-            \Mail::raw(['html' => $html], function ($message) use ($datasEmail) {
+            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
                 $message->to($datasEmail['emails']);
                 $message->subject($datasEmail['subject']);
                 // if ($addPj) {

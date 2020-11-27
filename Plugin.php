@@ -51,6 +51,26 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerMarkupTags()
+    {
+        return [
+            'functions' => [
+                'mailPartial' => function ($twig, $data) {
+                    $bloc = \Waka\Mailer\Models\Bloc::where('slug', $twig)->first();
+                    trace_log($twig);
+                    trace_log($bloc);
+                    if ($bloc) {
+                        $bloc_html = \Twig::parse($bloc->contenu, compact('data'));
+                        return $bloc_html;
+                    } else {
+                        return null;
+                    }
+
+                },
+            ],
+        ];
+    }
+
     /**
      * Boot method, called right before the request route.
      *

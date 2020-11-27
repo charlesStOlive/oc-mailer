@@ -13,7 +13,6 @@ class TemplatesImport implements ToCollection, WithHeadingRow
             $template = new Template();
             $template->id = $row['id'] ?? null;
             $template->name = $row['name'] ?? null;
-            $template->code = $row['code'] ?? null;
             $template->contenu = $row['contenu'] ?? null;
             $template->css = $row['css'] ?? null;
             $template->save();

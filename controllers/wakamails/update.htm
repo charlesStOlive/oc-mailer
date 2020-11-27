@@ -2,8 +2,7 @@
 <?php Block::put('breadcrumb') ?>
 <ul>
     <li><a href="<?= Backend::url('system/settings/') ?>"><?= e(trans('waka.utils::lang.global.settings')) ?></a></li>
-    <li><a
-           href="<?= Backend::url('waka/mailer/wakamails') ?>"><?= e(trans('waka.mailer::wakamail.title')) ?></a>
+    <li><a href="<?= Backend::url('waka/mailer/wakamails') ?>"><?= e(trans('waka.mailer::wakamail.title')) ?></a>
     </li>
     <li><?= e($this->pageTitle) ?></li>
 </ul>
@@ -34,12 +33,24 @@
                 class="btn btn-default">
             <?= e(trans('waka.utils::lang.global.save_close')) ?>
         </button>
-                <button type="button"
+        <button type="button"
                 class="oc-icon-trash-o btn-icon danger pull-right"
                 data-request="onDelete"
                 data-load-indicator="<?= e(trans('waka.utils::lang.global.delete_indicator')) ?>"
                 data-request-confirm="<?= e(trans('waka.utils::lang.global.delete')) ?>">
         </button>
+        <div class="btn-group">
+            <button href="javascript:;"
+                    class="btn btn-default oc-icon-external-link "
+                    data-request-data="redirect:0, wakamailId:<?=$this->params[0]?>"
+                    data-control="popup"
+                    data-handler="onLoadMailTestForm">
+                <?= e(trans('waka.mailer::lang.wakamail.test')) ?> </button>
+            <a class="btn btn-default oc-icon-eye"
+               href="/test/email/<?=$this->params[0]?>"
+               target="_blank">
+                <?= e(trans('waka.mailer::lang.wakamail.show')) ?> </a>
+        </div>
         <?= $this->fireViewEvent('backend.top.update') ?>
         <?= $this->fireViewEvent('backend.down.update') ?>
         <?= $this->fireViewEvent('backend.update.prod') ?>
@@ -54,9 +65,22 @@
 
 <!-- Complimentary sidebar -->
 <?php Block::put('form-sidebar') ?>
-<div class="hide-tabs">
-        <div id="sidebar_attributes"><?= $this->attributesRender() ?></div>
+<div class="control-tabs secondary-tabs"
+     data-control="tab">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#secondaryTabOne">Attributs</a></li>
+        <li><a href="#secondaryTabTwo">Blocs emails</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div id="sidebar_attributes"><?= $this->attributesRender() ?></div>
         </div>
+        <div class="tab-pane">
+            <?= $this->widget->blocsWidget->render() ?>
+        </div>
+    </div>
+</div>
+
 
 
 <?php Block::endPut() ?>

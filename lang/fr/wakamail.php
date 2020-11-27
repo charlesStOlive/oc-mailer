@@ -5,7 +5,7 @@ return [
     'slug' => 'Code/Slug',
     'subject' => 'Sujet',
     'data_source_id' => 'Source des données',
-    'template' => 'Template',
+    'layout' => 'Maquette',
     'is_mjml' => 'En MJML ?',
     'mjml' => 'Code MJML',
     'mjml_html' => 'HTML',

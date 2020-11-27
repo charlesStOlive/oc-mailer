@@ -16,7 +16,6 @@ class Template extends Model
      */
     public $table = 'waka_mailer_templates';
 
-
     /**
      * @var array Guarded fields
      */
@@ -32,7 +31,6 @@ class Template extends Model
      */
     public $rules = [
         'name' => 'required',
-        'code' => 'required',
         'contenu' => 'required',
     ];
 
@@ -95,8 +93,13 @@ class Template extends Model
      * LISTS
      **/
 
+    public function listWconfigLayout()
+    {
+        return \Config::get('waka.wconfig::assets.css.email');
+    }
+
     /**
      * SCOPES
      */
-     
+
 }

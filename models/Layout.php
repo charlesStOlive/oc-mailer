@@ -3,19 +3,18 @@
 use Model;
 
 /**
- * wakaMail Model
+ * layout Model
  */
 
-class WakaMail extends Model
+class Layout extends Model
 {
     use \October\Rain\Database\Traits\Validation;
-    use \October\Rain\Database\Traits\SoftDelete;
     use \October\Rain\Database\Traits\Sortable;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'waka_mailer_waka_mails';
+    public $table = 'waka_mailer_layouts';
 
     /**
      * @var array Guarded fields
@@ -32,10 +31,8 @@ class WakaMail extends Model
      */
     public $rules = [
         'name' => 'required',
-        'slug' => 'required|unique:waka_mailer_waka_mails',
-        'subject' => 'required',
-        'data_source_id' => 'required',
-        'layout' => 'required',
+        'contenu' => 'required',
+        'baseCss' => 'required',
     ];
 
     /**
@@ -47,9 +44,6 @@ class WakaMail extends Model
      * @var array Attributes to be cast to JSON
      */
     protected $jsonable = [
-        'model_functions',
-        'images',
-        'scopes',
     ];
 
     /**
@@ -69,7 +63,6 @@ class WakaMail extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**
@@ -81,7 +74,6 @@ class WakaMail extends Model
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [
-        'layout' => 'Waka\Mailer\Models\Layout',
     ];
     public $belongsToMany = [];
     public $morphTo = [];
@@ -93,10 +85,6 @@ class WakaMail extends Model
     /**
      *EVENTS
      **/
-    public function afterSave()
-    {
-
-    }
 
     /**
      * GETTER
@@ -105,9 +93,9 @@ class WakaMail extends Model
     /**
      * LISTS
      **/
-    public function listDataSource()
+    public function listWconfigLayout()
     {
-        return \Waka\Utils\Classes\DataSourceList::lists();
+        return \Config::get('waka.wconfig::assets.css.email');
     }
 
     /**

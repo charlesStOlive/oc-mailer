@@ -5,9 +5,7 @@
 columns:
 
     name:
-        label: waka.mailer::template.name
-    code:
-        label: waka.mailer::template.code
+        label: waka.mailer::layout.name
  
     updated_at:
         label: waka.utils::lang.global.updated_at

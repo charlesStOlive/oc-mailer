@@ -3,7 +3,8 @@
 return [
     'name' => 'Nom du template',
     'contenu' => 'Contenu',
-    'css' => 'CSS',
+    'baseCss' => 'Basee CSS',
+    'AddCss' => 'CSS',
     'title' => 'Gestion des templates',
     'create' => 'Créer un template',
     'edit' => 'Éditer un template',

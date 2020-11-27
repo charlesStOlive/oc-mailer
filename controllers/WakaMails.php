@@ -12,24 +12,28 @@ class WakaMails extends Controller
     public $implement = [
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
-          'waka.Utils.Behaviors.SideBarAttributesBehavior',
+        'waka.Utils.Behaviors.SideBarAttributesBehavior',
         'Waka.Mailer.Behaviors.MailBehavior',
         'Backend.Behaviors.ReorderController',
         'Waka.Utils.Behaviors.DuplicateModel',
-        
+
     ];
 
     public $formConfig = 'config_form.yaml';
     public $listConfig = 'config_list.yaml';
     public $duplicateConfig = 'config_duplicate.yaml';
     public $reorderConfig = 'config_reorder.yaml';
-    public $sidebarAttributesConfig = 'config_attributes.yaml';    
-    
+    public $sidebarAttributesConfig = 'config_attributes.yaml';
+
     public function __construct()
     {
         parent::__construct();
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Waka.Mailer', 'WakaMails');
+
+        $blocsWidget = new \Waka\Mailer\Widgets\SideBarBlocs($this);
+        $blocsWidget->alias = 'blocsWidget';
+        $blocsWidget->bindToController();
     }
 
     public function update($id)
@@ -46,4 +50,3 @@ class WakaMails extends Controller
         ];
     }
 }
-
