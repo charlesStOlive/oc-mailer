@@ -29,8 +29,8 @@ tabs:
             span: right
             type: dropdown
             required: true
-            placeholder: waka.utils::lang.datasource.placeholder
             options: listDataSource
+            placeholder: waka.utils::lang.datasource.placeholder
         layout:
             label: waka.mailer::wakamail.layout
             span: left
@@ -109,4 +109,9 @@ tabs:
                 action: show
                 field: is_scope
                 condition: checked
+        test_id@update:
+            label: waka.mailer::wakamail.test_id
+            span: auto
+            type: dropdown
+            options: listDataSourceTarget
  

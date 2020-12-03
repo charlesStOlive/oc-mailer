@@ -23,6 +23,7 @@ class WakaMailsImport implements ToCollection, WithHeadingRow
             $wakaMail->html = $row['html'] ?? null;
             $wakaMail->model_functions = json_decode($row['model_functions'] ?? null);
             $wakaMail->images = json_decode($row['images'] ?? null);
+            $wakaMail->test_id = $row['test_id'] ?? null;
             $wakaMail->save();
         }
     }

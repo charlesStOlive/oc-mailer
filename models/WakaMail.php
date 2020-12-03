@@ -112,10 +112,6 @@ class WakaMail extends Model
     /**
      * LISTS
      **/
-    public function listDataSource()
-    {
-        return \Waka\Utils\Classes\DataSourceList::lists();
-    }
 
     /**
      * GETTER

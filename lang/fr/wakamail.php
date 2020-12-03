@@ -17,6 +17,7 @@ return [
     'data_source_id' => 'Source des données',
     'is_scope' => 'À des restrictions ?',
     'scopes' => 'Restrictions',
+    'test_id' => 'Model de test',
     'tab_info' => 'Information',
     'tab_edit' => 'Édition',
     'tab_scopes' => 'Restrictions',
