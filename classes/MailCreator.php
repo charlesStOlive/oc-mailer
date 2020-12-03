@@ -1,11 +1,8 @@
 <?php namespace Waka\Mailer\Classes;
 
 use ApplicationException;
-use Mail;
-use Swift_Mailer;
 use Waka\Mailer\Models\WakaMail;
 use Waka\Utils\Classes\DataSource;
-use Zaxbux\GmailMailerDriver\Classes\GmailTransport;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
@@ -17,6 +14,7 @@ class MailCreator
     private $additionalParams;
     private $dataSourceAdditionalParams;
     private $forceTo;
+    private $isTwigStarted;
 
     //use \Waka\Cloudis\Classes\Traits\CloudisKey;
 
@@ -72,6 +70,7 @@ class MailCreator
         ];
 
         //Traitement des markup.
+        $this->startTwig();
 
         $text = \Markdown::parse($this->wakamail->html);
         $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
@@ -91,13 +90,15 @@ class MailCreator
         if ($test) {
             return $htmlLayout;
         }
-        if (!$datasEmail) {
-            if ($this->forceTo) {
-                $datasEmail = $this->forceTo;
-            } else {
-                throw new ApplicationException("Impossible d'envoyer des données email sans les données du popup ou un forceTo");
-            }
-        }
+        $this->stopTwig();
+
+        // if (!$datasEmail) {
+        //     if ($this->forceTo) {
+        //         $datasEmail = $this->forceTo;
+        //     } else {
+        //         throw new ApplicationException("Impossible d'envoyer des données email sans les données du popup ou un forceTo");
+        //     }
+        // }
         // if ($this->forceTo) {
         //     $datasEmail['emails'] = $this->forceTo['email'];
         // }
@@ -128,10 +129,49 @@ class MailCreator
                 // }
             });
         }
+        $htmlContent = null;
+        $text = null;
+        $htmlLayout = null;
+        trace_log("fin du mail");
 
-        \Flash::info("Le(s) email(s) ont bien été envoyés ! ");
-        return \Redirect::back();
+        //\Flash::info("Le(s) email(s) ont bien été envoyés ! ");
+        return true;
 
+    }
+
+    /**
+     * Temporarily registers mail based token parsers with Twig.
+     * @return void
+     */
+    protected function startTwig()
+    {
+        if ($this->isTwigStarted) {
+            return;
+        }
+
+        $this->isTwigStarted = true;
+
+        $markupManager = \System\Classes\MarkupManager::instance();
+        $markupManager->beginTransaction();
+        $markupManager->registerTokenParsers([
+            new \System\Twig\MailPartialTokenParser,
+        ]);
+    }
+
+    /**
+     * Indicates that we are finished with Twig.
+     * @return void
+     */
+    protected function stopTwig()
+    {
+        if (!$this->isTwigStarted) {
+            return;
+        }
+
+        $markupManager = \System\Classes\MarkupManager::instance();
+        $markupManager->endTransaction();
+
+        $this->isTwigStarted = false;
     }
 
 }

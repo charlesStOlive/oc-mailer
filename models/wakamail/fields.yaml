@@ -58,7 +58,7 @@ tabs:
         html:
             label: waka.mailer::wakamail.html
             span: full
-            type: codeeditor
+            type: markdown
             size: giant
             tab: waka.mailer::wakamail.tab_edit
             trigger:
@@ -114,4 +114,5 @@ tabs:
             span: auto
             type: dropdown
             options: listDataSourceTarget
+            tab: waka.mailer::wakamail.tab_info
  

@@ -55,16 +55,19 @@ class Plugin extends PluginBase
     {
         return [
             'functions' => [
-                'mailPartial' => function ($twig, $data) {
+                'mailPartial' => function ($twig, $data, $dataKey2 = null, $data2 = null) {
                     $bloc = \Waka\Mailer\Models\Bloc::where('slug', $twig)->first();
-                    //trace_log($twig);
-                    //trace_log($bloc);
+                    if ($dataKey2) {
+                        $data[$dataKey2] = $data2;
+                        $test = compact('data');
+                    }
                     if ($bloc) {
                         $bloc_html = \Twig::parse($bloc->contenu, compact('data'));
                         return $bloc_html;
                     } else {
                         return null;
                     }
+                    return null;
 
                 },
             ],
