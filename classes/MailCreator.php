@@ -1,5 +1,6 @@
 <?php namespace Waka\Mailer\Classes;
 
+use ApplicationException;
 use Mail;
 use Swift_Mailer;
 use Waka\Mailer\Models\WakaMail;
@@ -19,9 +20,18 @@ class MailCreator
 
     //use \Waka\Cloudis\Classes\Traits\CloudisKey;
 
-    public function __construct($mail_id)
+    public function __construct($mail_id, $slug = false)
     {
-        $wakamail = WakaMail::find($mail_id);
+        $wakamail;
+        if ($slug) {
+            trace_log($mail_id);
+            $wakamail = WakaMail::where('slug', $mail_id)->first();
+            if (!$wakamail) {
+                throw new ApplicationException("Le code email ne fonctionne pas : " . $mail_id);
+            }
+        } else {
+            $wakamail = WakaMail::find($mail_id);
+        }
         $this->wakamail = $wakamail;
     }
 
@@ -30,10 +40,8 @@ class MailCreator
         $this->forceTo = $value;
     }
 
-    public function renderMail($modelId, $dataFromPopup, $test = false)
+    public function renderMail($modelId, $datasEmail, $test = false)
     {
-        $dataFromPopup = $dataFromPopup;
-
         $dataSourceId = $this->wakamail->data_source_id;
         $ds = new DataSource($dataSourceId, 'id');
 
@@ -45,9 +53,13 @@ class MailCreator
             }
         }
 
+        trace_log("model ID : " . $modelId);
+
         $varName = strtolower($ds->name);
 
         $values = $ds->getValues($modelId);
+
+        //trace_log($values);
         //le modele est instancié avec getValus. inutile de l'instancier.
         $img = $ds->wimages->getPicturesUrl($this->wakamail->images);
         $fnc = $ds->getFunctionsCollections($modelId, $this->wakamail->model_functions);
@@ -58,11 +70,18 @@ class MailCreator
             'FNC' => $fnc,
             'log' => $logKey ? $logKey->log : null,
         ];
-        //trace_log($model);
-        $htmlContent = \Twig::parse($this->wakamail->html, $model);
+
+        //Traitement des markup.
+
+        $text = \Markdown::parse($this->wakamail->html);
+        $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
+        $htmlContent = \Twig::parse($text, $model);
+
+        //trace_log($htmlContent);
 
         //trace_log($htmlContent);
         $data = [
+            $varName => $values,
             'content' => $htmlContent,
             'baseCss' => \File::get(plugins_path() . $this->wakamail->layout->baseCss),
             'AddCss' => $this->wakamail->layout->Addcss,
@@ -72,16 +91,16 @@ class MailCreator
         if ($test) {
             return $htmlLayout;
         }
-        if (!$dataFromPopup) {
+        if (!$datasEmail) {
             if ($this->forceTo) {
-                $dataFromPopup = $this->forceTo;
+                $datasEmail = $this->forceTo;
             } else {
                 throw new ApplicationException("Impossible d'envoyer des données email sans les données du popup ou un forceTo");
             }
         }
-        if ($this->forceTo) {
-            $datasEmail['emails'] = $this->forceTo;
-        }
+        // if ($this->forceTo) {
+        //     $datasEmail['emails'] = $this->forceTo['email'];
+        // }
 
         if ($dataSession['send_with_gmail'] ?? false) {
             //$backup = Mail::getSwiftMailer();

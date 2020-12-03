@@ -16,13 +16,13 @@ class CreateWakaMailsTable extends Migration
             $table->string('subject');
             $table->integer('data_source_id');
             $table->integer('layout_id')->unsigned();
-            $table->boolean('is_mjml')->nullable();
+            $table->boolean('is_mjml')->nullable()->default(false);
             $table->text('mjml')->nullable();
             $table->text('mjml_html')->nullable();
             $table->text('html')->nullable();
             $table->text('model_functions')->nullable();
             $table->text('images')->nullable();
-            $table->boolean('is_scope')->nullable();
+            $table->boolean('is_scope')->nullable()->default(false);
             $table->text('scopes')->nullable();
             //reorder
             $table->integer('sort_order')->default(0);

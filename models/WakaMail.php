@@ -11,11 +11,13 @@ class WakaMail extends Model
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\SoftDelete;
     use \October\Rain\Database\Traits\Sortable;
+    use \Waka\Utils\Classes\Traits\DataSourceHelpers;
 
     /**
      * @var string The database table used by the model.
      */
     public $table = 'waka_mailer_waka_mails';
+
 
     /**
      * @var array Guarded fields
@@ -36,6 +38,12 @@ class WakaMail extends Model
         'subject' => 'required',
         'data_source_id' => 'required',
         'layout' => 'required',
+    ];
+
+    /**
+     * @var array attributes send to datasource for creating document
+     */
+    public $attributesToDs = [
     ];
 
     /**
@@ -87,20 +95,19 @@ class WakaMail extends Model
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
+    public $attachOne = [
+    ];
+    public $attachMany = [
+    ];
 
     /**
      *EVENTS
      **/
-    public function afterSave()
+    public function afterSave() 
     {
 
     }
 
-    /**
-     * GETTER
-     **/
 
     /**
      * LISTS
@@ -111,7 +118,14 @@ class WakaMail extends Model
     }
 
     /**
+     * GETTER
+     **/
+
+    /**
      * SCOPES
      */
 
+    /**
+     * SETTERS
+     */
 }

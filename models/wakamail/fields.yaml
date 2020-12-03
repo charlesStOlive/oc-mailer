@@ -14,27 +14,23 @@ tabs:
             label: waka.mailer::wakamail.name
             span: left
             required: true
-
         slug@create:
             label: waka.mailer::wakamail.slug
             span: right
             required: true
             preset: name
-
         subject:
             label: waka.mailer::wakamail.subject
             span: left
             required: true
             tab: waka.mailer::wakamail.tab_edit
-
         data_source_id@create:
             label: waka.mailer::wakamail.data_source_id
             span: right
-            required: true
             type: dropdown
+            required: true
             placeholder: waka.utils::lang.datasource.placeholder
             options: listDataSource
-
         layout:
             label: waka.mailer::wakamail.layout
             span: left
@@ -42,14 +38,12 @@ tabs:
             placeholder: waka.utils::lang.global.placeholder
             nameFrom: name
             required: true
-
         is_mjml:
             label: waka.mailer::wakamail.is_mjml
             span: left
             type: switch
             tab: waka.mailer::wakamail.tab_edit
             default: false
-
         mjml:
             label: waka.mailer::wakamail.mjml
             span: full
@@ -61,43 +55,37 @@ tabs:
                 action: show
                 field: is_mjml
                 condition: checked
-
         html:
             label: waka.mailer::wakamail.html
             span: full
-            type: richeditor
+            type: codeeditor
             size: giant
             tab: waka.mailer::wakamail.tab_edit
             trigger:
                 action: hide
                 field: is_mjml
                 condition: checked
-
         model_functions@update:
             label: waka.mailer::wakamail.model_functions
             span: full
             type: functionslist
             size: giant
             tab: waka.mailer::wakamail.tab_fnc
-
         images@update:
             label: waka.mailer::wakamail.images
             span: full
             type: imageslist
             tab: waka.mailer::wakamail.tab_fnc
-
         name@update:
             label: waka.mailer::wakamail.name
             span: left
             size: giant
             tab: waka.mailer::wakamail.tab_info
-
         slug@update:
             label: waka.mailer::wakamail.slug
             span: left
             tab: waka.mailer::wakamail.tab_info
             disabled: true
-
         data_source_id@update:
             label: waka.mailer::wakamail.data_source_id
             span: left
@@ -106,14 +94,12 @@ tabs:
             placeholder: waka.utils::lang.datasource.placeholder
             disabled: true
             options: listDataSource
-
         is_scope:
             label: waka.mailer::wakamail.is_scope
             span: left
             type: switch
             tab: waka.mailer::wakamail.tab_scopes
             default: false
-
         scopes:
             label: waka.mailer::wakamail.scopes
             span: left
@@ -123,5 +109,4 @@ tabs:
                 action: show
                 field: is_scope
                 condition: checked
-
  
