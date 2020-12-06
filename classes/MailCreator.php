@@ -22,7 +22,7 @@ class MailCreator
     {
         $wakamail;
         if ($slug) {
-            trace_log($mail_id);
+            //trace_log($mail_id);
             $wakamail = WakaMail::where('slug', $mail_id)->first();
             if (!$wakamail) {
                 throw new ApplicationException("Le code email ne fonctionne pas : " . $mail_id);
@@ -51,7 +51,7 @@ class MailCreator
             }
         }
 
-        trace_log("model ID : " . $modelId);
+        //trace_log("model ID : " . $modelId);
 
         $varName = strtolower($ds->name);
 
@@ -132,7 +132,7 @@ class MailCreator
         $htmlContent = null;
         $text = null;
         $htmlLayout = null;
-        trace_log("fin du mail");
+        //trace_log("fin du mail");
 
         //\Flash::info("Le(s) email(s) ont bien été envoyés ! ");
         return true;
