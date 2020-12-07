@@ -25,6 +25,7 @@ class MailCreator
             //trace_log($mail_id);
             $wakamail = WakaMail::where('slug', $mail_id)->first();
             if (!$wakamail) {
+                //trace_log("pas trouvé");
                 throw new ApplicationException("Le code email ne fonctionne pas : " . $mail_id);
             }
         } else {
