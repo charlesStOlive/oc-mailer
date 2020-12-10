@@ -31,7 +31,7 @@ class WakaMails extends Controller
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Waka.Mailer', 'WakaMails');
 
-        $blocsWidget = new \Waka\Mailer\Widgets\SideBarBlocs($this);
+        $blocsWidget = new \Waka\Mailer\Widgets\SidebarBlocs($this);
         $blocsWidget->alias = 'blocsWidget';
         $blocsWidget->bindToController();
     }
@@ -50,4 +50,3 @@ class WakaMails extends Controller
         ];
     }
 }
-
