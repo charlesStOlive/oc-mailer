@@ -3,20 +3,26 @@
 # ===================================
 
 columns:
+    id:
+        label: ID
+        searchable: true
+        invisible: true
 
     name:
         label: waka.mailer::wakamail.name
+        searchable: true
     data_source_id:
         label: waka.mailer::wakamail.data_source_id
+        searchable: true
     layout_r:
         label: waka.mailer::wakamail.layout
         searchable: true
         relation: layout
         select: name
+        searchable: true
     is_mjml:
         label: waka.mailer::wakamail.is_mjml
         type: switch
- 
     updated_at:
         label: waka.utils::lang.global.updated_at
         type: timetense

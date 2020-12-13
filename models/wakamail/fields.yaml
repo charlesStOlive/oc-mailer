@@ -10,27 +10,32 @@ tabs:
         waka.mailer::wakamail.tab_fnc: icon-address-card-o
         waka.lp::lang.source_log.tab_lp: icon-file
     fields:    
-        name@create:
+        name:
             label: waka.mailer::wakamail.name
             span: left
             required: true
-        slug@create:
+            size: giant
+            tab: waka.mailer::wakamail.tab_info
+        slug:
             label: waka.mailer::wakamail.slug
             span: right
             required: true
-            preset: name
+            disabled: true
+            tab: waka.mailer::wakamail.tab_info
         subject:
             label: waka.mailer::wakamail.subject
             span: left
             required: true
-            tab: waka.mailer::wakamail.tab_edit
-        data_source_id@create:
+            tab: waka.mailer::wakamail.tab_edit
+        data_source_id:
             label: waka.mailer::wakamail.data_source_id
             span: right
             type: dropdown
+            placeholder: waka.utils::lang.global.placeholder
             required: true
+            disabled: true
             options: listDataSource
-            placeholder: waka.utils::lang.datasource.placeholder
+            tab: waka.mailer::wakamail.tab_info
         layout:
             label: waka.mailer::wakamail.layout
             span: left
@@ -42,77 +47,59 @@ tabs:
             label: waka.mailer::wakamail.is_mjml
             span: left
             type: switch
-            tab: waka.mailer::wakamail.tab_edit
             default: false
+            tab: waka.mailer::wakamail.tab_edit
         mjml:
             label: waka.mailer::wakamail.mjml
             span: full
             type: codeeditor
             language: xml
             size: giant
-            tab: waka.mailer::wakamail.tab_edit
             trigger:
                 action: show
                 field: is_mjml
                 condition: checked
+            tab: waka.mailer::wakamail.tab_edit
         html:
             label: waka.mailer::wakamail.html
             span: full
             type: markdown
             size: giant
-            tab: waka.mailer::wakamail.tab_edit
             trigger:
                 action: hide
                 field: is_mjml
                 condition: checked
-        model_functions@update:
+            tab: waka.mailer::wakamail.tab_edit
+        model_functions:
             label: waka.mailer::wakamail.model_functions
             span: full
             type: functionslist
             size: giant
             tab: waka.mailer::wakamail.tab_fnc
-        images@update:
+        images:
             label: waka.mailer::wakamail.images
             span: full
             type: imageslist
             tab: waka.mailer::wakamail.tab_fnc
-        name@update:
-            label: waka.mailer::wakamail.name
-            span: left
-            size: giant
-            tab: waka.mailer::wakamail.tab_info
-        slug@update:
-            label: waka.mailer::wakamail.slug
-            span: left
-            tab: waka.mailer::wakamail.tab_info
-            disabled: true
-        data_source_id@update:
-            label: waka.mailer::wakamail.data_source_id
-            span: left
-            type: dropdown
-            tab: waka.mailer::wakamail.tab_info
-            placeholder: waka.utils::lang.datasource.placeholder
-            disabled: true
-            options: listDataSource
         is_scope:
             label: waka.mailer::wakamail.is_scope
             span: left
             type: switch
-            tab: waka.mailer::wakamail.tab_scopes
             default: false
+            tab: waka.mailer::wakamail.tab_scopes
         scopes:
             label: waka.mailer::wakamail.scopes
             span: left
             type: scopeslist
-            tab: waka.mailer::wakamail.tab_scopes
             trigger:
                 action: show
                 field: is_scope
                 condition: checked
-        test_id@update:
+            tab: waka.mailer::wakamail.tab_scopes
+        test_id:
             label: waka.mailer::wakamail.test_id
             span: auto
             type: dropdown
+            placeholder: waka.utils::lang.global.placeholder
             options: listDataSourceTarget
             tab: waka.mailer::wakamail.tab_info
- 

@@ -12,9 +12,6 @@ return [
     'html' => 'Éditeur',
     'model_functions' => 'Fonctions',
     'images' => 'Images',
-    'name' => 'Nom email',
-    'slug' => 'Code/Slug',
-    'data_source_id' => 'Source des données',
     'is_scope' => 'À des restrictions ?',
     'scopes' => 'Restrictions',
     'test_id' => 'Model de test',
@@ -28,5 +25,4 @@ return [
     'edit' => 'Éditer un email',
     'form_name' => 'Gestion de l&#039;email',
     'preview_name' => 'Voir l&#039;email',
- 
 ];

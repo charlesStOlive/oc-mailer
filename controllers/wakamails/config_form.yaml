@@ -19,6 +19,7 @@ create:
     title: waka.mailer::wakamail.create
     redirect: waka/mailer/wakamails/update/:id
     redirectClose: waka/mailer/wakamails
+    form: $/waka/mailer/models/wakamail/fields_create.yaml
 
 # Update page
 update:

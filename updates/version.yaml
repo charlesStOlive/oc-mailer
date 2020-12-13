@@ -2,7 +2,6 @@
     - 'Version avancé de mailer'
     - create_waka_mails_table.php
     - create_blocs_table.php
-    - create_templates_table.php
     - create_layouts_table.php
 1.0.2:
     - 'Ajout des tests'

@@ -16,7 +16,7 @@ class WakaMails extends Controller
         'Waka.Mailer.Behaviors.MailBehavior',
         'Backend.Behaviors.ReorderController',
         'Waka.Utils.Behaviors.DuplicateModel',
-
+        
     ];
 
     public $formConfig = 'config_form.yaml';

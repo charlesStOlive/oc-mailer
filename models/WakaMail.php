@@ -89,12 +89,15 @@ class WakaMail extends Model
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [
-        'layout' => 'Waka\Mailer\Models\Layout',
+        'layout' => [
+            'Waka\Mailer\Models\Layout',
+        ],
     ];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
-    public $morphMany = [];
+    public $morphMany = [
+    ];
     public $attachOne = [
     ];
     public $attachMany = [
@@ -103,18 +106,13 @@ class WakaMail extends Model
     /**
      *EVENTS
      **/
-    public function afterSave() 
-    {
-
-    }
-
 
     /**
      * LISTS
      **/
 
     /**
-     * GETTER
+     * GETTERS
      **/
 
     /**
@@ -124,4 +122,13 @@ class WakaMail extends Model
     /**
      * SETTERS
      */
+ 
+    /**
+     * FILTER FIELDS
+     */
+
+    /**
+     * OTHERS
+     */
+    
 }

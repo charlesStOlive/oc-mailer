@@ -1,0 +1,21 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:    
+    name:
+        label: waka.mailer::wakamail.name
+        span: left
+        required: true
+    slug:
+        label: waka.mailer::wakamail.slug
+        span: right
+        required: true
+        preset: name
+    data_source_id:
+        label: waka.mailer::wakamail.data_source_id
+        span: right
+        type: dropdown
+        placeholder: waka.utils::lang.global.placeholder
+        required: true
+        options: listDataSource
