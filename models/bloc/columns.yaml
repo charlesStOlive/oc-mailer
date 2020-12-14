@@ -4,16 +4,19 @@
 
 columns:
 
+    name:
+        label: waka.mailer::bloc.name
+        searchable: true
+    slug:
+        label: waka.mailer::bloc.slug
+        searchable: true
     is_mjml:
         label: waka.mailer::bloc.is_mjml
         type: switch
-    name:
-        label: waka.mailer::bloc.name
-    slug:
-        label: waka.mailer::bloc.slug
-    contenu:
-        label: waka.mailer::bloc.contenu
- 
+    description:
+        label: waka.mailer::bloc.description
+        searchable: true
+        invisible: true
     updated_at:
         label: waka.utils::lang.global.updated_at
         type: timetense

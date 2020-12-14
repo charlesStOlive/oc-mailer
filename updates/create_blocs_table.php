@@ -11,11 +11,11 @@ class CreateBlocsTable extends Migration
         Schema::create('waka_mailer_blocs', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->boolean('is_mjml')->nullable();
             $table->string('name');
             $table->string('slug');
-            $table->text('contenu');
-            $table->text('copy');
+            $table->text('contenu')->nullable();
+            $table->boolean('is_mjml')->nullable()->default(false);
+            $table->text('description')->nullable();
             //reorder
             $table->integer('sort_order')->default(0);
             $table->timestamps();

@@ -11,6 +11,9 @@ columns:
     name:
         label: waka.mailer::wakamail.name
         searchable: true
+    subject:
+        label: waka.mailer::wakamail.subject
+        searchable: true
     data_source_id:
         label: waka.mailer::wakamail.data_source_id
         searchable: true

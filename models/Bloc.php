@@ -10,6 +10,7 @@ class Bloc extends Model
 {
     use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\Sortable;
+    use \Waka\Utils\Classes\Traits\DataSourceHelpers;
 
     /**
      * @var string The database table used by the model.
@@ -33,8 +34,12 @@ class Bloc extends Model
     public $rules = [
         'name' => 'required',
         'slug' => 'required',
-        'contenu' => 'required',
-        'copy' => 'required',
+    ];
+
+    /**
+     * @var array attributes send to datasource for creating document
+     */
+    public $attributesToDs = [
     ];
 
     /**
@@ -80,16 +85,15 @@ class Bloc extends Model
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
-    public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
+    public $morphMany = [
+    ];
+    public $attachOne = [
+    ];
+    public $attachMany = [
+    ];
 
     /**
      *EVENTS
-     **/
-
-    /**
-     * GETTER
      **/
 
     /**
@@ -97,7 +101,23 @@ class Bloc extends Model
      **/
 
     /**
+     * GETTERS
+     **/
+
+    /**
      * SCOPES
      */
-     
+
+    /**
+     * SETTERS
+     */
+ 
+    /**
+     * FILTER FIELDS
+     */
+
+    /**
+     * OTHERS
+     */
+    
 }

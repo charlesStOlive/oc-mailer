@@ -15,7 +15,7 @@ class CreateWakaMailsTable extends Migration
             $table->string('slug');
             $table->string('subject');
             $table->integer('data_source_id');
-            $table->integer('layout_id')->unsigned();
+            $table->integer('layout_id')->unsigned()->nullable();
             $table->boolean('is_mjml')->nullable()->default(false);
             $table->text('mjml')->nullable();
             $table->text('mjml_html')->nullable();

@@ -3,10 +3,16 @@
 # ===================================
 
 fields:    
+    is_mjml:
+        label: waka.mailer::wakamail.is_mjml
+        span: left
+        type: switch
+        default: false
     name:
         label: waka.mailer::wakamail.name
         span: left
         required: true
+        commentAbove: waka.mailer::wakamail.name_com
     slug:
         label: waka.mailer::wakamail.slug
         span: right
@@ -19,3 +25,13 @@ fields:
         placeholder: waka.utils::lang.global.placeholder
         required: true
         options: listDataSource
+    layout:
+        label: waka.mailer::wakamail.layout
+        span: left
+        type: relation
+        placeholder: waka.utils::lang.global.placeholder
+        nameFrom: name
+    subject:
+        label: waka.mailer::wakamail.subject
+        span: left
+        required: true

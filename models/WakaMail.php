@@ -1,5 +1,6 @@
 <?php namespace Waka\Mailer\Models;
 
+use Mjml\Client as MjmlClient;
 use Model;
 
 /**
@@ -17,7 +18,6 @@ class WakaMail extends Model
      * @var string The database table used by the model.
      */
     public $table = 'waka_mailer_waka_mails';
-
 
     /**
      * @var array Guarded fields
@@ -106,6 +106,16 @@ class WakaMail extends Model
     /**
      *EVENTS
      **/
+    public function beforeSave()
+    {
+        if ($this->is_mjml && $this->mjml) {
+            //transformation du mjmm en html via api mailjet.
+            $applicationId = env('MJML_API_ID');
+            $secretKey = env('MJML_API_SECRET');
+            $clientMjml = new MjmlClient($applicationId, $secretKey);
+            $this->mjml_html = $clientMjml->render($this->mjml);
+        }
+    }
 
     /**
      * LISTS
@@ -122,7 +132,7 @@ class WakaMail extends Model
     /**
      * SETTERS
      */
- 
+
     /**
      * FILTER FIELDS
      */
@@ -130,5 +140,5 @@ class WakaMail extends Model
     /**
      * OTHERS
      */
-    
+
 }

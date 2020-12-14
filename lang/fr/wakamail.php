@@ -2,6 +2,7 @@
 
 return [
     'name' => 'Nom email',
+    'name_com' => 'interne uniquement',
     'slug' => 'Code/Slug',
     'subject' => 'Sujet',
     'data_source_id' => 'Source des données',

@@ -3,6 +3,11 @@
 # ===================================
 
 fields:    
+    is_mjml:
+        label: waka.mailer::bloc.is_mjml
+        span: left
+        type: switch
+        default: false
     name:
         label: waka.mailer::bloc.name
         span: left
@@ -11,19 +16,7 @@ fields:
         label: waka.mailer::bloc.slug
         span: right
         required: true
-        preset: name
-    contenu:
-        label: waka.mailer::bloc.contenu
-        span: full
-        type: codeeditor
-        size: giant
-    is_mjml:
-        label: waka.mailer::bloc.is_mjml
-        span: left
-        type: switch
-        default: false
     description:
         label: waka.mailer::bloc.description
         span: auto
         type: textarea
-        size: small
