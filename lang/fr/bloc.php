@@ -4,7 +4,6 @@ return [
     'name' => 'Nom du bloc de contenu',
     'slug' => 'Code',
     'contenu' => 'Contenu',
-    'is_mjml' => 'MJML',
     'description' => 'Description',
     'title' => 'Gestion des blocs',
     'create' => 'Créer un bloc',

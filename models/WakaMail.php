@@ -113,6 +113,8 @@ class WakaMail extends Model
             $applicationId = env('MJML_API_ID');
             $secretKey = env('MJML_API_SECRET');
             $clientMjml = new MjmlClient($applicationId, $secretKey);
+            //constructtion du mjml final avec les blocs.
+
             $this->mjml_html = $clientMjml->render($this->mjml);
         }
     }

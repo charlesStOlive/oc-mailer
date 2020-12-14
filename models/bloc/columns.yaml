@@ -10,9 +10,6 @@ columns:
     slug:
         label: waka.mailer::bloc.slug
         searchable: true
-    is_mjml:
-        label: waka.mailer::bloc.is_mjml
-        type: switch
     description:
         label: waka.mailer::bloc.description
         searchable: true

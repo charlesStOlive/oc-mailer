@@ -14,7 +14,6 @@ class CreateBlocsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->text('contenu')->nullable();
-            $table->boolean('is_mjml')->nullable()->default(false);
             $table->text('description')->nullable();
             //reorder
             $table->integer('sort_order')->default(0);

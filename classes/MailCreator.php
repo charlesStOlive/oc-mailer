@@ -55,11 +55,7 @@ class MailCreator
         //trace_log("model ID : " . $modelId);
 
         $varName = strtolower($ds->name);
-
         $values = $ds->getValues($modelId);
-
-        //trace_log($values);
-        //le modele est instancié avec getValus. inutile de l'instancier.
         $img = $ds->wimages->getPicturesUrl($this->wakamail->images);
         $fnc = $ds->getFunctionsCollections($modelId, $this->wakamail->model_functions);
 
@@ -70,39 +66,15 @@ class MailCreator
             'log' => $logKey ? $logKey->log : null,
         ];
 
-        //Traitement des markup.
-        $this->startTwig();
-
-        $text = \Markdown::parse($this->wakamail->html);
-        $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
-        $htmlContent = \Twig::parse($text, $model);
-
-        //trace_log($htmlContent);
-
-        //trace_log($htmlContent);
-        $data = [
-            $varName => $values,
-            'content' => $htmlContent,
-            'baseCss' => \File::get(plugins_path() . $this->wakamail->layout->baseCss),
-            'AddCss' => $this->wakamail->layout->Addcss,
-        ];
-        $htmlLayout = \Twig::parse($this->wakamail->layout->contenu, $data);
+        if ($this->wakamail->is_mjml) {
+            $htmlLayout = $this->renderMjml($model, $varName);
+        } else {
+            $htmlLayout = $this->renderHtml($model, $varName);
+        }
 
         if ($test) {
             return $htmlLayout;
         }
-        $this->stopTwig();
-
-        // if (!$datasEmail) {
-        //     if ($this->forceTo) {
-        //         $datasEmail = $this->forceTo;
-        //     } else {
-        //         throw new ApplicationException("Impossible d'envoyer des données email sans les données du popup ou un forceTo");
-        //     }
-        // }
-        // if ($this->forceTo) {
-        //     $datasEmail['emails'] = $this->forceTo['email'];
-        // }
 
         if ($dataSession['send_with_gmail'] ?? false) {
             //$backup = Mail::getSwiftMailer();
@@ -130,14 +102,36 @@ class MailCreator
                 // }
             });
         }
-        $htmlContent = null;
-        $text = null;
-        $htmlLayout = null;
         //trace_log("fin du mail");
-
-        //\Flash::info("Le(s) email(s) ont bien été envoyés ! ");
         return true;
+    }
 
+    public function renderHtml($model, $varName)
+    {
+        $this->startTwig();
+        $text = \Markdown::parse($this->wakamail->html);
+        $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
+        $htmlContent = \Twig::parse($text, $model);
+        $data = [
+            $varName => $model,
+            'content' => $htmlContent,
+            'baseCss' => \File::get(plugins_path() . $this->wakamail->layout->baseCss),
+            'AddCss' => $this->wakamail->layout->Addcss,
+        ];
+        $htmlLayout = \Twig::parse($this->wakamail->layout->contenu, $data);
+        $this->stopTwig();
+        return $htmlLayout;
+
+    }
+
+    public function renderMjml($model)
+    {
+        $this->startTwig();
+        $htm = $this->wakamail->mjml_html;
+        //$htm = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
+        $htmlContent = \Twig::parse($htm, $model);
+        $this->stopTwig();
+        return $htmlContent;
     }
 
     /**

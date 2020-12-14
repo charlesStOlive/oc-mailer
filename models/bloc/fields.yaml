@@ -17,11 +17,6 @@ fields:
         span: full
         type: codeeditor
         size: giant
-    is_mjml:
-        label: waka.mailer::bloc.is_mjml
-        span: left
-        type: switch
-        default: false
     description:
         label: waka.mailer::bloc.description
         span: auto

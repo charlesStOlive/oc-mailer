@@ -3,11 +3,6 @@
 # ===================================
 
 fields:    
-    is_mjml:
-        label: waka.mailer::bloc.is_mjml
-        span: left
-        type: switch
-        default: false
     name:
         label: waka.mailer::bloc.name
         span: left
