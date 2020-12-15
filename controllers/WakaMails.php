@@ -16,14 +16,19 @@ class WakaMails extends Controller
         'Waka.Mailer.Behaviors.MailBehavior',
         'Backend.Behaviors.ReorderController',
         'Waka.Utils.Behaviors.DuplicateModel',
-        
+
     ];
 
     public $formConfig = 'config_form.yaml';
-    public $listConfig = 'config_list.yaml';
     public $duplicateConfig = 'config_duplicate.yaml';
     public $reorderConfig = 'config_reorder.yaml';
     public $sidebarAttributesConfig = 'config_attributes.yaml';
+
+    public $listConfig = [
+        'wakaMails' => 'config_list.yaml',
+        'layouts' => 'config_layouts_list.yaml',
+        'blocs' => 'config_blocs_list.yaml',
+    ];
 
     public function __construct()
     {
@@ -34,6 +39,13 @@ class WakaMails extends Controller
         $blocsWidget = new \Waka\Mailer\Widgets\SidebarBlocs($this);
         $blocsWidget->alias = 'blocsWidget';
         $blocsWidget->bindToController();
+    }
+
+    public function index($tab = null)
+    {
+        $this->asExtension('ListController')->index();
+        $this->bodyClass = 'compact-container';
+        $this->vars['activeTab'] = $tab ?: 'templates';
     }
 
     public function update($id)

@@ -3,16 +3,16 @@
 # ===================================
 
 # Model List Column configuration
-list: $/waka/mailer/models/template/columns.yaml
+list: $/waka/mailer/models/bloc/columns.yaml
 
 # Model Class name
-modelClass: Waka\Mailer\Models\Template
+modelClass: Waka\Mailer\Models\Bloc
 
 # List Title
-title: Manage Templates
+title: waka.mailer::bloc.title
 
 # Link URL for each record
-recordUrl: waka/mailer/templates/update/:id
+recordUrl: waka/mailer/blocs/update/:id
 
 # Message to display if the list is empty
 noRecordsMessage: backend::lang.list.no_records
@@ -39,7 +39,7 @@ showCheckboxes: true
 # Toolbar widget configuration
 toolbar:
     # Partial for toolbar buttons
-    buttons: list_toolbar
+    buttons: list_blocs_toolbar
 
     # Search widget configuration
     search:

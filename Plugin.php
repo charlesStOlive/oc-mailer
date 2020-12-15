@@ -182,7 +182,7 @@ class Plugin extends PluginBase
                 'description' => Lang::get('waka.mailer::lang.menu.wakamails_description'),
                 'category' => Lang::get('waka.utils::lang.menu.settings_category_model'),
                 'icon' => 'icon-envelope',
-                'url' => Backend::url('waka/mailer/wakamails'),
+                'url' => Backend::url('waka/mailer/wakamails/index/wakamails'),
                 'permissions' => ['waka.mailer.admin.*'],
                 'order' => 30,
             ],
