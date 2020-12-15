@@ -12,19 +12,19 @@ form: $/waka/mailer/models/layout/fields.yaml
 modelClass: Waka\Mailer\Models\Layout
 
 # Default redirect location
-defaultRedirect: waka/mailer/layouts
+defaultRedirect: waka/mailer/wakamails/index/layouts
 
 # Create page
 create:
     title: waka.mailer::layout.create
     redirect: waka/mailer/layouts/update/:id
-    redirectClose: waka/mailer/layouts
+    redirectClose: waka/mailer/wakamails/index/layouts
 
 # Update page
 update:
     title: waka.mailer::layout.update
-    redirect: waka/mailer/layouts
-    redirectClose: waka/mailer/layouts
+    redirect: waka/mailer/wakamails/index/layouts
+    redirectClose: waka/mailer/wakamails/index/layouts
 
 # Preview page
 preview:
