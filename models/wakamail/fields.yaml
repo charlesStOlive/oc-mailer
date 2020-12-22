@@ -82,8 +82,8 @@ tabs:
             size: giant
             commentAbove: waka.mailer::wakamail.name_com
             tab: waka.mailer::wakamail.tab_info
-        data_source_id:
-            label: waka.mailer::wakamail.data_source_id
+        data_source:
+            label: waka.mailer::wakamail.data_source
             span: right
             type: dropdown
             placeholder: waka.utils::lang.global.placeholder

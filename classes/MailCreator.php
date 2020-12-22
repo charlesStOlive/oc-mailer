@@ -41,7 +41,7 @@ class MailCreator
 
     public function renderMail($modelId, $datasEmail, $test = false)
     {
-        $dataSourceId = $this->wakamail->data_source_id;
+        $dataSourceId = $this->wakamail->data_source;
         $ds = new DataSource($dataSourceId, 'id');
 
         $logKey = null;

@@ -36,7 +36,7 @@ class WakaMail extends Model
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
         'subject' => 'required',
-        'data_source_id' => 'required',
+        'data_source' => 'required',
         'layout' => 'required',
     ];
 

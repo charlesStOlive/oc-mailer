@@ -5,7 +5,7 @@ return [
     'name_com' => 'interne uniquement',
     'slug' => 'Code/Slug',
     'subject' => 'Sujet',
-    'data_source_id' => 'Source des données',
+    'data_source' => 'Source des données',
     'layout' => 'Maquette',
     'is_mjml' => 'En MJML ?',
     'mjml' => 'Code MJML',

@@ -22,7 +22,7 @@ class SideBarBlocs extends WidgetBase
     public function render()
     {
         $controllerModel = $this->controller->formGetModel();
-        $this->dataSource = new DataSource($controllerModel->data_source_id, 'id');
+        $this->dataSource = new DataSource($controllerModel->data_source);
         $blocs = $this->getBlocs();
         $this->vars['blocs'] = $blocs;
         return $this->makePartial('list_blocs');
