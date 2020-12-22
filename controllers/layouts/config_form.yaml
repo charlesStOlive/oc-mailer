@@ -23,7 +23,7 @@ create:
 # Update page
 update:
     title: waka.mailer::layout.update
-    redirect: waka/mailer/wakamails/index/layouts
+    redirect: waka/mailer/layouts/update/:id
     redirectClose: waka/mailer/wakamails/index/layouts
 
 # Preview page

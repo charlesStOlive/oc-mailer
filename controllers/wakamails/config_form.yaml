@@ -12,20 +12,20 @@ form: $/waka/mailer/models/wakamail/fields.yaml
 modelClass: Waka\Mailer\Models\WakaMail
 
 # Default redirect location
-defaultRedirect: waka/mailer/wakamails
+defaultRedirect: waka/mailer/wakamails/index/wakamails
 
 # Create page
 create:
     title: waka.mailer::wakamail.create
     redirect: waka/mailer/wakamails/update/:id
-    redirectClose: waka/mailer/wakamails
+    redirectClose: waka/mailer/wakamails/index/wakamails
     form: $/waka/mailer/models/wakamail/fields_create.yaml
 
 # Update page
 update:
     title: waka.mailer::wakamail.update
-    redirect: waka/mailer/wakamails
-    redirectClose: waka/mailer/wakamails
+    redirect: waka/mailer/wakamails/update/:id
+    redirectClose: waka/mailer/wakamails/index/wakamails
 
 # Preview page
 preview:

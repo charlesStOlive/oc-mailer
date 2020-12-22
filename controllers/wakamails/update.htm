@@ -1,9 +1,15 @@
 <!-- Primary content -->
 <?php Block::put('breadcrumb') ?>
 <ul>
-    <li><a href="<?= Backend::url('system/settings/') ?>"><?= e(trans('waka.utils::lang.global.settings')) ?></a></li>
-    <li><a href="<?= Backend::url('waka/mailer/wakamails') ?>"><?= e(trans('waka.mailer::wakamail.title')) ?></a></li>
-    <li><?= e($this->pageTitle) ?></li>
+    <li><a href="<?= Backend::url('system/settings/') ?>">
+            <?= e(trans('waka.utils::lang.global.settings')) ?>
+        </a></li>
+    <li><a href="<?= Backend::url('waka/mailer/wakamails/index/wakamails') ?>">
+            <?= e(trans('waka.mailer::wakamail.title')) ?>
+        </a></li>
+    <li>
+        <?= e($this->pageTitle) ?>
+    </li>
 </ul>
 <?php Block::endPut() ?>
 <?php Block::put('form-contents') ?>
@@ -44,19 +50,22 @@
                     data-request-data="redirect:0, wakamailId:<?=$this->params[0]?>"
                     data-control="popup"
                     data-handler="onLoadMailTestForm">
-                <?= e(trans('waka.mailer::lang.wakamail.test')) ?> </button>
+                <?= e(trans('waka.mailer::lang.wakamail.test')) ?>
+            </button>
             <a class="btn btn-default oc-icon-eye"
                href="/test/email/<?=$this->params[0]?>"
                target="_blank">
-                <?= e(trans('waka.mailer::lang.wakamail.show')) ?> </a>
+                <?= e(trans('waka.mailer::lang.wakamail.show')) ?>
+            </a>
         </div>
         <?= $this->fireViewEvent('backend.top.update') ?>
         <?= $this->fireViewEvent('backend.down.update') ?>
         <?= $this->fireViewEvent('backend.update.prod') ?>
         <span class="btn-text">
             <?= e(trans('waka.utils::lang.global.or')) ?>
-            <a href="<?= Backend::url('waka/mailer/wakamails') ?>">
-                <?= e(trans('waka.utils::lang.global.cancel')) ?></a>
+            <a href="<?= Backend::url('waka/mailer/wakamails/index/wakamails') ?>">
+                <?= e(trans('waka.utils::lang.global.cancel')) ?>
+            </a>
         </span>
     </div>
 </div>
@@ -72,7 +81,9 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active">
-            <div id="sidebar_attributes"><?= $this->attributesRender() ?></div>
+            <div id="sidebar_attributes">
+                <?= $this->attributesRender() ?>
+            </div>
         </div>
         <div class="tab-pane">
             <?= $this->widget->blocsWidget->render() ?>
@@ -96,8 +107,12 @@
     <?= Block::placeholder('breadcrumb') ?>
 </div>
 <div class="padded-container">
-    <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+    <p class="flash-message static error">
+        <?= e(trans($this->fatalError)) ?>
+    </p>
     <p><a href="<?= Backend::url('backend/users') ?>"
-           class="btn btn-default"><?= e(trans('backend::lang.user.return')) ?></a></p>
+           class="btn btn-default">
+            <?= e(trans('backend::lang.user.return')) ?>
+        </a></p>
 </div>
 <?php endif ?>

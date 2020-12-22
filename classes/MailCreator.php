@@ -42,7 +42,7 @@ class MailCreator
     public function renderMail($modelId, $datasEmail, $test = false)
     {
         $dataSourceId = $this->wakamail->data_source;
-        $ds = new DataSource($dataSourceId, 'id');
+        $ds = new DataSource($dataSourceId);
 
         $logKey = null;
         if (class_exists('\Waka\Lp\Classes\LogKey')) {
