@@ -111,7 +111,7 @@ class MailBehavior extends ControllerBehavior
         $wakaMail = WakaMail::find($wakamailId);
 
         $dataSourceId = $wakaMail->data_source;
-        $ds = new DataSource($dataSourceId, 'id');
+        $ds = new DataSource($dataSourceId);
 
         $options = $ds->getPartialOptions(null, 'Waka\Mailer\Models\WakaMail');
 
