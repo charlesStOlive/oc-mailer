@@ -25,6 +25,8 @@ duplication:
     fields:
         name:
           label: waka.mailer::wakamail.name 
+        slug:
+          label: waka.mailer::wakamail.slug 
 
         # _keep:
         #   label: Dupliquer dans ce projet
