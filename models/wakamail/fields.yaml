@@ -26,6 +26,11 @@ tabs:
             span: full
             type: imageslist
             tab: waka.mailer::wakamail.tab_fnc
+        pjs:
+            label: waka.mailer::wakamail.pj
+            span: full
+            type: pjlist
+            tab: waka.mailer::wakamail.tab_fnc
         is_scope:
             label: waka.mailer::wakamail.is_scope
             span: left

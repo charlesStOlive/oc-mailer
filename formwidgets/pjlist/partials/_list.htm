@@ -1,0 +1,45 @@
+<?php
+ if($values && count($values)) {
+      ?>
+<div class="list-preview list-flush">
+    <div class="control-list">
+        <table class="table data"
+               data-control="rowlink">
+            <thead>
+                <tr>
+                    <th><span>Liste des PJ à créer pour l'email</span></th>
+                    <th><span>libellé</span></th>
+                    <th class="text-right"><span>Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($values as $value): ?>
+                <tr>
+                    <td>
+                        <?=$value['classType']?>
+                    </td>
+                    <td>
+                        <?=$value['productorName']?>
+                    </td>
+                    <td class="nolink text-right">
+                        <button data-attach-loading
+                                href="javascript:;"
+                                data-request="onDeleteScope"
+                                data-stripe-load-indicator
+                                data-request-data="scopeCode:'<?=$value['pjCode']?>'"
+                                class=" btn btn-danger btn-xs"
+                                data-toggle="tooltip"
+                                title="Delete"><i class="icon-trash"></i></button>
+                    </td>
+                </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php } else { ?>
+<p>
+    Il n' y a pas encore de PJ
+</p>
+<?php } ?>

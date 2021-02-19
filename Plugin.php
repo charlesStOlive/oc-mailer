@@ -47,7 +47,8 @@ class Plugin extends PluginBase
     public function registerFormWidgets(): array
     {
         return [
-            'Waka\Mailer\FormWidgets\ShowAttributes' => 'showattributes',
+            //'Waka\Mailer\FormWidgets\ShowAttributes' => 'showattributes',
+            'Waka\Mailer\FormWidgets\PjList' => 'pjlist',
         ];
     }
 
