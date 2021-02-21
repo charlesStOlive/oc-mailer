@@ -68,7 +68,7 @@ class PjList extends FormWidgetBase
         $options = $publications['types'] ?? [];
         if ($options) {
             $this->vars['pjList'] = $options;
-            trace_log($options);
+            //trace_log($options);
             return $this->makePartial('popup');
         } else {
             throw new \ApplicationException("Il n' y a pas de publications disponibles pour ce type de DataSource");
@@ -91,7 +91,7 @@ class PjList extends FormWidgetBase
     }
     public function onCreateScopeValidation()
     {
-        trace_log(post());
+        //trace_log(post());
         $classType = post('classType');
         $productorId = post('productorId');
 

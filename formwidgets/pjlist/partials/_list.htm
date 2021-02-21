@@ -1,25 +1,23 @@
-<?php
- if($values && count($values)) {
-      ?>
+<?php  if($values && count($values)) {?>
 <div class="list-preview list-flush">
     <div class="control-list">
         <table class="table data"
                data-control="rowlink">
             <thead>
                 <tr>
-                    <th><span>Liste des PJ à créer pour l'email</span></th>
-                    <th><span>libellé</span></th>
-                    <th class="text-right"><span>Actions</span></th>
+                    <th><span>Libellé de la PJ</span></th>
+                    <th><span>Class producteur</span></th>
+                    <th class="text-right"><span>Action</span></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($values as $value): ?>
                 <tr>
                     <td>
-                        <?=$value['classType']?>
+                        <?=$value['productorName']?>
                     </td>
                     <td>
-                        <?=$value['productorName']?>
+                        <?=$value['classType']?>
                     </td>
                     <td class="nolink text-right">
                         <button data-attach-loading

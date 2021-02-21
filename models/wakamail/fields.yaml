@@ -21,38 +21,6 @@ tabs:
             type: switch
             default: false
             tab: waka.mailer::wakamail.tab_edit
-        images:
-            label: waka.mailer::wakamail.images
-            span: full
-            type: imageslist
-            tab: waka.mailer::wakamail.tab_fnc
-        pjs:
-            label: waka.mailer::wakamail.pj
-            span: full
-            type: pjlist
-            tab: waka.mailer::wakamail.tab_fnc
-        is_scope:
-            label: waka.mailer::wakamail.is_scope
-            span: left
-            type: switch
-            default: false
-            tab: waka.mailer::wakamail.tab_scopes
-        scopes:
-            label: waka.mailer::wakamail.scopes
-            span: left
-            type: scopeslist
-            trigger:
-                action: show
-                field: is_scope
-                condition: checked
-            tab: waka.mailer::wakamail.tab_scopes
-        test_id:
-            label: waka.mailer::wakamail.test_id
-            span: auto
-            type: dropdown
-            placeholder: waka.utils::lang.global.placeholder
-            options: listDataSourceTarget
-            tab: waka.mailer::wakamail.tab_info
         mjml:
             label: waka.mailer::wakamail.mjml
             span: full
@@ -108,4 +76,36 @@ tabs:
             type: relation
             placeholder: waka.utils::lang.global.placeholder
             nameFrom: name
+            tab: waka.mailer::wakamail.tab_info
+        images:
+            label: waka.mailer::wakamail.images
+            span: full
+            type: imageslist
+            tab: waka.mailer::wakamail.tab_fnc
+        pjs:
+            label: waka.mailer::wakamail.pjs
+            span: full
+            type: pjlist
+            tab: waka.mailer::wakamail.tab_fnc
+        is_scope:
+            label: waka.mailer::wakamail.is_scope
+            span: left
+            type: switch
+            default: false
+            tab: waka.mailer::wakamail.tab_scopes
+        scopes:
+            label: waka.mailer::wakamail.scopes
+            span: full
+            type: scopeslist
+            trigger:
+                action: show
+                field: is_scope
+                condition: checked
+            tab: waka.mailer::wakamail.tab_scopes
+        test_id:
+            label: waka.mailer::wakamail.test_id
+            span: auto
+            type: dropdown
+            placeholder: waka.utils::lang.global.placeholder
+            options: listDataSourceTarget
             tab: waka.mailer::wakamail.tab_info

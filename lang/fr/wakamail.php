@@ -13,6 +13,7 @@ return [
     'html' => 'Éditeur',
     'model_functions' => 'Fonctions',
     'images' => 'Images',
+    'pjs' => 'Pjs',
     'is_scope' => 'À des restrictions ?',
     'scopes' => 'Restrictions',
     'test_id' => 'Model de test',
@@ -26,4 +27,6 @@ return [
     'edit' => 'Éditer un email',
     'form_name' => 'Gestion de l&#039;email',
     'preview_name' => 'Voir l&#039;email',
+    'e' => [
+    ],     
 ];

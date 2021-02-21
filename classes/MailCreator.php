@@ -72,6 +72,11 @@ class MailCreator
             $htmlLayout = $this->renderHtml($model, $varName);
         }
 
+        $pjs = [];
+        if ($this->wakamail->pjs) {
+            $pjs = $this->wakamail->pjs;
+        }
+
         if ($test) {
             return $htmlLayout;
         }
@@ -82,18 +87,29 @@ class MailCreator
             // Set the mailer as gmail
             Mail::setSwiftMailer($gmail);
 
-            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
+            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs) {
                 $message->to($datasEmail['emails']);
                 $message->subject($datasEmail['subject']);
+                if ($pjs) {
+                    foreach ($pjs as $pj) {
+                        // $message->attach(storage_path('app/media/cv/' . $contact->cv_name . '.pdf'));
+                        // $this->resolvePj($pj);
+                    }
+                }
             });
             //Mail::setSwiftMailer($backup);
         } else {
-            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
+            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs, $modelId) {
                 $message->to($datasEmail['emails']);
                 $message->subject($datasEmail['subject']);
-                // if ($addPj) {
-                //     $message->attach(storage_path('app/media/cv/' . $contact->cv_name . '.pdf'));
-                // }
+                if ($pjs) {
+                    foreach ($pjs as $pj) {
+                        //$message->attach(storage_path('app/media/cv/' . $contact->cv_name . '.pdf'));
+                        $mailPj = $this->resolvePj($pj, $modelId);
+                        trace_log($mailPj);
+                        $message->attach(storage_path('app/' . $mailPj));
+                    }
+                }
                 //$message->attach(storage_path('app/media/cv/'.$contact->cv_name.'.pdf'));
                 // if(!$isTest) {
                 // //Si ce n'est pas un test on met les headers.
@@ -102,8 +118,28 @@ class MailCreator
                 // }
             });
         }
-        //trace_log("fin du mail");
+        trace_log("fin du mail");
         return true;
+    }
+
+    public function resolvePj($data, $modelId)
+    {
+        $productorId = $data['productorId'];
+        trace_log('resolve PJ');
+        $classProductor = $data['classType'];
+        $productor = null;
+        if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
+            $productor = new \Waka\Pdfer\Classes\PdfCreator($productorId);
+        }
+        if ($classProductor == "Waka\Worder\Models\Document") {
+            $productor = new \Waka\Worder\Classes\WordCreator2($productorId);
+        }
+        if ($productor) {
+            trace_log($modelId);
+            return $productor->renderTemp($modelId);
+        } else {
+            return null;
+        }
     }
 
     public function renderHtml($model, $varName)

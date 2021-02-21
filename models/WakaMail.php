@@ -58,6 +58,7 @@ class WakaMail extends Model
         'model_functions',
         'images',
         'scopes',
+        'pjs',
     ];
 
     /**
