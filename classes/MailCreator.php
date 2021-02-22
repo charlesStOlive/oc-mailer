@@ -1,6 +1,7 @@
 <?php namespace Waka\Mailer\Classes;
 
 use ApplicationException;
+use Event;
 use Waka\Mailer\Models\WakaMail;
 use Waka\Utils\Classes\DataSource;
 
@@ -8,61 +9,69 @@ use Waka\Utils\Classes\DataSource;
 
 class MailCreator extends \October\Rain\Extension\Extendable
 {
-
-    private $dataSourceModel;
-    private $dataSourceId;
-    private $additionalParams;
-    private $dataSourceAdditionalParams;
     public static $wakamail;
-    public $dataForEmail;
-    //private $forceTo;
+    public $ds;
+    public $modelId;
     private $isTwigStarted;
-
-    public $implement = [
-
-    ];
+    public $implement = [];
 
     public static function find($mail_id, $slug = false)
     {
         $wakamail;
         if ($slug) {
-            $wakamail = WakaMail::where('slug', $mail_id)->first();
-            if (!$wakamail) {
+            $wakamailModel = WakaMail::where('slug', $mail_id)->first();
+            if (!$wakamailModel) {
                 throw new ApplicationException("Le code email ne fonctionne pas : " . $mail_id);
             }
         } else {
-            $wakamail = WakaMail::find($mail_id);
+            $wakamailModel = WakaMail::find($mail_id);
         }
-        self::$wakamail = $wakamail;
+        self::$wakamail = $wakamailModel;
         return new self;
+    }
+    public static function getProductor()
+    {
+        return self::$wakamail;
     }
 
     public function prepare($modelId)
     {
-        $dataSourceId = self::$wakamail->data_source;
-        $ds = new DataSource($dataSourceId);
+        $this->modelId = $modelId;
 
-        $logKey = null;
-        if (class_exists('\Waka\Lp\Classes\LogKey')) {
-            if (self::$wakamail->use_key) {
-                $logKey = new \Waka\Lp\Classes\LogKey($modelId, self::$wakamail);
-                $logKey->add();
-            }
-        }
+        $dataSourceId = $this->getProductor()->data_source;
+        $this->ds = new DataSource($dataSourceId);
 
-        $varName = strtolower($ds->name);
-        $values = $ds->getValues($modelId);
-        $img = $ds->wimages->getPicturesUrl(self::$wakamail->images);
-        $fnc = $ds->getFunctionsCollections($modelId, self::$wakamail->model_functions);
+        // $logKey = null;
+        // if (class_exists('\Waka\Lp\Classes\LogKey')) {
+        //     if ($this->getProductor()->use_key && $this->getProductor()->key_duration && $modelId) {
+        //         $logKey = new \Waka\Lp\Classes\LogKey($modelId, $this->getProductor());
+        //         $logKey->add();
+        //     }
+        // }
+
+        $varName = strtolower($this->ds->name);
+        $values = $this->ds->getValues($this->modelId);
+        $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
+        $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
 
         $model = [
             $varName => $values,
             'IMG' => $img,
             'FNC' => $fnc,
-            'log' => $logKey ? $logKey->log : null,
+            //'log' => $logKey ? $logKey->log : null,
         ];
 
-        if (self::$wakamail->is_mjml) {
+        //Recupère des variables par des evenements exemple LP log dans la finction boot
+        $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
+        if ($dataModelFromEvent) {
+            foreach ($dataModelFromEvent as $dataEvent) {
+                $model[key($dataEvent)] = $dataEvent;
+            }
+        }
+
+        //trace_log($model);
+
+        if ($this->getProductor()->is_mjml) {
             return $this->renderMjml($model, $varName);
         } else {
             return $this->renderHtml($model, $varName);
@@ -80,33 +89,33 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $htmlLayout = $this->prepare($modelId);
 
         $pjs = [];
-        if (self::$wakamail->pjs) {
-            $pjs = self::$wakamail->pjs;
+        if ($this->getProductor()->pjs) {
+            $pjs = $this->getProductor()->pjs;
         }
 
-        \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs, $modelId) {
+        \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs) {
             $message->to($datasEmail['emails']);
             $message->subject($datasEmail['subject']);
             if ($pjs) {
                 foreach ($pjs as $pj) {
-                    $mailPj = $this->resolvePj($pj, $modelId);
-                    trace_log($mailPj);
+                    $mailPj = $this->resolvePj($pj, $this->modelId);
+                    //trace_log($mailPj);
                     $message->attach(storage_path('app/' . $mailPj));
                 }
             }
         });
-        trace_log("fin du mail");
+        //trace_log("fin du mail");
         return true;
     }
 
     public function renderGMail($modelId, $datasEmail)
     {
         $htmlLayout = $this->prepare($modelId);
-        trace_log('send with gmail');
+        //trace_log('send with gmail');
 
         // $pjs = [];
-        // if (self::$wakamail->pjs) {
-        //     $pjs = self::$wakamail->pjs;
+        // if ($this->getProductor()->pjs) {
+        //     $pjs = $this->getProductor()->pjs;
         // }
         // //$backup = Mail::getSwiftMailer();
         // $gmail = new Swift_Mailer(new GmailTransport());
@@ -118,8 +127,8 @@ class MailCreator extends \October\Rain\Extension\Extendable
         //     $message->subject($datasEmail['subject']);
         //     if ($pjs) {
         //         foreach ($pjs as $pj) {
-        //             $mailPj = $this->resolvePj($pj, $modelId);
-        //             trace_log($mailPj);
+        //             $mailPj = $this->resolvePj($pj, $this->modelId);
+        //             //trace_log($mailPj);
         //             $message->attach(storage_path('app/' . $mailPj));
         //         }
         //     }
@@ -129,10 +138,10 @@ class MailCreator extends \October\Rain\Extension\Extendable
         return true;
     }
 
-    public function resolvePj($data, $modelId)
+    public function resolvePj($data)
     {
         $productorId = $data['productorId'];
-        trace_log('resolve PJ');
+        //trace_log('resolve PJ');
         $classProductor = $data['classType'];
         $productor = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
@@ -142,8 +151,8 @@ class MailCreator extends \October\Rain\Extension\Extendable
             $productor = new \Waka\Worder\Classes\WordCreator2($productorId);
         }
         if ($productor) {
-            trace_log($modelId);
-            return $productor->renderTemp($modelId);
+            //trace_log($this->modelId);
+            return $productor->renderTemp($this->modelId);
         } else {
             return null;
         }
@@ -152,16 +161,16 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function renderHtml($model, $varName)
     {
         $this->startTwig();
-        $text = \Markdown::parse(self::$wakamail->html);
+        $text = \Markdown::parse($this->getProductor()->html);
         $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
         $htmlContent = \Twig::parse($text, $model);
         $data = [
             $varName => $model,
             'content' => $htmlContent,
-            'baseCss' => \File::get(plugins_path() . self::$wakamail->layout->baseCss),
-            'AddCss' => self::$wakamail->layout->Addcss,
+            'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
+            'AddCss' => $this->getProductor()->layout->Addcss,
         ];
-        $htmlLayout = \Twig::parse(self::$wakamail->layout->contenu, $data);
+        $htmlLayout = \Twig::parse($this->getProductor()->layout->contenu, $data);
         $this->stopTwig();
         return $htmlLayout;
 
@@ -170,7 +179,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function renderMjml($model)
     {
         $this->startTwig();
-        $htm = self::$wakamail->mjml_html;
+        $htm = $this->getProductor()->mjml_html;
         //$htm = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
         $htmlContent = \Twig::parse($htm, $model);
         $this->stopTwig();

@@ -194,7 +194,7 @@ class MailBehavior extends ControllerBehavior
 
     public function onMailBehaviorPartialTestValidation()
     {
-        trace_log('onMailBehaviorPartialTestValidation');
+        //trace_log('onMailBehaviorPartialTestValidation');
 
         $datas = post();
 
@@ -216,7 +216,7 @@ class MailBehavior extends ControllerBehavior
 
     public function onMailTestShow()
     {
-        trace_log('onMailTestShow');
+        //trace_log('onMailTestShow');
         $wakamailId = post('wakamailId');
         $this->vars['html'] = MailCreator::find($wakamailId)->renderTest($modelId);
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
@@ -305,21 +305,14 @@ class MailBehavior extends ControllerBehavior
         }
     }
 
-    // public function makemail()
+    // public function makeDemo()
     // {
     //     $wakamailId = post('wakamailId');
     //     $modelId = post('modelId');
 
+    //     $wc = new MailCreator($wakamailId);
+    //     return $wc->renderMail($modelId);
     // }
-
-    public function makeDemo()
-    {
-        $wakamailId = post('wakamailId');
-        $modelId = post('modelId');
-
-        $wc = new MailCreator($wakamailId);
-        return $wc->renderMail($modelId);
-    }
 
     public function createMailBehaviorWidget()
     {
