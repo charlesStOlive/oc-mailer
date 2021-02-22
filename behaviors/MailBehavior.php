@@ -180,22 +180,21 @@ class MailBehavior extends ControllerBehavior
         $modelId = $datas['modelId'];
 
         if (post('testHtml')) {
-            $wc = new MailCreator($wakamailId);
-            $this->vars['html'] = $wc->renderMail($modelId, null, true);
+            $this->vars['html'] = MailCreator::find($wakamailId)->renderTest($modelId);
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject'],
             ];
-            $wc = new MailCreator($wakamailId);
-            return $wc->renderMail($modelId, $datasEmail);
+            return MailCreator::find($wakamailId)->renderMail($modelId, $datasEmail);
         }
 
     }
 
     public function onMailBehaviorPartialTestValidation()
     {
+        trace_log('onMailBehaviorPartialTestValidation');
 
         $datas = post();
 
@@ -203,28 +202,23 @@ class MailBehavior extends ControllerBehavior
         $modelId = null;
 
         if (post('testHtml')) {
-            $wc = new MailCreator($wakamailId);
-            $this->vars['html'] = $wc->renderMail($modelId, null, true);
+            $this->vars['html'] = MailCreator::find($wakamailId)->renderTest($modelId);
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject'],
             ];
-            $wc = new MailCreator($wakamailId);
-            return $wc->renderMail($modelId, $datasEmail);
+            return MailCreator::find($wakamailId)->renderMail($modelId, $datasEmail);
         }
 
     }
 
     public function onMailTestShow()
     {
+        trace_log('onMailTestShow');
         $wakamailId = post('wakamailId');
-        $modelId = null;
-        //
-        $wc = new MailCreator($wakamailId);
-        $this->vars['html'] = $wc->renderMail($modelId, null, true);
-        //
+        $this->vars['html'] = MailCreator::find($wakamailId)->renderTest($modelId);
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
 
     }
