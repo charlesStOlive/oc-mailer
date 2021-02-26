@@ -1,6 +1,7 @@
 <?php namespace Waka\Mailer\Classes;
 
 use Event;
+use Waka\Utils\Classes\DataSource;
 
 class MailQueueCreator
 {
@@ -11,18 +12,26 @@ class MailQueueCreator
             Event::fire('job.start.email', [$job, 'Envoi email ']);
         }
 
-        //trace_log($data);
+        //trace_log('in fire');
 
         $listIds = $data['listIds'];
-        $wakamailId = $data['wakamailId'];
-        $mc = new MailCreator($wakamailId);
+        $productorId = $data['productorId'];
+        //trace_log('2');
+        $mc = MailCreator::find($productorId);
+        //trace_log('3');
+        $modelDataSource = $mc->getProductor()->data_source;
+        //trace_log('4 : ' . $modelDataSource);
+        $ds = new DataSource($modelDataSource);
 
         foreach ($listIds as $modelId) {
+            //trace_log('model ID : ' . $modelId);
+            $emails = $ds->getContact('to', $modelId);
 
             $datasEmail = [
-                'emails' => $mc->getModelEmails($modelId),
+                'emails' => $emails,
                 'subject' => $data['subject'],
             ];
+            //trace_log($datasEmail);
             $mc->renderMail($modelId, $datasEmail);
         }
 

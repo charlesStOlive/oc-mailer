@@ -1,0 +1,69 @@
+# ===================================
+#  Duplicate Behavior Config
+# 
+# ATTENTION LE TITRE NE DOIT PAS AVOIR D ESPACE
+
+# Model Class name
+modelClass: Wcli\Crm\Models\WakaUser
+workflow: false
+
+###TOOLBAR
+tool_bar:
+    create: 
+        label: waka.mailer::wakamail.create
+        url: waka/mailer/wakamails/create
+        show: true
+    reorder: 
+        show: true
+        url: waka/mailer/wakamails/reorder
+    delete: 
+        show: true
+    mode: no_group
+    lot: 
+    secondary:
+        layout:
+            mode: no_group
+            create: 
+                label: waka.mailer::layout.create
+                url: waka/mailer/layouts/create
+                show: true
+            reorder: 
+                show: false
+            delete: 
+                show: true
+            
+        bloc:
+            mode: no_group
+            create: 
+                label: waka.mailer::bloc.create
+                url: waka/mailer/blocs/create
+                show: true
+            reorder: 
+                show: false
+            delete: 
+                show: true
+
+###BREADCRUMP
+breadcrump:
+    inSettings: true
+    indexUrl: waka/mailer/wakamails/index/wakamails
+    indexlabel: waka.mailer::wakamail.title
+    title: waka.mailer::wakamail.form_name
+
+###ACTION BAR (dans les pages update) #Les behavior liée aux boutons doivent êtres instanciés implements = [waka.xxx.behaviors.yyy] dans le controller. 
+action_bar:
+    mode: no_group #group,no_group,all
+    btns:
+        duplicate:
+            config: waka.utils::btns.duplicate
+    partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
+        testbtns:
+            url: $/waka/mailer/controllers/wakamails/_testbtns.htm
+
+
+          
+    
+        
+
+
+

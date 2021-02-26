@@ -63,7 +63,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
-        if ($dataModelFromEvent) {
+        if ($dataModelFromEvent[0] ?? false) {
             foreach ($dataModelFromEvent as $dataEvent) {
                 $model[key($dataEvent)] = $dataEvent;
             }
@@ -145,10 +145,10 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $classProductor = $data['classType'];
         $productor = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
-            $productor = new \Waka\Pdfer\Classes\PdfCreator($productorId);
+            $productor = \Waka\Pdfer\Classes\PdfCreator::find($productorId);
         }
         if ($classProductor == "Waka\Worder\Models\Document") {
-            $productor = new \Waka\Worder\Classes\WordCreator2($productorId);
+            $productor = \Waka\Worder\Classes\WordCreator::find($productorId);
         }
         if ($productor) {
             //trace_log($this->modelId);
@@ -219,6 +219,11 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $markupManager->endTransaction();
 
         $this->isTwigStarted = false;
+    }
+
+    public function getModelEmails()
+    {
+        return $this->ds->getContact('to', null);
     }
 
 }

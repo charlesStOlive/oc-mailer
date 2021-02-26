@@ -1,10 +1,8 @@
 <?php namespace Waka\Mailer;
 
 use Backend;
-use Event;
 use Lang;
 use System\Classes\PluginBase;
-use View;
 
 /**
  * Mailer Plugin Information File
@@ -82,49 +80,49 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        Event::listen('backend.update.prod', function ($controller) {
-            if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
-                return;
-            }
+        // Event::listen('backend.update.prod', function ($controller) {
+        //     if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
+        //         return;
+        //     }
 
-            if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
-                $data = [
-                    'model' => $modelClass = str_replace('\\', '\\\\', get_class($controller->formGetModel())),
-                    'modelId' => $controller->formGetModel()->id,
-                ];
-                return View::make('waka.mailer::publishMail')->withData($data);;
-            }
-        });
-        Event::listen('popup.actions.prod', function ($controller, $model, $id) {
-            if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
-                return;
-            }
+        //     if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
+        //         $data = [
+        //             'model' => $modelClass = str_replace('\\', '\\\\', get_class($controller->formGetModel())),
+        //             'modelId' => $controller->formGetModel()->id,
+        //         ];
+        //         return View::make('waka.mailer::publishMail')->withData($data);;
+        //     }
+        // });
+        // Event::listen('popup.actions.prod', function ($controller, $model, $id) {
+        //     if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
+        //         return;
+        //     }
 
-            if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
-                //trace_log("Laligne 1 est ici");
-                $data = [
-                    'model' => str_replace('\\', '\\\\', $model),
-                    'modelId' => $id,
-                ];
-                return View::make('waka.mailer::publishMailContent')->withData($data);;
-            }
-        });
-        Event::listen('backend.top.index', function ($controller) {
-            $user = \BackendAuth::getUser();
-            if (!$user->hasAccess('waka.importexport.exp.*')) {
-                return;
-            }
-            if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
-                return;
-            }
-            if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
-                $data = [
-                    'model' => $modelClass = str_replace('\\', '\\\\', $controller->listGetConfig()->modelClass),
-                    //'modelId' => $controller->formGetModel()->id
-                ];
-                return View::make('waka.mailer::lot_mail')->withData($data);;
-            }
-        });
+        //     if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
+        //         //trace_log("Laligne 1 est ici");
+        //         $data = [
+        //             'model' => str_replace('\\', '\\\\', $model),
+        //             'modelId' => $id,
+        //         ];
+        //         return View::make('waka.mailer::publishMailContent')->withData($data);;
+        //     }
+        // });
+        // Event::listen('backend.top.index', function ($controller) {
+        //     $user = \BackendAuth::getUser();
+        //     if (!$user->hasAccess('waka.importexport.exp.*')) {
+        //         return;
+        //     }
+        //     if (get_class($controller) == 'Waka\Mailer\Controllers\WakaMails') {
+        //         return;
+        //     }
+        //     if (in_array('Waka.Mailer.Behaviors.MailBehavior', $controller->implement)) {
+        //         $data = [
+        //             'model' => $modelClass = str_replace('\\', '\\\\', $controller->listGetConfig()->modelClass),
+        //             //'modelId' => $controller->formGetModel()->id
+        //         ];
+        //         return View::make('waka.mailer::lot_mail')->withData($data);;
+        //     }
+        // });
 
     }
 

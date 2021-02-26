@@ -25,8 +25,9 @@ return [
     'update' => 'Éditer un email',
     'create' => 'Créer un email',
     'edit' => 'Éditer un email',
+    'test_title' => 'Tester un email',
     'form_name' => 'Gestion de l&#039;email',
     'preview_name' => 'Voir l&#039;email',
     'e' => [
-    ],     
+    ],
 ];

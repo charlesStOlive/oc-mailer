@@ -13,6 +13,7 @@ class WakaMails extends Controller
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
         'waka.Utils.Behaviors.SideBarAttributesBehavior',
+        'Waka.Utils.Behaviors.BtnsBehavior',
         'Waka.Mailer.Behaviors.MailBehavior',
         'Backend.Behaviors.ReorderController',
         'Waka.Utils.Behaviors.DuplicateModel',
@@ -23,6 +24,7 @@ class WakaMails extends Controller
     public $duplicateConfig = 'config_duplicate.yaml';
     public $reorderConfig = 'config_reorder.yaml';
     public $sidebarAttributesConfig = 'config_attributes.yaml';
+    public $btnsConfig = 'config_btns.yaml';
 
     public $listConfig = [
         'wakaMails' => 'config_list.yaml',
