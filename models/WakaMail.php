@@ -143,5 +143,4 @@ class WakaMail extends Model
     /**
      * OTHERS
      */
-
 }

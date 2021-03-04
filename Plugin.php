@@ -39,7 +39,6 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-
     }
 
     public function registerFormWidgets(): array
@@ -67,7 +66,6 @@ class Plugin extends PluginBase
                         return null;
                     }
                     return null;
-
                 },
             ],
         ];
@@ -123,7 +121,6 @@ class Plugin extends PluginBase
         //         return View::make('waka.mailer::lot_mail')->withData($data);;
         //     }
         // });
-
     }
 
     /**
@@ -171,7 +168,6 @@ class Plugin extends PluginBase
     public function registerNavigation()
     {
         return [];
-
     }
     public function registerSettings()
     {

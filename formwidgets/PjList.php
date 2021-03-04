@@ -40,7 +40,6 @@ class PjList extends FormWidgetBase
         $this->vars['name'] = $this->formField->getName();
         $this->vars['values'] = $this->getLoadValue();
         $this->vars['model'] = $this->model;
-
     }
 
     /**
@@ -73,7 +72,6 @@ class PjList extends FormWidgetBase
         } else {
             throw new \ApplicationException("Il n' y a pas de publications disponibles pour ce type de DataSource");
         }
-
     }
 
     public function onSelectPjype()
@@ -87,7 +85,6 @@ class PjList extends FormWidgetBase
         return [
             '#pjAttribute' => $this->makePartial('attributes'),
         ];
-
     }
     public function onCreateScopeValidation()
     {
@@ -146,6 +143,5 @@ class PjList extends FormWidgetBase
         return [
             '#scopeList' => $this->makePartial('list', ['values' => $updatedDatas]),
         ];
-
     }
 }

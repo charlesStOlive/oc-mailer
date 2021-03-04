@@ -76,7 +76,6 @@ class MailCreator extends \October\Rain\Extension\Extendable
         } else {
             return $this->renderHtml($model, $varName);
         }
-
     }
 
     public function renderTest($modelId)
@@ -173,7 +172,6 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $htmlLayout = \Twig::parse($this->getProductor()->layout->contenu, $data);
         $this->stopTwig();
         return $htmlLayout;
-
     }
 
     public function renderMjml($model)
@@ -225,5 +223,4 @@ class MailCreator extends \October\Rain\Extension\Extendable
     {
         return $this->ds->getContact('to', null);
     }
-
 }

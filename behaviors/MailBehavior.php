@@ -81,7 +81,6 @@ class MailBehavior extends ControllerBehavior
         $this->vars['modelClass'] = $modelClass;
 
         return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_lot.htm')];
-
     }
 
     /**
@@ -144,9 +143,7 @@ class MailBehavior extends ControllerBehavior
                     'required' => $field['required'],
                 ],
             ]);
-
         }
-
     }
 
     public function onMailBehaviorPartialValidation()
@@ -172,7 +169,6 @@ class MailBehavior extends ControllerBehavior
             ];
             return MailCreator::find($productorId)->renderMail($modelId, $datasEmail);
         }
-
     }
 
     public function onMailBehaviorPartialTestValidation()
@@ -194,7 +190,6 @@ class MailBehavior extends ControllerBehavior
             ];
             return MailCreator::find($productorId)->renderMail($modelId, $datasEmail);
         }
-
     }
 
     public function onMailTestShow()
@@ -203,7 +198,6 @@ class MailBehavior extends ControllerBehavior
         $productorId = post('productorId');
         $this->vars['html'] = MailCreator::find($productorId)->renderTest($modelId);
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
-
     }
 
     public function onLotWordValidation()
@@ -231,7 +225,6 @@ class MailBehavior extends ControllerBehavior
         ];
         $jobId = \Queue::push('\Waka\Mailer\Classes\MailQueueCreator', $datas);
         \Event::fire('job.create.imp', [$jobId, 'Import en attente ']);
-
     }
 
     /**
@@ -309,5 +302,4 @@ class MailBehavior extends ControllerBehavior
         $widget->bindToController();
         return $widget;
     }
-
 }

@@ -16,7 +16,6 @@ class SideBarBlocs extends WidgetBase
 
     public function init()
     {
-
     }
 
     public function render()
@@ -26,7 +25,6 @@ class SideBarBlocs extends WidgetBase
         $blocs = $this->getBlocs();
         $this->vars['blocs'] = $blocs;
         return $this->makePartial('list_blocs');
-
     }
 
     public function getBlocs()
@@ -37,7 +35,6 @@ class SideBarBlocs extends WidgetBase
             $item['code'] = "{{mailPartial('" . $item['slug'] . "'," . $name . ")}}";
             return $item;
         });
-
     }
 
     public function loadAssets()
@@ -45,5 +42,4 @@ class SideBarBlocs extends WidgetBase
         $this->addCss('css/sidebarattributes.css', 'Waka.Utils');
         $this->addJs('js/clipboard.min.js', 'Waka.Utils');
     }
-
 }

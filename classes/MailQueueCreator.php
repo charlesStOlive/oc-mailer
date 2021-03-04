@@ -39,7 +39,5 @@ class MailQueueCreator
             Event::fire('job.end.email', [$job]);
             $job->delete();
         }
-
     }
-
 }
