@@ -40,8 +40,8 @@ class MailBehavior extends ControllerBehavior
             $this->mailBehaviorWidget->addFields([
                 'send_with_gmail' => [
                     'label' => ' Envoyer avec GMAIL',
-                    'type' => 'checkbox',
-                ],
+                    'type' => 'checkbox'
+                ]
             ]);
         }
 
@@ -53,6 +53,7 @@ class MailBehavior extends ControllerBehavior
         $this->vars['modelId'] = $modelId;
         $this->vars['options'] = $options;
     }
+
     /**
      * LOAD DES POPUPS
      */
@@ -61,6 +62,7 @@ class MailBehavior extends ControllerBehavior
         $this->getPostContent();
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_popup.htm');
     }
+
     public function onLoadMailBehaviorContentForm()
     {
         $this->getPostContent();
@@ -127,9 +129,10 @@ class MailBehavior extends ControllerBehavior
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
 
         return [
-            '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm'),
+            '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm')
         ];
     }
+
     public function getFieldFromWakaMail($wakaMail)
     {
         $fields = $wakaMail->add_fields;
@@ -140,8 +143,8 @@ class MailBehavior extends ControllerBehavior
                 $field['code'] => [
                     'label' => $field['label'],
                     'type' => $field['type'],
-                    'required' => $field['required'],
-                ],
+                    'required' => $field['required']
+                ]
             ]);
         }
     }
@@ -165,7 +168,7 @@ class MailBehavior extends ControllerBehavior
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
-                'subject' => $datas['mailData_array']['subject'],
+                'subject' => $datas['mailData_array']['subject']
             ];
             return MailCreator::find($productorId)->renderMail($modelId, $datasEmail);
         }
@@ -186,7 +189,7 @@ class MailBehavior extends ControllerBehavior
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
-                'subject' => $datas['mailData_array']['subject'],
+                'subject' => $datas['mailData_array']['subject']
             ];
             return MailCreator::find($productorId)->renderMail($modelId, $datasEmail);
         }
@@ -221,7 +224,7 @@ class MailBehavior extends ControllerBehavior
         $datas = [
             'listIds' => $listIds,
             'productorId' => $productorId,
-            'subject' => post('mailData_array.subject'),
+            'subject' => post('mailData_array.subject')
         ];
         $jobId = \Queue::push('\Waka\Mailer\Classes\MailQueueCreator', $datas);
         \Event::fire('job.create.imp', [$jobId, 'Import en attente ']);
@@ -234,7 +237,7 @@ class MailBehavior extends ControllerBehavior
     {
         $rules = [
             'productorId' => 'required',
-            'modelId' => 'required',
+            'modelId' => 'required'
         ];
         $is_test = $inputs['testHtml'] ?? false;
         if (!$is_test) {
@@ -250,11 +253,12 @@ class MailBehavior extends ControllerBehavior
             return false;
         }
     }
+
     public function CheckIndexValidation($inputs)
     {
         $rules = [
             'productorId' => 'required',
-            'mailData_array.subject' => 'required | min:3',
+            'mailData_array.subject' => 'required | min:3'
         ];
 
         $validator = \Validator::make($inputs, $rules);
@@ -265,10 +269,11 @@ class MailBehavior extends ControllerBehavior
             return false;
         }
     }
+
     public function validationAdditionalParams($field, $input, $fieldOption = null)
     {
         $rules = [
-            $field => 'required',
+            $field => 'required'
         ];
 
         $validator = \Validator::make([$input], $rules);
@@ -291,9 +296,9 @@ class MailBehavior extends ControllerBehavior
         $widget->bindToController();
         return $widget;
     }
+
     public function createMailDataWidget()
     {
-
         $config = $this->makeConfig('$/waka/mailer/models/wakamail/fields_for_data_mail.yaml');
         $config->alias = 'mailDataformWidget';
         $config->arrayName = 'mailData_array';
