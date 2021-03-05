@@ -52,6 +52,16 @@ class SendEmails implements WakajobQueueJob
     private $table;
 
     /**
+     * MC
+     */
+    private $mailCreator;
+
+    /**
+     * MC
+     */
+    private $ds;
+
+    /**
      * @param int $id
      */
     public function assignJobId(int $id)
@@ -71,7 +81,12 @@ class SendEmails implements WakajobQueueJob
      */
     public function __construct(array $dataEmails)
     {
-        $this->dataEmails = $data;
+        
+        $productorId = $dataEmails['productorId'];
+        $this->mailCreator = MailCreator::find($productorId);
+
+        $listIds = $dataEmails['listIds'];
+        $this->data = $listIds;
         $this->updateExisting = true;
         $this->chunk = 1;
         /** @var Model $model */
@@ -95,7 +110,13 @@ class SendEmails implements WakajobQueueJob
         $created = 0;
         $updated = 0;
         $skipped = 0;
+
+        //Travail sur les données
         $data = array_chunk($this->data, $this->chunk);
+        $modelDataSource = $this->mailCreator->getProductor()->data_source;
+        $ds = new DataSource($modelDataSource);
+
+
         try {
             foreach ($data as $chunk) {
                 foreach ($chunk as $data) {
@@ -103,23 +124,20 @@ class SendEmails implements WakajobQueueJob
                         $jobManager->failJob($this->jobId);
                         break;
                     }
-                    $entry = null;
-                    if ($this->updateExisting) {
-                        // TODO !
-                    }
-                    if (!$entry) {
-                        ++$created;
+                    // LANCEMENT EMAIL
+                    $emails = $ds->getContact('to', $modelId);
+                    if (!$emails) {
+                        ++$skipped;
                     } else {
-                        if ($this->updateExisting) {
-                            ++$updated;
-                        } else {
-                            ++$skipped;
-                            continue;
-                        }
+                        $datasEmail = [
+                            'emails' => $emails,
+                            'subject' => $data['subject'],
+                        ];
+                        $mc->renderMail($modelId, $datasEmail);
+                        ++$created;
                     }
-                    //$toInsert[] = $data;
+                    // Fin de lancement email
                 }
-                //\DB::table($this->table)->insert($toInsert);
                 $loop += $this->chunk;
                 $jobManager->updateJobState($this->jobId, $loop);
             }
