@@ -122,11 +122,12 @@ class SendEmails implements WakajobQueueJob
                         $jobManager->failJob($this->jobId);
                         break;
                     }
-                    // CONFIGURATION DU JOB
+                    /**
+                     * DEBUT TRAITEMENT **************
+                     */
                     $emails = $ds->getContact('to', $targetId);
                     if (!$emails) {
                         ++$skipped;
-                        //trace_log('skipped');
                         continue;
                     }
                     $datasEmail = [
@@ -135,32 +136,32 @@ class SendEmails implements WakajobQueueJob
                     ];
                     $mailCreator->setModelId($targetId);
                     $scopeIsOk = $mailCreator->checkScopes();
-                    //trace_log("scopeIsOk : ".$scopeIsOk);
                     if (!$scopeIsOk) {
                         $scopeError++;
-                        //trace_log('scopeError');
                         continue;
                     }
-                    //$mailCreator->renderMail($datasEmail);
-                    //trace_log('send');
+                    $mailCreator->renderMail($datasEmail);
                     ++$send;
-                    // Fin de lancement email
+                    /**
+                     * FIN TRAITEMENT **************
+                     */
                 }
                 $loop += $this->chunk;
                 $jobManager->updateJobState($this->jobId, $loop);
             }
+            $jobManager->completeJob(
+                $this->jobId,
+                [
+                'Message' => \count($targets).' '. \Lang::get('waka.mailer::wakamail.job_title'),
+                'waka.mailer::wakamail.job_send' => $send,
+                'waka.mailer::wakamail.job_scoped' => $scopeError,
+                'waka.mailer::wakamail.job_skipped' => $skipped,
+                ]
+            );
         } catch (\Exception $ex) {
+            trace_log("Exception");
             /**/trace_log($ex->getMessage());
             $jobManager->failJob($this->jobId, ['error' => $ex->getMessage()]);
         }
-        $jobManager->completeJob(
-            $this->jobId,
-            [
-                'Message' => \count($targets).' Email a envoyer',
-                'waka.mailer::wakamail.send' => $send,
-                'waka.mailer::wakamail.scopeError' => $scopeError,
-                'waka.mailer::wakamail.skipped' => $skipped,
-            ]
-        );
     }
 }

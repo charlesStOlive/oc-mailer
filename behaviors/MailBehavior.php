@@ -205,7 +205,7 @@ class MailBehavior extends ControllerBehavior
         } catch (Exception $ex) {
                 $this->controller->handleError($ex);
         }
-        return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_confirm.htm')];
+        return ['#popupActionContent' => $this->makePartial('$/waka/wakajob/controllers/jobs/_confirm.htm')];
     }
 
     

@@ -168,12 +168,12 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $path = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
             $productor = \Waka\Pdfer\Classes\PdfCreator::find($productorId);
-            $pj = $productor->renderTemp($this->modelId);
+            $pj = $productor->setModelId($this->modelId)->renderTemp();
             return storage_path('app/' . $pj);
         }
         elseif ($classProductor == "Waka\Worder\Models\Document") {
             $productor = \Waka\Worder\Classes\WordCreator::find($productorId);
-            $pj = $productor->renderTemp($this->modelId);
+            $pj = $productor->setModelId($this->modelId)->renderTemp();
             return storage_path('app/' . $pj);
         } else {
             $dotedAttributeClass = explode(".", $classProductor);

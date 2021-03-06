@@ -28,10 +28,10 @@ return [
     'test_title' => 'Tester un email',
     'form_name' => 'Gestion de l&#039;email',
     'preview_name' => 'Voir l&#039;email',
-    'job' => [
-        'send' => 'Email Envoyés',
-        'skipped' => 'Email non envoyés',
-    ],
+    'job_send' => "Email Envoyés",
+    'job_scoped' => "Email non envoyés",
+    'job_skipped' => "@ Bloqué par restrictions",
+    'job_title' => "Message(s) à envoyér",
     'e' => [
     ],
 ];
