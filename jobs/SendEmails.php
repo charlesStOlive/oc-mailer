@@ -11,6 +11,8 @@ use Waka\Wakajob\Classes\RequestSender;
 use Waka\Wakajob\Contracts\WakajobQueueJob;
 use October\Rain\Database\Model;
 use Viamage\CallbackManager\Models\Rate;
+use Waka\Mailer\Classes\MailCreator;
+use Waka\Utils\Classes\DataSource;
 
 /**
  * Class SendRequestJob
@@ -52,16 +54,6 @@ class SendEmails implements WakajobQueueJob
     private $table;
 
     /**
-     * MC
-     */
-    private $mailCreator;
-
-    /**
-     * MC
-     */
-    private $ds;
-
-    /**
      * @param int $id
      */
     public function assignJobId(int $id)
@@ -79,19 +71,11 @@ class SendEmails implements WakajobQueueJob
      * @param bool   $updateExisting
      * @param int    $chunk
      */
-    public function __construct(array $dataEmails)
+    public function __construct(array $data)
     {
-        
-        $productorId = $dataEmails['productorId'];
-        $this->mailCreator = MailCreator::find($productorId);
-
-        $listIds = $dataEmails['listIds'];
-        $this->data = $listIds;
+        $this->data = $data;
         $this->updateExisting = true;
         $this->chunk = 1;
-        /** @var Model $model */
-        //$model = new $model();
-        //$this->table = $model->getTable();
     }
 
     /**
@@ -102,55 +86,80 @@ class SendEmails implements WakajobQueueJob
     public function handle(JobManager $jobManager)
     {
         /**
+         * travail preparatoire sur les donnes
+         */
+        $productorId = $this->data['productorId'];
+        $mailCreator = MailCreator::find($productorId);
+        $modelDataSource = $mailCreator->getProductor()->data_source;
+        $ds = new DataSource($modelDataSource);
+        //
+        $targets = $this->data['listIds'];
+
+        //trace_log($targets);
+
+        //trace_log("lancement du JOB mail");
+
+
+        /**
          * We initialize database job. It has been assigned ID on dispatching,
          * so we pass it together with number of all elements to proceed (max_progress)
          */
         $loop = 1;
-        $jobManager->startJob($this->jobId, \count($this->data));
-        $created = 0;
-        $updated = 0;
+        $jobManager->startJob($this->jobId, \count($targets));
+        $send = 0;
+        $scopeError = 0;
         $skipped = 0;
+        // Fin inistialisation
 
         //Travail sur les données
-        $data = array_chunk($this->data, $this->chunk);
-        $modelDataSource = $this->mailCreator->getProductor()->data_source;
-        $ds = new DataSource($modelDataSource);
-
-
+        $targets = array_chunk($targets, $this->chunk);
+        
         try {
-            foreach ($data as $chunk) {
-                foreach ($chunk as $data) {
+            foreach ($targets as $chunk) {
+                foreach ($chunk as $targetId) {
+                    // TACHE DU JOB
                     if ($jobManager->checkIfCanceled($this->jobId)) {
                         $jobManager->failJob($this->jobId);
                         break;
                     }
-                    // LANCEMENT EMAIL
-                    $emails = $ds->getContact('to', $modelId);
+                    // CONFIGURATION DU JOB
+                    $emails = $ds->getContact('to', $targetId);
                     if (!$emails) {
                         ++$skipped;
-                    } else {
-                        $datasEmail = [
-                            'emails' => $emails,
-                            'subject' => $data['subject'],
-                        ];
-                        $mc->renderMail($modelId, $datasEmail);
-                        ++$created;
+                        //trace_log('skipped');
+                        continue;
                     }
+                    $datasEmail = [
+                        'emails' => $emails,
+                        'subject' => $this->data['subject'],
+                    ];
+                    $mailCreator->setModelId($targetId);
+                    $scopeIsOk = $mailCreator->checkScopes();
+                    //trace_log("scopeIsOk : ".$scopeIsOk);
+                    if (!$scopeIsOk) {
+                        $scopeError++;
+                        //trace_log('scopeError');
+                        continue;
+                    }
+                    //$mailCreator->renderMail($datasEmail);
+                    //trace_log('send');
+                    ++$send;
                     // Fin de lancement email
                 }
                 $loop += $this->chunk;
                 $jobManager->updateJobState($this->jobId, $loop);
             }
         } catch (\Exception $ex) {
+            /**/trace_log($ex->getMessage());
             $jobManager->failJob($this->jobId, ['error' => $ex->getMessage()]);
         }
         $jobManager->completeJob(
             $this->jobId,
             [
-                'message' => \count($this->data).' Email envoyé',
-                'Created' => $created,
-                'Updated' => $updated,
-                'Skipped' => $skipped,
+                'Message' => \count($targets).' Email a envoyer',
+                'waka.mailer::wakamail.send' => $send,
+                'waka.mailer::wakamail.scopeError' => $scopeError,
+                'waka.mailer::wakamail.skipped' => $skipped,
             ]
         );
     }

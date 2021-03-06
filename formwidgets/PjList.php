@@ -63,11 +63,9 @@ class PjList extends FormWidgetBase
     {
         $modelDataSource = $this->model->data_source;
         $ds = new DataSource($modelDataSource, 'code');
-        $publications = $ds->publications;
-        $options = $publications['types'] ?? [];
+        $options = $ds->getPublicationsType();
         if ($options) {
             $this->vars['pjList'] = $options;
-            //trace_log($options);
             return $this->makePartial('popup');
         } else {
             throw new \ApplicationException("Il n' y a pas de publications disponibles pour ce type de DataSource");
@@ -79,29 +77,33 @@ class PjList extends FormWidgetBase
         $modelDataSource = $this->model->data_source;
         $ds = new DataSource($modelDataSource, 'code');
         $class = post('classType');
-        $options = $ds->getPartialIndexOptions($class);
-        $this->vars['options_prod'] = $options;
-
-        return [
-            '#pjAttribute' => $this->makePartial('attributes'),
-        ];
+        $options = $ds->getPublicationsFromType($class);
+        if ($options) {
+            $this->vars['options_prod'] = $options;
+            return ['#pjAttribute' => $this->makePartial('attributes')];
+        } else {
+            return ['#pjAttribute' => '--'];
+        }
     }
-    public function onCreateScopeValidation()
+    
+    public function onCreatePjValidation()
     {
         //trace_log(post());
         $classType = post('classType');
-        $productorId = post('productorId');
-
-        // [_session_key] => 7gm4rZCiaT0Fdnfh5R6UutduqgeKbqtWtVnInqSa
-        // [_token] => 6FFKfC51Xo1e6BNho17XwhcyMef3629mG5fTmWJJ
-        // [classType] => Waka\Worder\Models\Document
-        // [productorId] => 1
-        // [redirect] => 0
-        //preparatio de l'array a ajouter
         $pjData = [];
-        $pjData['classType'] = $classType;
-        $pjData['productorId'] = $productorId;
-        $pjData['productorName'] = $classType::find(post('productorId'))->name;
+        //
+        $classIsNotProductor = strpos($classType, '.');
+        if ($classIsNotProductor) {
+            $array = explode(".", $classType);
+            // on recherche si il y a plusieurs ou un seul fichier grâce à la valeur avant le point .
+            $pjData['classType'] = $classType;
+            $pjData['productorId'] = null;
+            $pjData['productorName'] = 'Fichier ou montage lié au modèle';
+        } else {
+            $pjData['classType'] = $classType;
+            $pjData['productorId'] = $productorId;
+            $pjData['productorName'] = $classType::find(post('productorId'))->name;
+        }
         $pjData['pjCode'] = uniqid();
 
         $data;
@@ -120,11 +122,11 @@ class PjList extends FormWidgetBase
 
         //rafraichissement de la liste
         return [
-            '#scopeList' => $this->makePartial('list', ['values' => $datas]),
+            '#pjList' => $this->makePartial('list', ['values' => $datas]),
         ];
     }
 
-    public function onDeleteScope()
+    public function onDeletePj()
     {
         $pjCode = post('pjCode');
         $datas = $this->getLoadValue();
@@ -141,7 +143,7 @@ class PjList extends FormWidgetBase
         $this->model->save();
 
         return [
-            '#scopeList' => $this->makePartial('list', ['values' => $updatedDatas]),
+            '#pjList' => $this->makePartial('list', ['values' => $updatedDatas]),
         ];
     }
 }

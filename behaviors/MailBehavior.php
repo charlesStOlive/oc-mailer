@@ -20,43 +20,9 @@ class MailBehavior extends ControllerBehavior
     }
 
     /**
-     * METHODES
+     ******************** LOAD DES POPUPS et du test******************************
      */
 
-    public function getPostContent()
-    {
-        $modelClass = post('modelClass');
-        $modelId = post('modelId');
-
-        //trace_log($model);
-
-        $ds = new DataSource($modelClass, 'class');
-        $options = $ds->getPartialOptions($modelId, 'Waka\Mailer\Models\WakaMail');
-        $contact = $ds->getContact('to', $modelId);
-        //
-        $this->mailBehaviorWidget->getField('email')->options = $contact;
-
-        if (class_exists('Zaxbux\GmailMailerDriver\Classes\GmailTransport')) {
-            $this->mailBehaviorWidget->addFields([
-                'send_with_gmail' => [
-                    'label' => ' Envoyer avec GMAIL',
-                    'type' => 'checkbox'
-                ]
-            ]);
-        }
-
-        $cc = $ds->getContact('cc', $modelId);
-        //trace_log($cc);
-        $this->mailBehaviorWidget->getField('cc')->options = $cc;
-
-        $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
-        $this->vars['modelId'] = $modelId;
-        $this->vars['options'] = $options;
-    }
-
-    /**
-     * LOAD DES POPUPS
-     */
     public function onLoadMailBehaviorPopupForm()
     {
         $this->getPostContent();
@@ -69,20 +35,22 @@ class MailBehavior extends ControllerBehavior
         return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_content.htm')];
     }
 
-    /**
-     * Traitement par lot
-     */
-    public function onLotMail()
+    public function getPostContent()
     {
         $modelClass = post('modelClass');
+        $modelId = post('modelId');
+        //datasource
         $ds = new DataSource($modelClass, 'class');
-        $options = $ds->getPartialIndexOptions('Waka\Mailer\Models\WakaMail');
-
+        $options = $ds->getProductorOptions('Waka\Mailer\Models\WakaMail', $modelId);
+        $contact = $ds->getContact('to', $modelId);
+        //
+        $this->mailBehaviorWidget->getField('email')->options = $contact;
+        $cc = $ds->getContact('cc', $modelId);
+        $this->mailBehaviorWidget->getField('cc')->options = $cc;
+        //
+        $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
+        $this->vars['modelId'] = $modelId;
         $this->vars['options'] = $options;
-        $this->vars['mailDataWidget'] = $this->mailDataWidget;
-        $this->vars['modelClass'] = $modelClass;
-
-        return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_lot.htm')];
     }
 
     /**
@@ -91,62 +59,34 @@ class MailBehavior extends ControllerBehavior
     public function onLoadMailTestForm()
     {
         $productorId = post('productorId');
-
         $wakaMail = WakaMail::find($productorId);
-
-        $dataSourceId = $wakaMail->data_source;
-        $ds = new DataSource($dataSourceId);
-
-        $options = $ds->getPartialOptions(null, 'Waka\Mailer\Models\WakaMail');
-
+        $dataSourceCode = $wakaMail->data_source;
+        $ds = new DataSource($dataSourceCode);
+        $options = $ds->getProductorOptions('Waka\Mailer\Models\WakaMail');
         $contact = $ds->getContact('to', null);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
-
         $cc = $ds->getContact('cc', null);
         $this->mailBehaviorWidget->getField('cc')->hidden = true;
-
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
-
-        //$this->getFieldFromWakaMail($wakaMail);
-
         $this->vars['productorId'] = $productorId;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
-
         $this->vars['modelId'] = null;
         $this->vars['options'] = $options;
-
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_test.htm');
     }
-
+    /**
+     * Cette fonction est utilisé lors du test depuis le controller wakamail.
+     */
     public function onSelectWakaMail()
     {
         $productorId = post('productorId');
         $wakaMail = WakaMail::find($productorId);
-
         $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
-
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
-
         return [
             '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm')
         ];
-    }
-
-    public function getFieldFromWakaMail($wakaMail)
-    {
-        $fields = $wakaMail->add_fields;
-        // trace_log("fields");
-        // trace_log($fields);
-        foreach ($fields as $field) {
-            $this->mailDataWidget->addFields([
-                $field['code'] => [
-                    'label' => $field['label'],
-                    'type' => $field['type'],
-                    'required' => $field['required']
-                ]
-            ]);
-        }
     }
 
     public function onMailBehaviorPartialValidation()
@@ -154,44 +94,37 @@ class MailBehavior extends ControllerBehavior
 
         $datas = post();
         $errors = $this->CheckValidation($datas);
-
         if ($errors) {
             throw new \ValidationException(['error' => $errors]);
         }
-
         $productorId = $datas['productorId'];
         $modelId = $datas['modelId'];
-
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->renderTest($modelId);
+            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->renderTest($modelId);
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject']
             ];
-            return MailCreator::find($productorId)->renderMail($modelId, $datasEmail);
+            return MailCreator::find($productorId)->setModelId($modelId)->renderMail($datasEmail);
         }
     }
 
     public function onMailBehaviorPartialTestValidation()
     {
-        //trace_log('onMailBehaviorPartialTestValidation');
-
         $datas = post();
-
         $productorId = $datas['productorId'];
         $modelId = null;
-
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->renderTest($modelId);
+            $this->vars['html'] = MailCreator::find($productorId)->setModelTest()->renderTest();
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject']
             ];
-            return MailCreator::find($productorId)->renderMail($modelId, $datasEmail);
+            return MailCreator::find($productorId)->setModelTest()->renderMail($datasEmail);
         }
     }
 
@@ -199,37 +132,9 @@ class MailBehavior extends ControllerBehavior
     {
         //trace_log('onMailTestShow');
         $productorId = post('productorId');
-        $this->vars['html'] = MailCreator::find($productorId)->renderTest($modelId);
+        $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->renderTest();
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
     }
-
-    public function onLotWordValidation()
-    {
-        $errors = $this->CheckIndexValidation(\Input::all());
-        if ($errors) {
-            throw new \ValidationException(['error' => $errors]);
-        }
-
-        $lotType = post('lotType');
-        $productorId = post('productorId');
-        $listIds = null;
-        if ($lotType == 'filtered') {
-            $listIds = Session::get('lot.listId');
-        } elseif ($lotType == 'checked') {
-            $listIds = Session::get('lot.checkedIds');
-        }
-        // Session::forget('lot.listId');
-        // Session::forget('lot.checkedIds');
-
-        $datas = [
-            'listIds' => $listIds,
-            'productorId' => $productorId,
-            'subject' => post('mailData_array.subject')
-        ];
-        $jobId = \Queue::push('\Waka\Mailer\Classes\MailQueueCreator', $datas);
-        \Event::fire('job.create.imp', [$jobId, 'Import en attente ']);
-    }
-
     /**
      * Validations
      */
@@ -254,6 +159,57 @@ class MailBehavior extends ControllerBehavior
         }
     }
 
+    /**
+     * ************************************Traitement par lot**********************************
+     */
+    public function onLotMail()
+    {
+        $modelClass = post('modelClass');
+        $ds = new DataSource($modelClass, 'class');
+        $options = $ds->getPartialIndexOptions('Waka\Mailer\Models\WakaMail');
+        //
+        $this->vars['options'] = $options;
+        $this->vars['mailDataWidget'] = $this->mailDataWidget;
+        $this->vars['modelClass'] = $modelClass;
+        //
+        return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_lot.htm')];
+    }
+
+    public function onLotWordValidation()
+    {
+        $errors = $this->CheckIndexValidation(\Input::all());
+        if ($errors) {
+            throw new \ValidationException(['error' => $errors]);
+        }
+        $lotType = post('lotType');
+        $productorId = post('productorId');
+        $listIds = null;
+        if ($lotType == 'filtered') {
+            $listIds = Session::get('lot.listId');
+        } elseif ($lotType == 'checked') {
+            $listIds = Session::get('lot.checkedIds');
+        }
+        Session::forget('lot.listId');
+        Session::forget('lot.checkedIds');
+        //
+        $datas = [
+            'listIds' => $listIds,
+            'productorId' => $productorId,
+            'subject' => post('mailData_array.subject')
+        ];
+        try {
+            $job = new \Waka\Mailer\Jobs\SendEmails($datas);
+            $jobManager = \App::make('Waka\Wakajob\Classes\JobManager');
+            $jobManager->dispatch($job, "Envoi d'emails");
+            $this->vars['jobId'] = $job->jobId;
+        } catch (Exception $ex) {
+                $this->controller->handleError($ex);
+        }
+        return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_confirm.htm')];
+    }
+
+    
+
     public function CheckIndexValidation($inputs)
     {
         $rules = [
@@ -270,20 +226,9 @@ class MailBehavior extends ControllerBehavior
         }
     }
 
-    public function validationAdditionalParams($field, $input, $fieldOption = null)
-    {
-        $rules = [
-            $field => 'required'
-        ];
-
-        $validator = \Validator::make([$input], $rules);
-
-        if ($validator->fails()) {
-            return $validator->messages()->first();
-        } else {
-            return false;
-        }
-    }
+    /**
+     * *********************Création des widgets****************************************
+     */
 
     public function createMailBehaviorWidget()
     {

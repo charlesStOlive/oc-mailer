@@ -34,33 +34,57 @@ class MailCreator extends \October\Rain\Extension\Extendable
         return self::$wakamail;
     }
 
-    public function prepare($modelId)
+    public function setModelId($modelId)
     {
         $this->modelId = $modelId;
-
         $dataSourceId = $this->getProductor()->data_source;
         $this->ds = new DataSource($dataSourceId);
+        $this->ds->instanciateModel($modelId);
+        return $this;
+    }
 
-        // $logKey = null;
-        // if (class_exists('\Waka\Lp\Classes\LogKey')) {
-        //     if ($this->getProductor()->use_key && $this->getProductor()->key_duration && $modelId) {
-        //         $logKey = new \Waka\Lp\Classes\LogKey($modelId, $this->getProductor());
-        //         $logKey->add();
-        //     }
-        // }
+    public function setModelTest()
+    {
+        $this->modelId = $this->getProductor()->test_id;
+        $dataSourceId = $this->getProductor()->data_source;
+        $this->ds = new DataSource($dataSourceId);
+        $this->ds->instanciateModel($modelId);
+        return $this;
+    }
 
+    public function checkScopes()
+    {
+        //trace_log('checkScopes');
+        if (!$this->ds || !$this->modelId) {
+            //trace_log("modelId pas instancie");
+            throw new \SystemException("Le modelId n a pas ete instancié");
+        }
+        //trace_log('nom modèle : '.$this->ds->model);
+        $scope = new \Waka\Utils\Classes\Scopes($this->getProductor(), $this->ds->model);
+        //trace_log('scope calcule');
+        if ($scope->checkScopes()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function prepare()
+    {
+        if (!$this->ds || !$this->modelId) {
+            throw new \ApplicationException("Le modelId n a pas ete instancié");
+        }
         $varName = strtolower($this->ds->name);
         $values = $this->ds->getValues($this->modelId);
         $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
         $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
-
+        //
         $model = [
             $varName => $values,
             'IMG' => $img,
             'FNC' => $fnc,
             //'log' => $logKey ? $logKey->log : null,
         ];
-
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
         if ($dataModelFromEvent[0] ?? false) {
@@ -68,9 +92,6 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 $model[key($dataEvent)] = $dataEvent;
             }
         }
-
-        //trace_log($model);
-
         if ($this->getProductor()->is_mjml) {
             return $this->renderMjml($model, $varName);
         } else {
@@ -78,32 +99,35 @@ class MailCreator extends \October\Rain\Extension\Extendable
         }
     }
 
-    public function renderTest($modelId)
+    public function renderTest()
     {
-        return $this->prepare($modelId);
+        $this->setModelId($this->getProductor()->test_id);
+        return $this->prepare();
     }
 
-    public function renderMail($modelId, $datasEmail)
+    public function renderMail($datasEmail = [])
     {
-        $htmlLayout = $this->prepare($modelId);
-
+        $htmlLayout = $this->prepare();
         $pjs = [];
         if ($this->getProductor()->pjs) {
             $pjs = $this->getProductor()->pjs;
         }
-
         \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs) {
             $message->to($datasEmail['emails']);
             $message->subject($datasEmail['subject']);
             if ($pjs) {
                 foreach ($pjs as $pj) {
-                    $mailPj = $this->resolvePj($pj, $this->modelId);
-                    //trace_log($mailPj);
-                    $message->attach(storage_path('app/' . $mailPj));
+                    $pjPath = $this->resolvePj($pj, $this->modelId);
+                    if (is_array($pjPath)) {
+                        foreach ($pjPath as $pjPathUnique) {
+                            $message->attach($pjPathUnique);
+                        }
+                    } elseif ($pjPath) {
+                        $message->attach($pjPath);
+                    }
                 }
             }
         });
-        //trace_log("fin du mail");
         return true;
     }
 
@@ -140,20 +164,39 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function resolvePj($data)
     {
         $productorId = $data['productorId'];
-        //trace_log('resolve PJ');
         $classProductor = $data['classType'];
-        $productor = null;
+        $path = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
             $productor = \Waka\Pdfer\Classes\PdfCreator::find($productorId);
+            $pj = $productor->renderTemp($this->modelId);
+            return storage_path('app/' . $pj);
         }
-        if ($classProductor == "Waka\Worder\Models\Document") {
+        elseif ($classProductor == "Waka\Worder\Models\Document") {
             $productor = \Waka\Worder\Classes\WordCreator::find($productorId);
-        }
-        if ($productor) {
-            //trace_log($this->modelId);
-            return $productor->renderTemp($this->modelId);
+            $pj = $productor->renderTemp($this->modelId);
+            return storage_path('app/' . $pj);
         } else {
-            return null;
+            $dotedAttributeClass = explode(".", $classProductor);
+            $type = $dotedAttributeClass[0] ?? false;
+            $attribute = $dotedAttributeClass[1] ?? false;
+            $model = $this->ds->model;
+            //trace_log("type : ".$type);
+            if ($type =='file_one') {
+                //trace_log($attribute);
+                //trace_log($model->name);
+                return $model->{$attribute}->getPath();
+            }
+            if ($type =='file_multi') {
+                $multi = $model->{$attribute}();
+                $pjs = [];
+                foreach ($multi as $key => $file) {
+                    $pjs[$key] = $file->getPath();
+                }
+            }
+            if ($type =='cloudi_one') {
+                //trace_log($model->{$attribute}->getCloudiUrl());
+                return $model->{$attribute}->getCloudiUrl();
+            }
         }
     }
 
