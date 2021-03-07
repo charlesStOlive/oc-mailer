@@ -122,6 +122,7 @@ class SendEmails implements WakajobQueueJob
                         $jobManager->failJob($this->jobId);
                         break;
                     }
+                    $jobManager->updateJobState($this->jobId, $loop);
                     /**
                      * DEBUT TRAITEMENT **************
                      */
@@ -147,8 +148,8 @@ class SendEmails implements WakajobQueueJob
                      */
                 }
                 $loop += $this->chunk;
-                $jobManager->updateJobState($this->jobId, $loop);
             }
+            $jobManager->updateJobState($this->jobId, $loop);
             $jobManager->completeJob(
                 $this->jobId,
                 [
