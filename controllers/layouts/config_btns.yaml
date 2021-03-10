@@ -9,16 +9,17 @@ workflow: false
 
 ###TOOLBAR
 tool_bar:
-    create: 
-        label: waka.mailer::wakamail.create
-        show: true
-    reorder: 
-        show: true
-        url: waka/mailer/wakamails/reorder
-    delete: 
-        show: true
-    mode: no_group
-    btns: 
+    base:
+        create: 
+            label: waka.mailer::wakamail.create
+            show: true
+        reorder: 
+            show: true
+            url: waka/mailer/wakamails/reorder
+        delete: 
+            show: true
+        mode: no_group
+        btns: 
 ###BREADCRUMP
 breadcrump:
     inSettings: true
