@@ -4,6 +4,7 @@ use ApplicationException;
 use Event;
 use Waka\Mailer\Models\WakaMail;
 use Waka\Utils\Classes\DataSource;
+use Waka\Utils\Classes\TmpFile;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
@@ -131,6 +132,43 @@ class MailCreator extends \October\Rain\Extension\Extendable
         return true;
     }
 
+    public function renderOutlook($datasEmail = [], $sendType = 'draft')
+    {
+        $htmlLayout = $this->prepare();
+        trace_log($htmlLayout);
+        $pjs = [];
+        if(!\MsGraph::isConnected()) {
+            return null;
+        }
+        $mail = \MsGraph::emails()
+                ->to($datasEmail['emails'])
+                ->subject($datasEmail['subject'])
+                ->body($htmlLayout);
+        //Gestion des PJ
+        if ($this->getProductor()->pjs) {
+            $pjs = $this->getProductor()->pjs;
+        }
+        if($pjs) {
+            foreach ($pjs as $pj) {
+                $pjPaths = $this->resolvePj($pj, $this->modelId);
+                trace_log($pjPaths);
+                if (is_array($pjPaths)) {
+                    $mail->attachments($pjPaths);
+                } elseif ($pjPaths) {
+                    $mail->attachments([$pjPaths]);
+                }
+            }
+        }
+        trace_log($sendType);
+        if($sendType == 'draft') {
+            return $mail->make();
+        } 
+        if($sendType == 'send') {
+            return $mail->send();
+        }
+        
+    }
+
     public function renderGMail($modelId, $datasEmail)
     {
         $htmlLayout = $this->prepare($modelId);
@@ -163,7 +201,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
     public function resolvePj($data)
     {
-        $productorId = $data['productorId'];
+        $productorId = $data['productorId'] ?? null; 
         $classProductor = $data['classType'];
         $path = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
@@ -195,7 +233,10 @@ class MailCreator extends \October\Rain\Extension\Extendable
             }
             if ($type =='cloudi_one') {
                 //trace_log($model->{$attribute}->getCloudiUrl());
-                return $model->{$attribute}->getCloudiUrl();
+
+                trace_log($model->{$attribute}->getCloudiUrl());
+                \Storage::put('temp/' . $attribute.'.png', file_get_contents($model->{$attribute}->getCloudiUrl()));
+                return storage_path('app/temp/' . $attribute.'.png');
             }
         }
     }

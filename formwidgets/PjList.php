@@ -101,7 +101,7 @@ class PjList extends FormWidgetBase
             $pjData['productorName'] = 'Fichier ou montage lié au modèle';
         } else {
             $pjData['classType'] = $classType;
-            $pjData['productorId'] = $productorId;
+            $pjData['productorId'] = post('productorId');
             $pjData['productorName'] = $classType::find(post('productorId'))->name;
         }
         $pjData['pjCode'] = uniqid();
