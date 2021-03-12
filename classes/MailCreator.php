@@ -4,7 +4,7 @@ use ApplicationException;
 use Event;
 use Waka\Mailer\Models\WakaMail;
 use Waka\Utils\Classes\DataSource;
-use Waka\Utils\Classes\TmpFile;
+use Waka\Utils\Classes\TmpFiles;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
@@ -206,13 +206,13 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $path = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
             $productor = \Waka\Pdfer\Classes\PdfCreator::find($productorId);
-            $pj = $productor->setModelId($this->modelId)->renderTemp();
-            return storage_path('app/' . $pj);
+            $tempFile = $productor->setModelId($this->modelId)->renderTemp();
+            return $tempFile->getFilePath();
         }
         elseif ($classProductor == "Waka\Worder\Models\Document") {
             $productor = \Waka\Worder\Classes\WordCreator::find($productorId);
-            $pj = $productor->setModelId($this->modelId)->renderTemp();
-            return storage_path('app/' . $pj);
+            $tempFile = $productor->setModelId($this->modelId)->renderTemp();
+            return $tempFile->getFilePath();
         } else {
             $dotedAttributeClass = explode(".", $classProductor);
             $type = $dotedAttributeClass[0] ?? false;
@@ -232,11 +232,8 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 }
             }
             if ($type =='cloudi_one') {
-                //trace_log($model->{$attribute}->getCloudiUrl());
-
-                trace_log($model->{$attribute}->getCloudiUrl());
-                \Storage::put('temp/' . $attribute.'.png', file_get_contents($model->{$attribute}->getCloudiUrl()));
-                return storage_path('app/temp/' . $attribute.'.png');
+                $tempFile = TmpFiles::createDirectory()->putUrlFile($model->{$attribute}->getCloudiUrl());
+                return $tempFile->getFilePath();
             }
         }
     }
