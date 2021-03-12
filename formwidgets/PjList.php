@@ -26,7 +26,6 @@ class PjList extends FormWidgetBase
      */
     public function render()
     {
-
         $this->prepareVars();
         return $this->makePartial('pjlist');
     }

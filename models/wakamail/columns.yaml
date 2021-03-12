@@ -14,6 +14,10 @@ columns:
     subject:
         label: waka.mailer::wakamail.subject
         searchable: true
+    has_ds:
+        label: waka.mailer::wakamail.has_ds
+        searchable: false
+        sortable: false
     data_source:
         label: waka.mailer::wakamail.data_source
         searchable: true

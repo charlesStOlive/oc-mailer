@@ -15,16 +15,23 @@ fields:
         commentAbove: waka.mailer::wakamail.name_com
     slug:
         label: waka.mailer::wakamail.slug
-        span: right
+        span: left
         required: true
         preset: name
+    has_ds:
+        label: waka.mailer::wakamail.has_ds
+        span: left
+        type: switch
     data_source:
         label: waka.mailer::wakamail.data_source
         span: right
         type: dropdown
         placeholder: waka.utils::lang.global.placeholder
-        required: true
         options: listDataSource
+        trigger:
+            action: show
+            field: has_ds
+            condition: checked
     layout:
         label: waka.mailer::wakamail.layout
         span: left

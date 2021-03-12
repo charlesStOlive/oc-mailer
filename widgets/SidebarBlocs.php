@@ -21,7 +21,9 @@ class SideBarBlocs extends WidgetBase
     public function render()
     {
         $controllerModel = $this->controller->formGetModel();
-        $this->dataSource = new DataSource($controllerModel->data_source);
+        if($controllerModel->has_ds) {
+            $this->dataSource = new DataSource($controllerModel->data_source);
+        }
         $blocs = $this->getBlocs();
         $this->vars['blocs'] = $blocs;
         return $this->makePartial('list_blocs');
@@ -29,7 +31,10 @@ class SideBarBlocs extends WidgetBase
 
     public function getBlocs()
     {
-        $name = strtolower($this->dataSource->name);
+        $name = 'base';
+        if($this->dataSource) {
+            strtolower($this->dataSource->name);
+        }
         $blocs = \Waka\Mailer\Models\Bloc::get();
         return $blocs->map(function ($item, $key) use ($name) {
             $item['code'] = "{{mailPartial('" . $item['slug'] . "'," . $name . ")}}";

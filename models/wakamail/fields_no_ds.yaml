@@ -109,14 +109,3 @@ tabs:
                 field: is_scope
                 condition: checked
             tab: waka.mailer::wakamail.tab_scopes
-        test_id:
-            label: waka.mailer::wakamail.test_id
-            span: auto
-            type: dropdown
-            placeholder: waka.utils::lang.global.placeholder
-            options: listDataSourceTarget
-            tab: waka.mailer::wakamail.tab_info
-            trigger:
-                action: show
-                field: has_ds
-                condition: checked

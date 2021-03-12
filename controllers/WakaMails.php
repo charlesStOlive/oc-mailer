@@ -3,6 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
+use Waka\Mailer\Models\WakaMail;
 
 /**
  * Waka Mail Back-end Controller
@@ -50,8 +51,25 @@ class WakaMails extends Controller
         $this->vars['activeTab'] = $tab ?: 'templates';
     }
 
+    public function formExtendFields($form)
+    {
+        if ($form->context == 'update') {
+                $hasDs = WakaMail::find($this->params[0])->has_ds;
+            if(!$hasDs) {
+                $form->removeField('scope');
+                $form->removeField('is_scope');
+                $form->removeField('data_source');
+                $form->removeField('pjs');
+                $form->removeField('name'); 
+                $form->removeField('images');
+                $form->removeField('model_functions');
+            }
+        }
+    }
+
     public function update($id)
     {
+        $hasDs = WakaMail::find($id)->has_ds;
         $this->bodyClass = 'compact-container';
         return $this->asExtension('FormController')->update($id);
     }

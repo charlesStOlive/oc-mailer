@@ -12,8 +12,9 @@ class MailCreator extends \October\Rain\Extension\Extendable
 {
     public static $wakamail;
     public $ds;
-    public $modelId;
+    public $modelId = null;
     private $isTwigStarted;
+    public $manualData = [];
     public $implement = [];
 
     public static function find($mail_id, $slug = false)
@@ -70,22 +71,26 @@ class MailCreator extends \October\Rain\Extension\Extendable
         }
     }
 
+    
+
+    public function setManualData($data) {
+        $this->manualData = array_merge($this->manualData, $data);
+        return $this;
+    }
+
     public function prepare()
     {
-        if (!$this->ds || !$this->modelId) {
-            throw new \ApplicationException("Le modelId n a pas ete instancié");
+        if ((!$this->ds || !$this->modelId) && !count($this->manualData)) {
+            throw new \ApplicationException("Le modelId n a pas ete instancié et il n' y a pas de données manuel");
         }
-        $varName = strtolower($this->ds->name);
-        $values = $this->ds->getValues($this->modelId);
-        $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
-        $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
+        $model = [];
+        if($this->ds && $this->modelId) {
+            $model = $this->prepareModel();
+        }
         //
-        $model = [
-            $varName => $values,
-            'IMG' => $img,
-            'FNC' => $fnc,
-            //'log' => $logKey ? $logKey->log : null,
-        ];
+        if(count($this->manualData)) {
+            $model = array_merge($model, $this->manualData);
+        }
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
         if ($dataModelFromEvent[0] ?? false) {
@@ -94,16 +99,36 @@ class MailCreator extends \October\Rain\Extension\Extendable
             }
         }
         if ($this->getProductor()->is_mjml) {
-            return $this->renderMjml($model, $varName);
+            return $this->renderMjml($model);
         } else {
-            return $this->renderHtml($model, $varName);
+            return $this->renderHtml($model);
         }
+    }
+
+    public function prepareModel() {
+        
+        $values = $this->ds->getValues($this->modelId);
+        $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
+        $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
+        $varName = strtolower($this->ds->name);
+        //
+        return [
+            $varName => $values,
+            'IMG' => $img,
+            'FNC' => $fnc,
+            //'log' => $logKey ? $logKey->log : null,
+        ];
+
     }
 
     public function renderTest()
     {
         $this->setModelId($this->getProductor()->test_id);
         return $this->prepare();
+    }
+
+    public function renderNoModel() {
+
     }
 
     public function renderMail($datasEmail = [])
@@ -238,18 +263,26 @@ class MailCreator extends \October\Rain\Extension\Extendable
         }
     }
 
-    public function renderHtml($model, $varName)
+    public function renderHtml($model)
     {
         $this->startTwig();
         $text = \Markdown::parse($this->getProductor()->html);
         $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
         $htmlContent = \Twig::parse($text, $model);
         $data = [
-            $varName => $model,
             'content' => $htmlContent,
             'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
+        if($this->ds) {
+            $varName = strtolower($this->ds->name);
+            $data['data'] =  $model[$varName];
+        } else {
+            $data['data'] =  $model;
+        }
+
+        trace_log($data);
+        
         $htmlLayout = \Twig::parse($this->getProductor()->layout->contenu, $data);
         $this->stopTwig();
         return $htmlLayout;

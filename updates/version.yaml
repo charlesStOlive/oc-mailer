@@ -9,3 +9,6 @@
 1.0.3:
     - 'Ajout des Pjs'
     - create_waka_mails_table_u103.php
+1.0.4:
+    - 'Data Source devient une option'
+    - create_waka_mails_table_u104.php
