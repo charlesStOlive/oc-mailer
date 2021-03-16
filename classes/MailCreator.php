@@ -160,7 +160,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function renderOutlook($datasEmail = [], $sendType = 'draft')
     {
         $htmlLayout = $this->prepare();
-        trace_log($htmlLayout);
+        //trace_log($htmlLayout);
         $pjs = [];
         if(!\MsGraph::isConnected()) {
             return null;
@@ -176,7 +176,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
         if($pjs) {
             foreach ($pjs as $pj) {
                 $pjPaths = $this->resolvePj($pj, $this->modelId);
-                trace_log($pjPaths);
+                //trace_log($pjPaths);
                 if (is_array($pjPaths)) {
                     $mail->attachments($pjPaths);
                 } elseif ($pjPaths) {
@@ -184,7 +184,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 }
             }
         }
-        trace_log($sendType);
+        //trace_log($sendType);
         if($sendType == 'draft') {
             return $mail->make();
         } 
@@ -281,7 +281,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
             $data['data'] =  $model;
         }
 
-        trace_log($data);
+        //trace_log($data);
         
         $htmlLayout = \Twig::parse($this->getProductor()->layout->contenu, $data);
         $this->stopTwig();

@@ -160,7 +160,7 @@ class SendEmails implements WakajobQueueJob
                 ]
             );
         } catch (\Exception $ex) {
-            trace_log("Exception");
+            //trace_log("Exception");
             /**/trace_log($ex->getMessage());
             $jobManager->failJob($this->jobId, ['error' => $ex->getMessage()]);
         }
