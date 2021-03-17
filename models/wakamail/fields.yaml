@@ -10,11 +10,6 @@ tabs:
         waka.mailer::wakamail.tab_fnc: icon-address-card-o
         waka.lp::lang.source_log.tab_lp: icon-file
     fields:    
-        subject:
-            label: waka.mailer::wakamail.subject
-            span: left
-            required: true
-            tab: waka.mailer::wakamail.tab_edit
         is_mjml:
             label: waka.mailer::wakamail.is_mjml
             span: left
@@ -42,23 +37,6 @@ tabs:
                 field: is_mjml
                 condition: checked
             tab: waka.mailer::wakamail.tab_edit
-        slug:
-            label: waka.mailer::wakamail.slug
-            span: right
-            required: true
-            disabled: true
-            tab: waka.mailer::wakamail.tab_info
-        name:
-            label: waka.mailer::wakamail.name
-            span: left
-            required: true
-            size: giant
-            commentAbove: waka.mailer::wakamail.name_com
-            tab: waka.mailer::wakamail.tab_info
-        has_ds:
-            label: waka.mailer::wakamail.has_ds
-            span: left
-            type: switch
         data_source:
             label: waka.mailer::wakamail.data_source
             span: right
@@ -84,6 +62,11 @@ tabs:
             placeholder: waka.utils::lang.global.placeholder
             nameFrom: name
             tab: waka.mailer::wakamail.tab_info
+        subject:
+            label: waka.mailer::wakamail.subject
+            span: left
+            required: true
+            tab: waka.mailer::wakamail.tab_edit
         images:
             label: waka.mailer::wakamail.images
             span: full
@@ -109,6 +92,12 @@ tabs:
                 field: is_scope
                 condition: checked
             tab: waka.mailer::wakamail.tab_scopes
+        slug:
+            label: waka.mailer::wakamail.slug
+            span: right
+            required: true
+            disabled: true
+            tab: waka.mailer::wakamail.tab_info
         test_id:
             label: waka.mailer::wakamail.test_id
             span: auto
@@ -116,7 +105,10 @@ tabs:
             placeholder: waka.utils::lang.global.placeholder
             options: listDataSourceTarget
             tab: waka.mailer::wakamail.tab_info
-            trigger:
-                action: show
-                field: has_ds
-                condition: checked
+        name:
+            label: waka.mailer::wakamail.name
+            span: left
+            required: true
+            size: giant
+            commentAbove: waka.mailer::wakamail.name_com
+            tab: waka.mailer::wakamail.tab_info

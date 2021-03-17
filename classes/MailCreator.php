@@ -110,7 +110,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $values = $this->ds->getValues($this->modelId);
         $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
         $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
-        $varName = strtolower($this->ds->name);
+        $varName = $this->ds->code;
         //
         return [
             $varName => $values,
@@ -275,7 +275,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
         if($this->ds) {
-            $varName = strtolower($this->ds->name);
+            $varName = strtolower($this->ds->code);
             $data['data'] =  $model[$varName];
         } else {
             $data['data'] =  $model;

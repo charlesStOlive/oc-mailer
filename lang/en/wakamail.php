@@ -4,7 +4,7 @@ return [
     'name_com' => "internal only",
     'slug' => "Code/Slug",
     'subject' => "Topic",
-    'has_ds' => "To a data source",
+    'no_ds' => "To a data source",
     'data_source' => "Data source",
     'layout' => "Model",
     'is_mjml' => "An MJML?",

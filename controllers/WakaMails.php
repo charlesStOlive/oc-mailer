@@ -54,8 +54,9 @@ class WakaMails extends Controller
     public function formExtendFields($form)
     {
         if ($form->context == 'update') {
-                $hasDs = WakaMail::find($this->params[0])->has_ds;
-            if(!$hasDs) {
+                $no_ds = WakaMail::find($this->params[0])->no_ds;
+                trace_log($no_ds);
+            if($no_ds) {
                 $form->removeField('scope');
                 $form->removeField('is_scope');
                 $form->removeField('data_source');
@@ -69,7 +70,6 @@ class WakaMails extends Controller
 
     public function update($id)
     {
-        $hasDs = WakaMail::find($id)->has_ds;
         $this->bodyClass = 'compact-container';
         return $this->asExtension('FormController')->update($id);
     }

@@ -9,7 +9,7 @@ class CreateWakaMailsTableU104 extends Migration
     public function up()
     {
         Schema::table('waka_mailer_waka_mails', function (Blueprint $table) {
-            $table->boolean('has_ds')->default(true)->after('subject');
+            $table->boolean('no_ds')->default(true)->after('subject');
             $table->string('data_source')->nullable()->change();
         });
     }
@@ -17,7 +17,7 @@ class CreateWakaMailsTableU104 extends Migration
     public function down()
     {
         Schema::table('waka_mailer_waka_mails', function (Blueprint $table) {
-            $table->dropColumn('has_ds');
+            $table->dropColumn('no_ds');
         });
     }
 }

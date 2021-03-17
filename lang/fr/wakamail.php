@@ -33,6 +33,8 @@ return [
     'job_scoped' => "Emails non envoyés",
     'job_skipped' => "Mails bloqués par restrictions",
     'job_title' => "Message(s) à envoyer",
+    'show' => "Tester",
+    'test' => "Voir",
     'e' => [
         'data_source' => 'Vous devez choisir un modèle',
     ],     

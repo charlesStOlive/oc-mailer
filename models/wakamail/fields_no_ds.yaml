@@ -55,8 +55,8 @@ tabs:
             size: giant
             commentAbove: waka.mailer::wakamail.name_com
             tab: waka.mailer::wakamail.tab_info
-        has_ds:
-            label: waka.mailer::wakamail.has_ds
+        no_ds:
+            label: waka.mailer::wakamail.no_ds
             span: left
             type: switch
         data_source:
@@ -67,8 +67,8 @@ tabs:
             disabled: true
             options: listDataSource
             trigger:
-                action: show
-                field: has_ds
+                action: hidde
+                field: no_ds
                 condition: checked
             tab: waka.mailer::wakamail.tab_info
         model_functions:
