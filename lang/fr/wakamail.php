@@ -2,10 +2,11 @@
 
 return [
     'name' => "Nom de l'email",
-    'name_com' => 'interne uniquement',
+    'name_com' => "interne uniquement",
     'slug' => "Code/Slug",
+    'slug_com' => "permet d'identifer l'email dans le code",
     'subject' => "Sujet",
-    'has_ds' => "A une source de donnée",
+    'no_ds' => "Pas de sources de données",
     'data_source' => "Source des données",
     'layout' => "Maquette",
     'is_mjml' => "En MJML ?",
@@ -36,6 +37,6 @@ return [
     'show' => "Tester",
     'test' => "Voir",
     'e' => [
-        'data_source' => 'Vous devez choisir un modèle',
+        'data_source' => "Vous devez choisir un modèle",
     ],     
 ];

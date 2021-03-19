@@ -45,8 +45,8 @@ tabs:
             disabled: true
             options: listDataSource
             trigger:
-                action: show
-                field: has_ds
+                action: hide
+                field: no_ds
                 condition: checked
             tab: waka.mailer::wakamail.tab_info
         model_functions:
@@ -97,6 +97,7 @@ tabs:
             span: right
             required: true
             disabled: true
+            commentAbove: waka.mailer::wakamail.slug_com
             tab: waka.mailer::wakamail.tab_info
         test_id:
             label: waka.mailer::wakamail.test_id

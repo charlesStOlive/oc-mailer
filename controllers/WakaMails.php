@@ -55,7 +55,7 @@ class WakaMails extends Controller
     {
         if ($form->context == 'update') {
                 $no_ds = WakaMail::find($this->params[0])->no_ds;
-                trace_log($no_ds);
+                //trace_log($no_ds);
             if($no_ds) {
                 $form->removeField('scope');
                 $form->removeField('is_scope');

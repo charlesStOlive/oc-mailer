@@ -95,9 +95,8 @@ class SendEmails implements WakajobQueueJob
         //
         $targets = $this->data['listIds'];
 
-        //trace_log($targets);
-
-        //trace_log("lancement du JOB mail");
+        trace_log($targets);
+        trace_log("lancement du JOB mail");
 
 
         /**
@@ -113,6 +112,8 @@ class SendEmails implements WakajobQueueJob
 
         //Travail sur les données
         $targets = array_chunk($targets, $this->chunk);
+
+        trace_log($targets);
         
         try {
             foreach ($targets as $chunk) {
@@ -126,6 +127,13 @@ class SendEmails implements WakajobQueueJob
                     /**
                      * DEBUT TRAITEMENT **************
                      */
+                    trace_log("DEBUT TRAITEMENT **************");
+                    $mailCreator->setModelId($targetId);
+                    $scopeIsOk = $mailCreator->checkScopes();
+                    if (!$scopeIsOk) {
+                        $scopeError++;
+                        continue;
+                    }
                     $emails = $ds->getContact('to', $targetId);
                     if (!$emails) {
                         ++$skipped;
@@ -133,14 +141,11 @@ class SendEmails implements WakajobQueueJob
                     }
                     $datasEmail = [
                         'emails' => $emails,
-                        'subject' => $this->data['subject'],
+                        'subject' => $this->data['subject'] ?? null,
                     ];
-                    $mailCreator->setModelId($targetId);
-                    $scopeIsOk = $mailCreator->checkScopes();
-                    if (!$scopeIsOk) {
-                        $scopeError++;
-                        continue;
-                    }
+                    trace_log($datasEmail);
+                    
+                    
                     $mailCreator->renderMail($datasEmail);
                     ++$send;
                     /**

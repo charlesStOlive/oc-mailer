@@ -36,7 +36,10 @@ class WakaMail extends Model
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
         'subject' => 'required',
-        'layout' => 'required',
+    ];
+
+    public $customMessages = [
+        'data_source.required' => 'waka.mailer::wakamail.e.data_source',
     ];
 
     /**
@@ -56,8 +59,8 @@ class WakaMail extends Model
     protected $jsonable = [
         'model_functions',
         'images',
-        'scopes',
         'pjs',
+        'scopes',
     ];
 
     /**
@@ -87,7 +90,8 @@ class WakaMail extends Model
     public $hasMany = [
     ];
     public $hasOneThrough = [];
-    public $hasManyThrough = [];
+    public $hasManyThrough = [
+    ];
     public $belongsTo = [
         'layout' => [
             'Waka\Mailer\Models\Layout',
@@ -95,7 +99,8 @@ class WakaMail extends Model
     ];
     public $belongsToMany = [];
     public $morphTo = [];
-    public $morphOne = [];
+    public $morphOne = [
+    ];
     public $morphMany = [
     ];
     public $attachOne = [

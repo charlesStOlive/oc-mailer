@@ -50,7 +50,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $this->modelId = $this->getProductor()->test_id;
         $dataSourceId = $this->getProductor()->data_source;
         $this->ds = new DataSource($dataSourceId);
-        $this->ds->instanciateModel($modelId);
+        $this->ds->instanciateModel($this->modelId);
         return $this;
     }
 
@@ -131,26 +131,30 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
     }
 
+    public function PrepareProductorMeta($datasEmail) {
+        if ($this->getProductor()->pjs) {
+            $pjs = $this->getProductor()->pjs;
+            $datasEmail['pjs'] = $pjs;
+        }
+        $subject = $datasEmail['subject'] ?? null;
+        if(!$subject) {
+            $datasEmail['subject'] = $this->getProductor()->subject;
+        }
+        return $datasEmail;
+    }
+
     public function renderMail($datasEmail = [])
     {
         $htmlLayout = $this->prepare();
-        $pjs = [];
-        if ($this->getProductor()->pjs) {
-            $pjs = $this->getProductor()->pjs;
-        }
-        \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs) {
+        $datasEmail = $this->PrepareProductorMeta($datasEmail);
+        
+        \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
             $message->to($datasEmail['emails']);
             $message->subject($datasEmail['subject']);
+            $pjs = $datasEmail['pjs'] ?? null;
             if ($pjs) {
                 foreach ($pjs as $pj) {
-                    $pjPath = $this->resolvePj($pj, $this->modelId);
-                    if (is_array($pjPath)) {
-                        foreach ($pjPath as $pjPathUnique) {
-                            $message->attach($pjPathUnique);
-                        }
-                    } elseif ($pjPath) {
-                        $message->attach($pjPath);
-                    }
+                    $message = $this->resolvePj($message, 'swift', $pj);
                 }
             }
         });
@@ -160,8 +164,8 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function renderOutlook($datasEmail = [], $sendType = 'draft')
     {
         $htmlLayout = $this->prepare();
-        //trace_log($htmlLayout);
-        $pjs = [];
+        $datasEmail = $this->PrepareProductorMeta($datasEmail);
+
         if(!\MsGraph::isConnected()) {
             return null;
         }
@@ -169,19 +173,11 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 ->to($datasEmail['emails'])
                 ->subject($datasEmail['subject'])
                 ->body($htmlLayout);
-        //Gestion des PJ
-        if ($this->getProductor()->pjs) {
-            $pjs = $this->getProductor()->pjs;
-        }
+                
+        $pjs = $datasEmail['pjs'] ?? null;
         if($pjs) {
             foreach ($pjs as $pj) {
-                $pjPaths = $this->resolvePj($pj, $this->modelId);
-                //trace_log($pjPaths);
-                if (is_array($pjPaths)) {
-                    $mail->attachments($pjPaths);
-                } elseif ($pjPaths) {
-                    $mail->attachments([$pjPaths]);
-                }
+                $mail = $this->resolvePj($mail, 'outlook', $pj);
             }
         }
         //trace_log($sendType);
@@ -224,20 +220,26 @@ class MailCreator extends \October\Rain\Extension\Extendable
         return true;
     }
 
-    public function resolvePj($data)
+    public function resolvePj($message, $mailResolver,  $data)
     {
+        $pjToReturn = null;
+        $pjsToReturn = null;
         $productorId = $data['productorId'] ?? null; 
         $classProductor = $data['classType'];
         $path = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
             $productor = \Waka\Pdfer\Classes\PdfCreator::find($productorId);
             $tempFile = $productor->setModelId($this->modelId)->renderTemp();
-            return $tempFile->getFilePath();
+            $pjToReturn =   [
+                'path' => $tempFile->getFilePath(),
+                ];
         }
         elseif ($classProductor == "Waka\Worder\Models\Document") {
             $productor = \Waka\Worder\Classes\WordCreator::find($productorId);
             $tempFile = $productor->setModelId($this->modelId)->renderTemp();
-            return $tempFile->getFilePath();
+            $pjToReturn = [
+                'path' => $tempFile->getFilePath(),
+                ];
         } else {
             $dotedAttributeClass = explode(".", $classProductor);
             $type = $dotedAttributeClass[0] ?? false;
@@ -247,18 +249,69 @@ class MailCreator extends \October\Rain\Extension\Extendable
             if ($type =='file_one') {
                 //trace_log($attribute);
                 //trace_log($model->name);
-                return $model->{$attribute}->getPath();
+                $pjToReturn = [
+                    'path' =>  $model->{$attribute}->getLocalPath(),
+                    'name' => $file->file_name,
+                ];
             }
-            if ($type =='file_multi') {
-                $multi = $model->{$attribute}();
-                $pjs = [];
-                foreach ($multi as $key => $file) {
-                    $pjs[$key] = $file->getPath();
-                }
-            }
+            
             if ($type =='cloudi_one') {
                 $tempFile = TmpFiles::createDirectory()->putUrlFile($model->{$attribute}->getCloudiUrl());
-                return $tempFile->getFilePath();
+                $pjToReturn =  $tempFile->getFilePath();
+            }
+            //TRAITEMENT DES LISTES
+            if ($type =='file_multi') {
+                trace_log("multi");
+                $multi = $model->{$attribute};
+                $pjs = [];
+                foreach ($multi as $key => $file) {
+                    $pjsToReturn[$key] = [
+                        'path' => $file->getLocalPath(),
+                        'name' => $file->file_name,
+                    ];
+                }
+            }
+        }
+        if($mailResolver == 'outlook') {
+            $this->returnOutlookPj($message, $pjToReturn, $pjsToReturn);
+        }
+        if($mailResolver == 'swift') {
+            trace_log('swift');
+           $this->returnSwiftPj($message, $pjToReturn, $pjsToReturn);
+        }
+    }
+
+    public function returnOutlookPj($message, $pjToReturn, $pjsToReturn) {
+        if($pjToReturn) {
+            $message-attachments([$pjToReturn['path']]);
+            }
+        if($pjsToReturn) {
+            $allPjsPath = [];
+            foreach($pjsToReturn as $pj) {
+                array_push($allPjsPath, $pj['path']); 
+            }
+            $message-attachments($allPjsPath);
+        }
+    }
+
+    public function returnSwiftPj($message, $pjToReturn, $pjsToReturn) {
+        trace_log($message);
+        if($pjToReturn) {
+                $pjName = $pjToReturn['name'] ?? null;
+                if($pjName) {
+                    $message->attach($pjToReturn['path'], ['as' => $pjToReturn['name']]);
+                } else {
+                    $message->attach($pjToReturn['path']);
+                }
+            }
+        if($pjsToReturn) {
+            foreach ($pjsToReturn as $pjPathUnique) {
+                $pjName = $pjPathUnique['name'] ?? null;
+                if($pjName) {
+                    $message->attach($pjPathUnique['path'], ['as' => $pjPathUnique['name']]);
+                } else {
+                    $message->attach($pjPathUnique['path']);
+                }
             }
         }
     }

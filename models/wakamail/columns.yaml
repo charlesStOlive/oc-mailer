@@ -7,17 +7,15 @@ columns:
         label: ID
         searchable: true
         invisible: true
-
     name:
         label: waka.mailer::wakamail.name
         searchable: true
     subject:
         label: waka.mailer::wakamail.subject
         searchable: true
-    has_ds:
-        label: waka.mailer::wakamail.has_ds
-        searchable: false
-        sortable: false
+    no_ds:
+        label: waka.mailer::wakamail.no_ds
+        type: switch
     data_source:
         label: waka.mailer::wakamail.data_source
         searchable: true
