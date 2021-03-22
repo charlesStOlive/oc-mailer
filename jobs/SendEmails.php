@@ -95,8 +95,8 @@ class SendEmails implements WakajobQueueJob
         //
         $targets = $this->data['listIds'];
 
-        trace_log($targets);
-        trace_log("lancement du JOB mail");
+        //trace_log($targets);
+        //trace_log("lancement du JOB mail");
 
 
         /**
@@ -113,7 +113,7 @@ class SendEmails implements WakajobQueueJob
         //Travail sur les données
         $targets = array_chunk($targets, $this->chunk);
 
-        trace_log($targets);
+        //trace_log($targets);
         
         try {
             foreach ($targets as $chunk) {
@@ -127,7 +127,7 @@ class SendEmails implements WakajobQueueJob
                     /**
                      * DEBUT TRAITEMENT **************
                      */
-                    trace_log("DEBUT TRAITEMENT **************");
+                    //trace_log("DEBUT TRAITEMENT **************");
                     $mailCreator->setModelId($targetId);
                     $scopeIsOk = $mailCreator->checkScopes();
                     if (!$scopeIsOk) {
@@ -143,7 +143,7 @@ class SendEmails implements WakajobQueueJob
                         'emails' => $emails,
                         'subject' => $this->data['subject'] ?? null,
                     ];
-                    trace_log($datasEmail);
+                    //trace_log($datasEmail);
                     
                     
                     $mailCreator->renderMail($datasEmail);

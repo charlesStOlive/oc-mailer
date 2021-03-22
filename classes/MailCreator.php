@@ -261,7 +261,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
             }
             //TRAITEMENT DES LISTES
             if ($type =='file_multi') {
-                trace_log("multi");
+                //trace_log("multi");
                 $multi = $model->{$attribute};
                 $pjs = [];
                 foreach ($multi as $key => $file) {
@@ -276,7 +276,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
             $this->returnOutlookPj($message, $pjToReturn, $pjsToReturn);
         }
         if($mailResolver == 'swift') {
-            trace_log('swift');
+            //trace_log('swift');
            $this->returnSwiftPj($message, $pjToReturn, $pjsToReturn);
         }
     }
@@ -295,7 +295,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
     }
 
     public function returnSwiftPj($message, $pjToReturn, $pjsToReturn) {
-        trace_log($message);
+        //trace_log($message);
         if($pjToReturn) {
                 $pjName = $pjToReturn['name'] ?? null;
                 if($pjName) {
