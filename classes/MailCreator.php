@@ -163,16 +163,22 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
     public function renderOutlook($datasEmail = [], $sendType = 'draft')
     {
+        trace_log("render Outlook");
         $htmlLayout = $this->prepare();
+        trace_log("ok pour prepare");
         $datasEmail = $this->PrepareProductorMeta($datasEmail);
-
+        trace_log("ok pour data email ensuite connect");
+        trace_log("connected ".\MsGraph::isConnected());
         if(!\MsGraph::isConnected()) {
             return null;
         }
+        
         $mail = \MsGraph::emails()
                 ->to($datasEmail['emails'])
                 ->subject($datasEmail['subject'])
                 ->body($htmlLayout);
+
+        trace_log("mail ok");
                 
         $pjs = $datasEmail['pjs'] ?? null;
         if($pjs) {
@@ -180,7 +186,9 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 $mail = $this->resolvePj($mail, 'outlook', $pj);
             }
         }
-        //trace_log($sendType);
+        trace_log("pj ok");
+
+        trace_log($sendType);
         if($sendType == 'draft') {
             return $mail->make();
         } 
@@ -249,15 +257,20 @@ class MailCreator extends \October\Rain\Extension\Extendable
             if ($type =='file_one') {
                 //trace_log($attribute);
                 //trace_log($model->name);
+                $file = $model->{$attribute};
                 $pjToReturn = [
-                    'path' =>  $model->{$attribute}->getLocalPath(),
+                    'path' =>  $file->getLocalPath(),
                     'name' => $file->file_name,
                 ];
             }
             
             if ($type =='cloudi_one') {
-                $tempFile = TmpFiles::createDirectory()->putUrlFile($model->{$attribute}->getCloudiUrl());
-                $pjToReturn =  $tempFile->getFilePath();
+                $cloudiFile = $model->{$attribute};
+                $tempFile = TmpFiles::createDirectory()->putUrlFile($cloudiFile->getCloudiUrl());
+                $pjToReturn = [
+                    'path' =>  $tempFile->getFilePath(),
+                    'name' => $cloudiFile->file_name,
+                ];
             }
             //TRAITEMENT DES LISTES
             if ($type =='file_multi') {
@@ -273,7 +286,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
             }
         }
         if($mailResolver == 'outlook') {
-            $this->returnOutlookPj($message, $pjToReturn, $pjsToReturn);
+            return $this->returnOutlookPj($message, $pjToReturn, $pjsToReturn);
         }
         if($mailResolver == 'swift') {
             //trace_log('swift');
@@ -283,14 +296,14 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
     public function returnOutlookPj($message, $pjToReturn, $pjsToReturn) {
         if($pjToReturn) {
-            $message-attachments([$pjToReturn['path']]);
+            return $message->attachments([$pjToReturn['path']]);
             }
         if($pjsToReturn) {
             $allPjsPath = [];
             foreach($pjsToReturn as $pj) {
                 array_push($allPjsPath, $pj['path']); 
             }
-            $message-attachments($allPjsPath);
+            return $message->attachments($allPjsPath);
         }
     }
 
