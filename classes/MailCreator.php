@@ -95,7 +95,8 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
         if ($dataModelFromEvent[0] ?? false) {
             foreach ($dataModelFromEvent as $dataEvent) {
-                $model[key($dataEvent)] = $dataEvent;
+                //trace_log($dataEvent);
+               $model[key($dataEvent)] = $dataEvent[key($dataEvent)];
             }
         }
         if ($this->getProductor()->is_mjml) {
@@ -123,6 +124,10 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
     public function renderTest()
     {
+        $testId = $this->getProductor()->test_id;
+        if(!$testId) {
+            throw new ApplicationException("Il manque le modèle de test dans l'onglet info");
+        }
         $this->setModelId($this->getProductor()->test_id);
         return $this->prepare();
     }
@@ -163,12 +168,12 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
     public function renderOutlook($datasEmail = [], $sendType = 'draft')
     {
-        trace_log("render Outlook");
+        //trace_log("render Outlook");
         $htmlLayout = $this->prepare();
-        trace_log("ok pour prepare");
+        //trace_log("ok pour prepare");
         $datasEmail = $this->PrepareProductorMeta($datasEmail);
-        trace_log("ok pour data email ensuite connect");
-        trace_log("connected ".\MsGraph::isConnected());
+        //trace_log("ok pour data email ensuite connect");
+        //trace_log("connected ".\MsGraph::isConnected());
         if(!\MsGraph::isConnected()) {
             return null;
         }
@@ -178,7 +183,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 ->subject($datasEmail['subject'])
                 ->body($htmlLayout);
 
-        trace_log("mail ok");
+        //trace_log("mail ok");
                 
         $pjs = $datasEmail['pjs'] ?? null;
         if($pjs) {
@@ -186,9 +191,9 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 $mail = $this->resolvePj($mail, 'outlook', $pj);
             }
         }
-        trace_log("pj ok");
+        //trace_log("pj ok");
 
-        trace_log($sendType);
+        //trace_log($sendType);
         if($sendType == 'draft') {
             return $mail->make();
         } 
