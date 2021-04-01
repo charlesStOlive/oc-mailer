@@ -1,3 +1,4 @@
+<?php if($options_prod) : ?>
 <div class="form-group dropdown-field span-full">
     <select class="form-control custom-select span-full"
             name="productorId">
@@ -10,4 +11,9 @@
         </option>
         <?php } ?>
     </select>
+</div>
+<?php endif ?>
+<div class="form-group span-full">
+    <label><?=(e(trans('waja.mailer::wakamail.force_pj_name')))?></label>
+    <input type="text" name="force_pj_name" value="" class="form-control" />
 </div>

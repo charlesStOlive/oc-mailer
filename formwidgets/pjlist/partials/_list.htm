@@ -6,6 +6,7 @@
             <thead>
                 <tr>
                     <th><span>Libellé de la PJ</span></th>
+                    <th><span>Forcer un nom</span></th>
                     <th><span>Class producteur</span></th>
                     <th class="text-right"><span>Action</span></th>
                 </tr>
@@ -15,6 +16,9 @@
                 <tr>
                     <td>
                         <?=$value['productorName']?>
+                    </td>
+                    <td>
+                        <?=$value['force_pj_name'] ?? '' ?>
                     </td>
                     <td>
                         <?=$value['classType']?>

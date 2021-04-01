@@ -77,12 +77,8 @@ class PjList extends FormWidgetBase
         $ds = new DataSource($modelDataSource, 'code');
         $class = post('classType');
         $options = $ds->getPublicationsFromType($class);
-        if ($options) {
-            $this->vars['options_prod'] = $options;
-            return ['#pjAttribute' => $this->makePartial('attributes')];
-        } else {
-            return ['#pjAttribute' => '--'];
-        }
+        $this->vars['options_prod'] = $options;
+        return ['#pjAttribute' => $this->makePartial('attributes')];
     }
     
     public function onCreatePjValidation()
@@ -92,10 +88,12 @@ class PjList extends FormWidgetBase
         $pjData = [];
         //
         $classIsNotProductor = strpos($classType, '.');
+        $pjData['classType'] = $classType;
+        $pjData['force_pj_name'] = post('force_pj_name');
         if ($classIsNotProductor) {
             $array = explode(".", $classType);
             // on recherche si il y a plusieurs ou un seul fichier grâce à la valeur avant le point .
-            $pjData['classType'] = $classType;
+            
             $pjData['productorId'] = null;
             $pjData['productorName'] = 'Fichier ou montage lié au modèle';
         } else {

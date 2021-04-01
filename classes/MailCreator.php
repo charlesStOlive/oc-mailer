@@ -111,10 +111,10 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $values = $this->ds->getValues($this->modelId);
         $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
         $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
-        $varName = $this->ds->code;
+        //$varName = $this->ds->code;
         //
         return [
-            $varName => $values,
+            'ds' => $values,
             'IMG' => $img,
             'FNC' => $fnc,
             //'log' => $logKey ? $logKey->log : null,
@@ -239,6 +239,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
         $pjsToReturn = null;
         $productorId = $data['productorId'] ?? null; 
         $classProductor = $data['classType'];
+        $forcedPjName = $data['force_pj_name'] ?? null;
         $path = null;
         if ($classProductor == "Waka\Pdfer\Models\WakaPdf") {
             $productor = \Waka\Pdfer\Classes\PdfCreator::find($productorId);
@@ -263,18 +264,24 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 //trace_log($attribute);
                 //trace_log($model->name);
                 $file = $model->{$attribute};
+                $path = $file->getLocalPath();
+                $extension = pathinfo($path)['extension'];
+                $name = $forcedPjName ? $forcedPjName.'.'.$extension : $file->file_name;
                 $pjToReturn = [
-                    'path' =>  $file->getLocalPath(),
-                    'name' => $file->file_name,
+                    'path' =>  $path,
+                    'name' => $name,
                 ];
             }
             
             if ($type =='cloudi_one') {
                 $cloudiFile = $model->{$attribute};
                 $tempFile = TmpFiles::createDirectory()->putUrlFile($cloudiFile->getCloudiUrl());
+                $path = $tempFile->getFilePath();
+                $extension = pathinfo($path)['extension'];
+                $name = $forcedPjName ? $forcedPjName.'.'.$extension : $cloudiFile->file_name;
                 $pjToReturn = [
-                    'path' =>  $tempFile->getFilePath(),
-                    'name' => $cloudiFile->file_name,
+                    'path' =>  $path,
+                    'name' => $name,
                 ];
             }
             //TRAITEMENT DES LISTES
@@ -283,9 +290,12 @@ class MailCreator extends \October\Rain\Extension\Extendable
                 $multi = $model->{$attribute};
                 $pjs = [];
                 foreach ($multi as $key => $file) {
+                    $path = $file->getLocalPath();
+                    $extension = pathinfo($path)['extension'];
+                    $name = $forcedPjName ? $forcedPjName.'_'.$key.'.'.$extension : $file->file_name;
                     $pjsToReturn[$key] = [
-                        'path' => $file->getLocalPath(),
-                        'name' => $file->file_name,
+                        'path' => $path,
+                        'name' => $name,
                     ];
                 }
             }
@@ -313,7 +323,6 @@ class MailCreator extends \October\Rain\Extension\Extendable
     }
 
     public function returnSwiftPj($message, $pjToReturn, $pjsToReturn) {
-        //trace_log($message);
         if($pjToReturn) {
                 $pjName = $pjToReturn['name'] ?? null;
                 if($pjName) {
@@ -346,8 +355,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
         if($this->ds) {
-            $varName = strtolower($this->ds->code);
-            $data['data'] =  $model[$varName];
+            $data['data'] =  $model['ds'];
         } else {
             $data['data'] =  $model;
         }
