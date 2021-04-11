@@ -12,3 +12,6 @@
 1.0.4:
     - 'Data Source devient une option'
     - create_waka_mails_table_u104.php
+1.0.5:
+    - "Ajout start layout si n'existe pas"
+    - seed_start_template.php
