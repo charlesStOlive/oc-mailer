@@ -22,7 +22,6 @@ tool_bar:
     secondary:
         layout:
             base:
-                mode: no_group
                 create: 
                     label: waka.mailer::layout.create
                     url: waka/mailer/layouts/create
@@ -33,7 +32,6 @@ tool_bar:
                     show: true
         bloc:
             base:
-                mode: no_group
                 create: 
                     label: waka.mailer::bloc.create
                     url: waka/mailer/blocs/create
