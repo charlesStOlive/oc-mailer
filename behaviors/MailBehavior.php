@@ -175,7 +175,7 @@ class MailBehavior extends ControllerBehavior
         return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_lot.htm')];
     }
 
-    public function onLotWordValidation()
+    public function onLotMailBehaviorValidation()
     {
         $errors = $this->CheckIndexValidation(\Input::all());
         if ($errors) {
