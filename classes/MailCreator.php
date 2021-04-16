@@ -166,19 +166,22 @@ class MailCreator extends \October\Rain\Extension\Extendable
         return true;
     }
 
-    public function renderOutlook($datasEmail = [], $sendType = 'draft')
+    public function renderOutlook($datasEmail = [], $userMsId = null, $sendType = 'draft')
     {
         //trace_log("render Outlook");
         $htmlLayout = $this->prepare();
         //trace_log("ok pour prepare");
         $datasEmail = $this->PrepareProductorMeta($datasEmail);
         //trace_log("ok pour data email ensuite connect");
-        //trace_log("connected ".\MsGraph::isConnected());
-        if(!\MsGraph::isConnected()) {
-            return null;
+        if(!\MsGraphAdmin::isConnected()) {
+            throw new ApplicationException('MsGraphAdmin not connected');
+        }
+        if(!$userMsId) {
+            throw new ApplicationException('Missing userMsId in renderOutlook');
         }
         
-        $mail = \MsGraph::emails()
+        $mail = \MsGraphAdmin::emails()
+                ->userid($userMsId)
                 ->to($datasEmail['emails'])
                 ->subject($datasEmail['subject'])
                 ->body($htmlLayout);
@@ -195,6 +198,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
         //trace_log($sendType);
         if($sendType == 'draft') {
+            trace_log("J'envoi le mail en brouillon");
             return $mail->make();
         } 
         if($sendType == 'send') {
