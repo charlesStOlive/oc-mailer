@@ -198,7 +198,7 @@ class MailCreator extends \October\Rain\Extension\Extendable
 
         //trace_log($sendType);
         if($sendType == 'draft') {
-            trace_log("J'envoi le mail en brouillon");
+            //trace_log("J'envoi le mail en brouillon");
             return $mail->make();
         } 
         if($sendType == 'send') {
