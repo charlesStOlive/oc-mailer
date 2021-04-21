@@ -141,11 +141,21 @@ class MailCreator extends \October\Rain\Extension\Extendable
             $pjs = $this->getProductor()->pjs;
             $datasEmail['pjs'] = $pjs;
         }
-        $subject = $datasEmail['subject'] ?? null;
-        if(!$subject) {
-            $datasEmail['subject'] = $this->getProductor()->subject;
-        }
+        $subject = $datasEmail['subject'] ?? $this->getProductor()->subject;
+        $subject = $this->createTwigStrSubject();
+        $datasEmail['subject'] = $subject;
         return $datasEmail;
+    }
+
+    public function createTwigStrSubject()
+    {
+        //C est pas le top puisque je double la requete getValues à réorganiser.
+        $vars = [
+            'ds' => $this->ds->getValues($this->modelId),
+        ];
+        //trace_log($this->getProductor()->pdf_name);
+        $nameConstruction = \Twig::parse($this->getProductor()->subject, $vars);
+        return $nameConstruction;
     }
 
     public function renderMail($datasEmail = [])
