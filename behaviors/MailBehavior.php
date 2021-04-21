@@ -26,13 +26,23 @@ class MailBehavior extends ControllerBehavior
     public function onLoadMailBehaviorPopupForm()
     {
         $this->getPostContent();
-        return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_popup.htm');
+        if($this->vars['options']) {
+            return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_popup.htm');
+        } else {
+            return $this->makePartial('$/waka/utils/views/_popup_no_model.htm');
+        }
+        
     }
 
     public function onLoadMailBehaviorContentForm()
     {
         $this->getPostContent();
-        return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_content.htm')];
+        if($this->vars['options']) {
+             return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_content.htm')];
+        } else {
+             return ['#popupActionContent' => $this->makePartial('$/waka/utils/views/_content_no_model.htm')];
+        }
+       
     }
 
     public function getPostContent()
