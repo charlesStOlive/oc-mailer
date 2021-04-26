@@ -150,6 +150,9 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function createTwigStrSubject()
     {
         //C est pas le top puisque je double la requete getValues à réorganiser.
+        if(!$this->ds) {
+            return $this->getProductor()->subject;
+        }
         $vars = [
             'ds' => $this->ds->getValues($this->modelId),
         ];
