@@ -110,7 +110,7 @@ class MailBehavior extends ControllerBehavior
         $productorId = $datas['productorId'];
         $modelId = $datas['modelId'];
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->renderTest($modelId);
+            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->renderHtmlforTest();
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [

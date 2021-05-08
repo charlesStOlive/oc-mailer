@@ -109,6 +109,8 @@ class MailCreator extends \October\Rain\Extension\Extendable
     public function prepareModel() {
         
         $values = $this->ds->getValues($this->modelId);
+        //trace_log('les images du modèles');
+        //trace_log($this->getProductor()->images);
         $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
         $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
         //$varName = $this->ds->code;
@@ -159,6 +161,11 @@ class MailCreator extends \October\Rain\Extension\Extendable
         //trace_log($this->getProductor()->pdf_name);
         $nameConstruction = \Twig::parse($this->getProductor()->subject, $vars);
         return $nameConstruction;
+    }
+
+    public function renderHtmlforTest()
+    {
+        return  $this->prepare();
     }
 
     public function renderMail($datasEmail = [])
