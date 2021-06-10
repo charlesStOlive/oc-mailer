@@ -106,9 +106,9 @@ class PjList extends FormWidgetBase
         $data;
         $modelValues = $this->getLoadValue();
         if ($modelValues && count($modelValues)) {
-            $datas = new \October\Rain\Support\Collection($modelValues);
+            $datas = new \Winter\Storm\Support\Collection($modelValues);
         } else {
-            $datas = new \October\Rain\Support\Collection();
+            $datas = new \Winter\Storm\Support\Collection();
         }
         $datas->push($pjData);
 

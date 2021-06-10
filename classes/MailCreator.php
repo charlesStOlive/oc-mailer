@@ -8,7 +8,7 @@ use Waka\Utils\Classes\TmpFiles;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
-class MailCreator extends \October\Rain\Extension\Extendable
+class MailCreator extends \Winter\Storm\Extension\Extendable
 {
     public static $wakamail;
     public $ds;
