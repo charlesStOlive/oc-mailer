@@ -15,3 +15,6 @@
 1.0.5:
     - "Ajout start layout si n'existe pas"
     - seed_start_template.php
+1.2.0:
+    - "Ajout des champs asks"
+    - create_waka_mails_table_u120.php

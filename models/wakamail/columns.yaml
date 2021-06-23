@@ -21,7 +21,6 @@ columns:
         searchable: true
     layout_r:
         label: waka.mailer::wakamail.layout
-        searchable: true
         relation: layout
         select: name
         searchable: true

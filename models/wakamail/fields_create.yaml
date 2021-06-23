@@ -8,6 +8,7 @@ fields:
         span: left
         type: switch
         default: false
+        permissions: [waka.mailer.admin.super]
     name:
         label: waka.mailer::wakamail.name
         span: left
@@ -19,11 +20,13 @@ fields:
         required: true
         preset: name
         commentAbove: waka.mailer::wakamail.slug_com
+        permissions: [waka.mailer.admin.super]
     no_ds:
         label: waka.mailer::wakamail.no_ds
         span: left
         type: switch
         default: false
+        permissions: [waka.mailer.admin.super]
     data_source:
         label: waka.mailer::wakamail.data_source
         span: right
@@ -34,12 +37,13 @@ fields:
             action: hide
             field: no_ds
             condition: checked
+        permissions: [waka.mailer.admin.super]
     layout:
         label: waka.mailer::wakamail.layout
         span: left
         type: relation
-        placeholder: waka.utils::lang.global.placeholder
-        nameFrom: name
+        required: true
+        permissions: [waka.mailer.admin.super]
     subject:
         label: waka.mailer::wakamail.subject
         span: left

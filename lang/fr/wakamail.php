@@ -19,6 +19,8 @@ return [
     'is_scope' => "À des restrictions ?",
     'scopes' => "Restrictions",
     'test_id' => "Model de test",
+    'has_asks' => "A des questions ?",
+    'asks' => "Questions",
     'tab_info' => "Information",
     'tab_edit' => "Édition",
     'tab_scopes' => "Restrictions",
@@ -36,6 +38,7 @@ return [
     'job_title' => "Message(s) à envoyer",
     'show' => "Tester",
     'test' => "Voir",
+    'force_pj_name' => "Forrcer un nom pour la PJ",
     'e' => [
         'data_source' => "Vous devez choisir un modèle",
     ],     

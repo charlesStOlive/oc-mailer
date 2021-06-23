@@ -19,6 +19,7 @@ class WakaMail extends Model
      */
     public $table = 'waka_mailer_waka_mails';
 
+
     /**
      * @var array Guarded fields
      */
@@ -36,6 +37,7 @@ class WakaMail extends Model
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
         'subject' => 'required',
+        'layout' => 'required',
     ];
 
     public $customMessages = [
@@ -61,6 +63,7 @@ class WakaMail extends Model
         'images',
         'pjs',
         'scopes',
+        'asks',
     ];
 
     /**
@@ -89,15 +92,17 @@ class WakaMail extends Model
     public $hasOne = [];
     public $hasMany = [
     ];
-    public $hasOneThrough = [];
+    public $hasOneThrough = [
+    ];
     public $hasManyThrough = [
     ];
     public $belongsTo = [
-        'layout' => [
-            'Waka\Mailer\Models\Layout',
+       'layout' => [
+            'Waka\Mailer\Models\Layout'
         ],
     ];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+    ];        
     public $morphTo = [];
     public $morphOne = [
     ];
@@ -108,6 +113,7 @@ class WakaMail extends Model
     public $attachMany = [
     ];
 
+    //startKeep/
     /**
      *EVENTS
      **/
@@ -139,7 +145,7 @@ class WakaMail extends Model
     /**
      * SETTERS
      */
-
+ 
     /**
      * FILTER FIELDS
      */
@@ -147,4 +153,6 @@ class WakaMail extends Model
     /**
      * OTHERS
      */
+
+//endKeep/
 }

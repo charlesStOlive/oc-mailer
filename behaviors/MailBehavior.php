@@ -60,6 +60,7 @@ class MailBehavior extends ControllerBehavior
         //
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
         $this->vars['modelId'] = $modelId;
+        $this->vars['modelClass'] = $modelClass;
         $this->vars['options'] = $options;
     }
 
@@ -91,8 +92,16 @@ class MailBehavior extends ControllerBehavior
     public function onSelectWakaMail()
     {
         $productorId = post('productorId');
+        $modelClass = post('modelClass');
+        $modelId = post('modelId');
+        $ds = new DataSource($modelClass, 'class');
         $wakaMail = WakaMail::find($productorId);
-        $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
+
+
+        $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
+        $this->mailDataWidget->getField('subject')->value = $subject;
+        $asks = $ds->getProductorAsks('Waka\Mailer\Models\WakaMail',$productorId, $modelId);
+        $this->mailDataWidget->addFields($asks);
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
         return [
             '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm')
@@ -110,14 +119,14 @@ class MailBehavior extends ControllerBehavior
         $productorId = $datas['productorId'];
         $modelId = $datas['modelId'];
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->renderHtmlforTest();
+            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->setAsksResponse($datas['mailData_array'] ?? [])->renderHtmlforTest();
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject']
             ];
-            return MailCreator::find($productorId)->setModelId($modelId)->renderMail($datasEmail);
+            return MailCreator::find($productorId)->setModelId($modelId)->setAsksResponse($datas['mailData_array'] ?? [])->renderMail($datasEmail);
         }
     }
 
@@ -127,14 +136,14 @@ class MailBehavior extends ControllerBehavior
         $productorId = $datas['productorId'];
         $modelId = null;
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->setModelTest()->renderTest();
+            $this->vars['html'] = MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['mailData_array'] ?? [])->renderTest();
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
-                'subject' => $datas['mailData_array']['subject']
+                'subject' => $datas['mailData_array']['subject'],
             ];
-            return MailCreator::find($productorId)->setModelTest()->renderMail($datasEmail);
+            return MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['mailData_array'] ?? [])->renderMail($datasEmail);
         }
     }
 

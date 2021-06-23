@@ -15,6 +15,7 @@ tabs:
             span: left
             type: switch
             default: false
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
         mjml:
             label: waka.mailer::wakamail.mjml
@@ -26,6 +27,7 @@ tabs:
                 action: show
                 field: is_mjml
                 condition: checked
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
         html:
             label: waka.mailer::wakamail.html
@@ -36,6 +38,7 @@ tabs:
                 action: hide
                 field: is_mjml
                 condition: checked
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
         data_source:
             label: waka.mailer::wakamail.data_source
@@ -48,6 +51,7 @@ tabs:
                 action: hide
                 field: no_ds
                 condition: checked
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
         model_functions:
             label: waka.mailer::wakamail.model_functions
@@ -59,8 +63,9 @@ tabs:
             label: waka.mailer::wakamail.layout
             span: left
             type: relation
-            placeholder: waka.utils::lang.global.placeholder
+            required: true
             nameFrom: name
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
         subject:
             label: waka.mailer::wakamail.subject
@@ -82,6 +87,7 @@ tabs:
             span: left
             type: switch
             default: false
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_scopes
         scopes:
             label: waka.mailer::wakamail.scopes
@@ -91,13 +97,14 @@ tabs:
                 action: show
                 field: is_scope
                 condition: checked
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_scopes
         slug:
             label: waka.mailer::wakamail.slug
             span: right
             required: true
-            disabled: true
             commentAbove: waka.mailer::wakamail.slug_com
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
         test_id:
             label: waka.mailer::wakamail.test_id
@@ -106,6 +113,12 @@ tabs:
             placeholder: waka.utils::lang.global.placeholder
             options: listDataSourceTarget
             tab: waka.mailer::wakamail.tab_info
+        has_asks:
+            label: waka.mailer::wakamail.has_asks
+            span: left
+            type: switch
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_edit
         name:
             label: waka.mailer::wakamail.name
             span: left
@@ -113,3 +126,9 @@ tabs:
             size: giant
             commentAbove: waka.mailer::wakamail.name_com
             tab: waka.mailer::wakamail.tab_info
+        asks:
+            label: waka.mailer::wakamail.asks
+            span: full
+            type: repeater
+            groups: $/waka/mailer/models/config/ask.yaml
+            tab: waka.mailer::wakamail.tab_edit

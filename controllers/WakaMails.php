@@ -13,19 +13,18 @@ class WakaMails extends Controller
     public $implement = [
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
-        'waka.Utils.Behaviors.SideBarAttributesBehavior',
         'Waka.Utils.Behaviors.BtnsBehavior',
+        'waka.Utils.Behaviors.SideBarAttributesBehavior',
         'Waka.Mailer.Behaviors.MailBehavior',
         'Backend.Behaviors.ReorderController',
         'Waka.Utils.Behaviors.DuplicateModel',
-
     ];
-
     public $formConfig = 'config_form.yaml';
+    public $btnsConfig = 'config_btns.yaml';
     public $duplicateConfig = 'config_duplicate.yaml';
     public $reorderConfig = 'config_reorder.yaml';
-    public $sidebarAttributesConfig = 'config_attributes.yaml';
-    public $btnsConfig = 'config_btns.yaml';
+    public $sidebarAttributesConfig = 'config_attributes.yaml';    
+    //FIN DE LA CONFIG AUTO
 
     public $listConfig = [
         'wakaMails' => 'config_list.yaml',
@@ -43,6 +42,7 @@ class WakaMails extends Controller
         $blocsWidget->alias = 'blocsWidget';
         $blocsWidget->bindToController();
     }
+    //startKeep/
 
     public function index($tab = null)
     {
@@ -81,4 +81,6 @@ class WakaMails extends Controller
             '#sidebar_attributes' => $this->attributesRender($this->params[0]),
         ];
     }
+    //endKeep/
 }
+
