@@ -19,12 +19,12 @@ class Layout extends Model
     /**
      * @var array Guarded fields
      */
-    protected $guarded = ['*'];
+    protected $guarded = ['id'];
 
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    //protected $fillable = [];
 
     /**
      * @var array Validation rules for attributes

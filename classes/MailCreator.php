@@ -170,8 +170,9 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function renderMail($datasEmail = [])
     {
-        $htmlLayout = $this->prepare();
+        
         $datasEmail = $this->PrepareProductorMeta($datasEmail);
+        $htmlLayout = $this->prepare();
         
         \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
             $message->to($datasEmail['emails']);
@@ -374,10 +375,12 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
         $htmlContent = \Twig::parse($text, $model);
         $data = [
+            'subject' => $this->getProductor()->toArray(),
             'content' => $htmlContent,
             'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
+        trace_log($data);
         if($this->ds) {
             $data['data'] =  $model['ds'];
         } else {
