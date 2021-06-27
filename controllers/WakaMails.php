@@ -81,6 +81,15 @@ class WakaMails extends Controller
             '#sidebar_attributes' => $this->attributesRender($this->params[0]),
         ];
     }
+
+    public function formExtendFieldsBefore($form) {
+        if(!$this->user->hasPermission(['waka.mailer.admin.super'])) {
+            //Le blocage du champs code de ask est fait dans le model wakaMail
+            $wakaMail =  WakaMail::find($this->params[0]);
+            $countAsks = count($wakaMail->asks);
+            $form->tabs['fields']['asks']['maxItems'] = $countAsks;
+            $form->tabs['fields']['asks']['minItems'] = $countAsks;
+        }
+    }
     //endKeep/
 }
-

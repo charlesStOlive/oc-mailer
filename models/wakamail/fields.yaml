@@ -32,13 +32,18 @@ tabs:
         html:
             label: waka.mailer::wakamail.html
             span: full
-            type: markdown
+            type: richeditor
             size: giant
             trigger:
                 action: hide
                 field: is_mjml
                 condition: checked
             permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_edit
+        subject:
+            label: waka.mailer::wakamail.subject
+            span: left
+            required: true
             tab: waka.mailer::wakamail.tab_edit
         data_source:
             label: waka.mailer::wakamail.data_source
@@ -67,11 +72,6 @@ tabs:
             nameFrom: name
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
-        subject:
-            label: waka.mailer::wakamail.subject
-            span: left
-            required: true
-            tab: waka.mailer::wakamail.tab_edit
         images:
             label: waka.mailer::wakamail.images
             span: full
@@ -117,7 +117,6 @@ tabs:
             label: waka.mailer::wakamail.has_asks
             span: left
             type: switch
-            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
         name:
             label: waka.mailer::wakamail.name
@@ -130,5 +129,9 @@ tabs:
             label: waka.mailer::wakamail.asks
             span: full
             type: repeater
-            groups: $/waka/mailer/models/config/ask.yaml
+            groups: $/waka/utils/models/config/ask.yaml
+            trigger:
+                action: show
+                field: has_asks
+                condition: checked
             tab: waka.mailer::wakamail.tab_edit

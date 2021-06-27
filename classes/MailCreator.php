@@ -103,8 +103,8 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         if(!$this->askResponse) {
             $this->setAsksResponse();
         }
-        trace_log("ASK RESPONSE");
-        trace_log($this->askResponse);
+        //trace_log("ASK RESPONSE");
+        //trace_log($this->askResponse);
         $model = array_merge($model, [ 'asks' => $this->askResponse]);
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
@@ -383,8 +383,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     public function renderHtml($model)
     {
         $this->startTwig();
-        $text = \Markdown::parse($this->getProductor()->html);
-        $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
+        $text = $this->getProductor()->html;
         $htmlContent = \Twig::parse($text, $model);
         $data = [
             'subject' => $this->getProductor()->toArray(),
@@ -392,7 +391,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
-        trace_log($data);
+        //trace_log($data);
         if($this->ds) {
             $data['data'] =  $model['ds'];
         } else {
