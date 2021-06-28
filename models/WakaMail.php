@@ -19,6 +19,7 @@ class WakaMail extends Model
      */
     public $table = 'waka_mailer_waka_mails';
 
+
     /**
      * @var array Guarded fields
      */
@@ -36,6 +37,7 @@ class WakaMail extends Model
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
         'subject' => 'required',
+        'layout' => 'required',
     ];
 
     public $customMessages = [
@@ -61,6 +63,7 @@ class WakaMail extends Model
         'images',
         'pjs',
         'scopes',
+        'asks',
     ];
 
     /**
@@ -89,15 +92,17 @@ class WakaMail extends Model
     public $hasOne = [];
     public $hasMany = [
     ];
-    public $hasOneThrough = [];
+    public $hasOneThrough = [
+    ];
     public $hasManyThrough = [
     ];
     public $belongsTo = [
-        'layout' => [
-            'Waka\Mailer\Models\Layout',
+       'layout' => [
+            'Waka\Mailer\Models\Layout'
         ],
     ];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+    ];        
     public $morphTo = [];
     public $morphOne = [
     ];
@@ -108,6 +113,7 @@ class WakaMail extends Model
     public $attachMany = [
     ];
 
+    //startKeep/
     /**
      *EVENTS
      **/
@@ -132,6 +138,7 @@ class WakaMail extends Model
      * GETTERS
      **/
 
+
     /**
      * SCOPES
      */
@@ -139,12 +146,26 @@ class WakaMail extends Model
     /**
      * SETTERS
      */
-
+ 
     /**
      * FILTER FIELDS
      */
+    public function filterFields($fields, $context = null) {
+        $user = \BackendAuth::getUser();
+        //La limite du  nombre de asks est géré dans le controller.
+        if(!$user->hasPermission(['waka.mailer.admin.super'])) {
+            if(isset($fields->code)) {
+                    $fields->code->readOnly = true;
+            }
+            if(isset($fields->has_asks)) {
+                    $fields->has_asks->readOnly = true;
+            }
+        }
+    }
 
     /**
      * OTHERS
      */
+
+//endKeep/
 }

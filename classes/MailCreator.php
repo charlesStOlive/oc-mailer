@@ -16,6 +16,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     private $isTwigStarted;
     public $manualData = [];
     public $implement = [];
+    public $askResponse = [];
 
     public static function find($mail_id, $slug = false)
     {
@@ -54,6 +55,12 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         return $this;
     }
 
+    public function setAsksResponse($datas = [])
+    {
+        $this->askResponse = $this->ds->getAsksFromData($datas, $this->getProductor()->asks);
+        return $this;
+    }
+
     public function checkScopes()
     {
         //trace_log('checkScopes');
@@ -84,13 +91,21 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             throw new \ApplicationException("Le modelId n a pas ete instancié et il n' y a pas de données manuel");
         }
         $model = [];
+        //Fusion des données avec prepare model
         if($this->ds && $this->modelId) {
             $model = $this->prepareModel();
         }
-        //
+        //Ajout des donnnées manuels
         if(count($this->manualData)) {
             $model = array_merge($model, $this->manualData);
         }
+        //Injection des asks s'ils existent dans le model;
+        if(!$this->askResponse) {
+            $this->setAsksResponse();
+        }
+        //trace_log("ASK RESPONSE");
+        //trace_log($this->askResponse);
+        $model = array_merge($model, [ 'asks' => $this->askResponse]);
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
         if ($dataModelFromEvent[0] ?? false) {
@@ -109,17 +124,13 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     public function prepareModel() {
         
         $values = $this->ds->getValues($this->modelId);
-        //trace_log('les images du modèles');
-        //trace_log($this->getProductor()->images);
         $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
         $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
-        //$varName = $this->ds->code;
         //
         return [
             'ds' => $values,
             'IMG' => $img,
             'FNC' => $fnc,
-            //'log' => $logKey ? $logKey->log : null,
         ];
 
     }
@@ -165,6 +176,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function renderHtmlforTest()
     {
+        $datasEmail = [];
         return  $this->prepare();
     }
 
@@ -189,10 +201,10 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function renderOutlook($datasEmail = [], $userMsId = null, $sendType = 'draft')
     {
-        //trace_log("render Outlook");
+        $datasEmail = $this->PrepareProductorMeta($datasEmail);
         $htmlLayout = $this->prepare();
         //trace_log("ok pour prepare");
-        $datasEmail = $this->PrepareProductorMeta($datasEmail);
+        
         //trace_log("ok pour data email ensuite connect");
         if(!\MsGraphAdmin::isConnected()) {
             throw new ApplicationException('MsGraphAdmin not connected');
@@ -230,7 +242,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function renderGMail($modelId, $datasEmail)
     {
-        $htmlLayout = $this->prepare($modelId);
+        //$htmlLayout = $this->prepare($modelId);
         //trace_log('send with gmail');
 
         // $pjs = [];
@@ -371,8 +383,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     public function renderHtml($model)
     {
         $this->startTwig();
-        $text = \Markdown::parse($this->getProductor()->html);
-        $text = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
+        $text = $this->getProductor()->html;
         $htmlContent = \Twig::parse($text, $model);
         $data = [
             'subject' => $this->getProductor()->toArray(),
@@ -380,7 +391,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
-        trace_log($data);
+        //trace_log($data);
         if($this->ds) {
             $data['data'] =  $model['ds'];
         } else {
