@@ -18,3 +18,6 @@
 1.2.0:
     - "Ajout des champs asks"
     - create_waka_mails_table_u120.php
+1.2.1:
+    - "Transformation auto des champs markdown en champs html"
+    - work_change_markdown_u121.php

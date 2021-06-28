@@ -32,8 +32,9 @@ tabs:
         html:
             label: waka.mailer::wakamail.html
             span: full
-            type: richeditor
+            type: codeeditor
             size: giant
+            language: html
             trigger:
                 action: hide
                 field: is_mjml
