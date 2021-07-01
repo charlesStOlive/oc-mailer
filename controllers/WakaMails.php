@@ -24,6 +24,8 @@ class WakaMails extends Controller
     public $duplicateConfig = 'config_duplicate.yaml';
     public $reorderConfig = 'config_reorder.yaml';
     public $sidebarAttributesConfig = 'config_attributes.yaml';    
+
+    public $requiredPermissions = ['waka.mailer.admin.*'];
     //FIN DE LA CONFIG AUTO
 
     public $listConfig = [
@@ -83,12 +85,15 @@ class WakaMails extends Controller
     }
 
     public function formExtendFieldsBefore($form) {
-        if(!$this->user->hasPermission(['waka.mailer.admin.super'])) {
+        if(!$this->user->hasAccess(['waka.mailer.admin.super'])) {
             //Le blocage du champs code de ask est fait dans le model wakaMail
-            $wakaMail =  WakaMail::find($this->params[0]);
-            $countAsks = count($wakaMail->asks);
-            $form->tabs['fields']['asks']['maxItems'] = $countAsks;
-            $form->tabs['fields']['asks']['minItems'] = $countAsks;
+            $model =  WakaMail::find($this->params[0]);
+            $countAsks = 0;
+            if($model->asks) {
+                $countAsks = count($model->asks);
+                $form->tabs['fields']['asks']['maxItems'] = $countAsks;
+                $form->tabs['fields']['asks']['minItems'] = $countAsks;
+            }
         }
     }
     //endKeep/

@@ -69,6 +69,7 @@ tabs:
             label: waka.mailer::wakamail.layout
             span: left
             type: relation
+            placeholder: waka.utils::lang.global.placeholder
             required: true
             nameFrom: name
             permissions: [waka.mailer.admin.super]
@@ -77,6 +78,7 @@ tabs:
             label: waka.mailer::wakamail.images
             span: full
             type: imageslist
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_fnc
         pjs:
             label: waka.mailer::wakamail.pjs

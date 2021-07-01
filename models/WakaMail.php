@@ -153,7 +153,7 @@ class WakaMail extends Model
     public function filterFields($fields, $context = null) {
         $user = \BackendAuth::getUser();
         //La limite du  nombre de asks est géré dans le controller.
-        if(!$user->hasPermission(['waka.mailer.admin.super'])) {
+        if(!$user->hasAccess(['waka.mailer.admin.super'])) {
             if(isset($fields->code)) {
                     $fields->code->readOnly = true;
             }

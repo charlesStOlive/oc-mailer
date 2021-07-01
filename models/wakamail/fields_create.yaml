@@ -2,7 +2,7 @@
 #  Form Field Definitions
 # ===================================
 
-fields:    
+fields:
     is_mjml:
         label: waka.mailer::wakamail.is_mjml
         span: left
@@ -42,6 +42,8 @@ fields:
         label: waka.mailer::wakamail.layout
         span: left
         type: relation
+        placeholder: waka.utils::lang.global.placeholder
+        nameFrom: name
         required: true
         permissions: [waka.mailer.admin.super]
     subject:

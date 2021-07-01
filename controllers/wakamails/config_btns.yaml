@@ -50,7 +50,7 @@ breadcrump:
 ###ACTION BAR (dans les pages update) #Les behavior liée aux boutons doivent êtres instanciés implements = [waka.xxx.behaviors.yyy] dans le controller. 
 action_bar:
     config_btns:
-        mode: all #group,no_group,all
+        format: all #unique : un seul bouton, all : tts les boutons
         btns:
             duplicate:
                 config: waka.utils::btns.duplicate
