@@ -89,6 +89,7 @@ class MailBehavior extends ControllerBehavior
     /**
      * Cette fonction est utilisé lors du test depuis le controller wakamail.
      */
+    
     public function onSelectWakaMail()
     {
         $productorId = post('productorId');
@@ -100,11 +101,15 @@ class MailBehavior extends ControllerBehavior
 
         $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
         $this->mailDataWidget->getField('subject')->value = $subject;
-        $asks = $ds->getProductorAsks('Waka\Mailer\Models\WakaMail',$productorId, $modelId);
-        $this->mailDataWidget->addFields($asks);
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
+
+        $askDataWidget = $this->createAskDataWidget();
+        $asks = $ds->getProductorAsks('Waka\Mailer\Models\WakaMail',$productorId, $modelId);
+        $askDataWidget->addFields($asks);
+        $this->vars['askDataWidget'] = $askDataWidget;
         return [
-            '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm')
+            '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm'),
+            '#askDataWidget' => $this->makePartial('$/waka/utils/models/ask/_widget_ask_data.htm'),
         ];
     }
 
@@ -119,14 +124,14 @@ class MailBehavior extends ControllerBehavior
         $productorId = $datas['productorId'];
         $modelId = $datas['modelId'];
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->setAsksResponse($datas['mailData_array'] ?? [])->renderHtmlforTest();
+            $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->setAsksResponse($datas['asks_array'] ?? [])->renderHtmlforTest();
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject']
             ];
-            return MailCreator::find($productorId)->setModelId($modelId)->setAsksResponse($datas['mailData_array'] ?? [])->renderMail($datasEmail);
+            return MailCreator::find($productorId)->setModelId($modelId)->setAsksResponse($datas['asks_array'] ?? [])->renderMail($datasEmail);
         }
     }
 
@@ -136,14 +141,14 @@ class MailBehavior extends ControllerBehavior
         $productorId = $datas['productorId'];
         $modelId = null;
         if (post('testHtml')) {
-            $this->vars['html'] = MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['mailData_array'] ?? [])->renderTest();
+            $this->vars['html'] = MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['asks_array'] ?? [])->renderTest();
             return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
         } else {
             $datasEmail = [
                 'emails' => $datas['mailBehavior_array']['email'],
                 'subject' => $datas['mailData_array']['subject'],
             ];
-            return MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['mailData_array'] ?? [])->renderMail($datasEmail);
+            return MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['asks_array'] ?? [])->renderMail($datasEmail);
         }
     }
 
@@ -267,6 +272,16 @@ class MailBehavior extends ControllerBehavior
         $config->alias = 'mailDataformWidget';
         $config->arrayName = 'mailData_array';
         $config->model = new WakaMail();
+        $widget = $this->makeWidget('Backend\Widgets\Form', $config);
+        $widget->bindToController();
+        return $widget;
+    }
+    public function createAskDataWidget()
+    {
+        $config = $this->makeConfig('$/waka/utils/models/ask/empty_fields.yaml');
+        $config->alias = 'askDataformWidget';
+        $config->arrayName = 'asks_array';
+        $config->model = new \Waka\Utils\Models\Ask();
         $widget = $this->makeWidget('Backend\Widgets\Form', $config);
         $widget->bindToController();
         return $widget;

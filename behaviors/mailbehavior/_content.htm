@@ -7,6 +7,7 @@
         <input id="modelId" name="modelId" type="hidden" value="<?=$modelId?>">
         <select class="form-control custom-select"
                 data-request="onSelectWakaMail"
+                data-request-loading="#wakaLoading"
                 name="productorId">
             <option value=""
                     disabled
@@ -18,11 +19,16 @@
         </select>
         <div class="p-t-md">
             <?=$mailBehaviorWidget->render()?>
+            <?= $this->makePartial('~/plugins/waka/utils/views/wakaLoading.htm') ?>
+            <div id="mailDataWidget">
+                <!--Emplacement pour les data-->
+            </div>
+            <div id="askDataWidget">
+                <!--Emplacement pour les data-->
+            </div>
         </div>
     </div>
-    <div id="mailDataWidget">
-        <!--Emplacement pour les data-->
-    </div>
+
     <button type="submit"
             data-request="onMailBehaviorPartialValidation"
             data-request-data="redirect:0"

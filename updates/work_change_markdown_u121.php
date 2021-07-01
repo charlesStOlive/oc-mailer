@@ -9,16 +9,16 @@ class WorkChangeMarkdownU121 extends Seeder
     {
         $mails = WakaMail::get();
         if(!$mails) {
-            trace_log('pas trouvé');
+            //trace_log('pas trouvé');
             return;
         }
        
         foreach($mails as $mail) {
             if(!$mail->is_mjml) {
-                trace_log('pas mjml');
+                //trace_log('pas mjml');
                 $hasHtm =  str_contains($mail->html, '<p>');
                 if(!$hasHtm) {
-                    trace_log('pas htm');
+                    //trace_log('pas htm');
                     $mail->html = \Markdown::parse($mail->html);
                     $mail->save();
                 }
