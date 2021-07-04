@@ -57,7 +57,11 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function setAsksResponse($datas = [])
     {
-        $this->askResponse = $this->ds->getAsksFromData($datas, $this->getProductor()->asks);
+        if($this->ds) {
+             $this->askResponse = $this->ds->getAsksFromData($datas, $this->getProductor()->asks);
+        } else {
+            $this->askResponse = [];
+        }
         return $this;
     }
 
