@@ -39,6 +39,7 @@ return [
     'show' => "Tester",
     'test' => "Voir",
     'force_pj_name' => "Forrcer un nom pour la PJ",
+    'mail_success' => "Mail envoyé avec succès",
     'e' => [
         'data_source' => "Vous devez choisir un modèle",
     ],     

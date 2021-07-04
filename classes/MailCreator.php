@@ -182,60 +182,75 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function renderMail($datasEmail = [])
     {
-        
-        $datasEmail = $this->PrepareProductorMeta($datasEmail);
-        $htmlLayout = $this->prepare();
-        
-        \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
-            $message->to($datasEmail['emails']);
-            $message->subject($datasEmail['subject']);
-            $pjs = $datasEmail['pjs'] ?? null;
-            if ($pjs) {
-                foreach ($pjs as $pj) {
-                    $message = $this->resolvePj($message, 'swift', $pj);
+        try {
+            $datasEmail = $this->PrepareProductorMeta($datasEmail);
+            $htmlLayout = $this->prepare();
+
+            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
+                //trace_log($datasEmail);
+                $message->to($datasEmail['emails']);
+                $message->subject($datasEmail['subject']);
+                $pjs = $datasEmail['pjs'] ?? null;
+                //trace_log($pjs);
+                if ($pjs) {
+                    //trace_log("Il y a des pjs");
+                    foreach ($pjs as $pj) {
+                        $message = $this->resolvePj($message, 'swift', $pj);
+                    }
                 }
-            }
-        });
-        return true;
+            });
+
+            \Flash::success(trans('waka.mailer::wakamail.mail_success'));
+        }
+        catch (Exception $ex) {
+            \Flash::error($ex->getMessage());
+        }
+        
     }
 
     public function renderOutlook($datasEmail = [], $userMsId = null, $sendType = 'draft')
     {
-        $datasEmail = $this->PrepareProductorMeta($datasEmail);
-        $htmlLayout = $this->prepare();
-        //trace_log("ok pour prepare");
-        
-        //trace_log("ok pour data email ensuite connect");
-        if(!\MsGraphAdmin::isConnected()) {
-            throw new ApplicationException('MsGraphAdmin not connected');
-        }
-        if(!$userMsId) {
-            throw new ApplicationException('Missing userMsId in renderOutlook');
-        }
-        
-        $mail = \MsGraphAdmin::emails()
-                ->userid($userMsId)
-                ->to($datasEmail['emails'])
-                ->subject($datasEmail['subject'])
-                ->body($htmlLayout);
-
-        //trace_log("mail ok");
-                
-        $pjs = $datasEmail['pjs'] ?? null;
-        if($pjs) {
-            foreach ($pjs as $pj) {
-                $mail = $this->resolvePj($mail, 'outlook', $pj);
+        try {
+            $datasEmail = $this->PrepareProductorMeta($datasEmail);
+            $htmlLayout = $this->prepare();
+            //trace_log("ok pour prepare");
+            
+            //trace_log("ok pour data email ensuite connect");
+            if(!\MsGraphAdmin::isConnected()) {
+                throw new ApplicationException('MsGraphAdmin not connected');
             }
-        }
-        //trace_log("pj ok");
+            if(!$userMsId) {
+                throw new ApplicationException('Missing userMsId in renderOutlook');
+            }
+            
+            $mail = \MsGraphAdmin::emails()
+                    ->userid($userMsId)
+                    ->to($datasEmail['emails'])
+                    ->subject($datasEmail['subject'])
+                    ->body($htmlLayout);
 
-        //trace_log($sendType);
-        if($sendType == 'draft') {
-            //trace_log("J'envoi le mail en brouillon");
-            return $mail->make();
-        } 
-        if($sendType == 'send') {
-            return $mail->send();
+            //trace_log("mail ok");
+                    
+            $pjs = $datasEmail['pjs'] ?? null;
+            if($pjs) {
+                foreach ($pjs as $pj) {
+                    $mail = $this->resolvePj($mail, 'outlook', $pj);
+                }
+            }
+            //trace_log("pj ok");
+
+            //trace_log($sendType);
+            if($sendType == 'draft') {
+                //trace_log("J'envoi le mail en brouillon");
+                return $mail->make();
+            } 
+            if($sendType == 'send') {
+                return $mail->send();
+            }
+            
+        }
+        catch (Exception $ex) {
+            \Flash::error($ex->getMessage());
         }
         
     }

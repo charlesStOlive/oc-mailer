@@ -32,6 +32,7 @@
     <button type="submit"
             data-request="onMailBehaviorPartialValidation"
             data-request-data="redirect:0"
+            data-popup-load-indicator
             class="btn btn-primary">
         <?=e(trans('waka.utils::lang.global.validate'))?>
     </button>
@@ -39,7 +40,7 @@
             data-handler="onMailBehaviorPartialValidation"
             data-control="popup"
             data-size="large"
-            data-request-data="modelId:'<?=$modelId?>', testHtml:'true'"
+            data-request-data="testHtml:'true'"
             data-hotkey="ctrl+s, cmd+s"
             class="btn btn-primary">
         <?=e(trans('waka.utils::lang.global.show'))?>
