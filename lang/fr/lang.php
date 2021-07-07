@@ -1,5 +1,4 @@
 <?php
-
 return [
     'menu' => [
         'title' => 'Contenu',
@@ -8,20 +7,19 @@ return [
         'bloc_name' => 'Blocs emails',
         'bloc_type' => 'types de blocs emails',
         'bloc_type_description' => 'Administration des types de blocs et exemples',
-        "btn_lot" => "Lot Email",
+        'btn_lot' => 'Lot Email'
     ],
     'objtext' => [
         'data' => 'Paragraphes',
-        'data_prompt' => "Cliquez ici pour ajouter un paragraphe",
+        'data_prompt' => 'Cliquez ici pour ajouter un paragraphe',
         'value' => 'Paragraphe',
-        'jump' => 'Saut de ligne entre les deux paragraphes',
+        'jump' => 'Saut de ligne entre les deux paragraphes'
     ],
     'lot' => [
-        "title" => "Créer des lots word",
-        "all" => "Tout",
-        "filtered" => "Liste filtrée",
-        "checked" => "Lignes cochées",
-
+        'title' => 'Créer des lots word',
+        'all' => 'Tout',
+        'filtered' => 'Liste filtrée',
+        'checked' => 'Lignes cochées'
     ],
-
+    '' => null
 ];

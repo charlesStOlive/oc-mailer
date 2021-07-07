@@ -1,5 +1,4 @@
 <?php
-
 return [
     'name' => 'Nom du template',
     'contenu' => 'Contenu',
@@ -10,5 +9,5 @@ return [
     'edit' => 'Éditer un template',
     'form_name' => 'Gestion du template',
     'preview_name' => 'Voir le template',
- 
+    '' => null
 ];
