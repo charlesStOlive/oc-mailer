@@ -158,8 +158,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             $pjs = $this->getProductor()->pjs;
             $datasEmail['pjs'] = $pjs;
         }
-        $subject = $datasEmail['subject'] ?? $this->getProductor()->subject;
-        $subject = $this->createTwigStrSubject();
+        $subject = $datasEmail['subject'] ?? $this->createTwigStrSubject();
         $datasEmail['subject'] = $subject;
         return $datasEmail;
     }
@@ -410,7 +409,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
-        //trace_log($data);
+        trace_log($data);
         if($this->ds) {
             $data['data'] =  $model['ds'];
         } else {
