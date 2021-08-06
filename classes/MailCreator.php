@@ -409,7 +409,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             'baseCss' => \File::get(plugins_path() . $this->getProductor()->layout->baseCss),
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
-        trace_log($data);
+        //trace_log($data);
         if($this->ds) {
             $data['data'] =  $model['ds'];
         } else {
