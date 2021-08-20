@@ -20,14 +20,16 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public static function find($mail_id, $slug = false)
     {
+        trace_log('find');
         $wakamail;
         if ($slug) {
             $wakamailModel = WakaMail::where('slug', $mail_id)->first();
-            if (!$wakamailModel) {
-                throw new ApplicationException("Le code email ne fonctionne pas : " . $mail_id);
-            }
         } else {
             $wakamailModel = WakaMail::find($mail_id);
+        }
+        if (!$wakamailModel) {
+            /**/trace_log("Le code ou id  email ne fonctionne pas : " . $mail_id. "vous dever entrer l'id ou le code suivi de true");
+            throw new ApplicationException("Le code ou id  email ne fonctionne pas : " . $mail_id. "vous dever entrer l'id ou le code suivi de true");
         }
         self::$wakamail = $wakamailModel;
         return new self;
@@ -39,10 +41,12 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function setModelId($modelId)
     {
+        trace_log('setModelId');
         $this->modelId = $modelId;
         $dataSourceId = $this->getProductor()->data_source;
         $this->ds = new DataSource($dataSourceId);
         $this->ds->instanciateModel($modelId);
+        trace_log('ok');
         return $this;
     }
 
@@ -198,6 +202,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
 
     public function renderMail($datasEmail = [])
     {
+        trace_log('renderEmail');
         try {
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
@@ -219,6 +224,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             \Flash::success(trans('waka.mailer::wakamail.mail_success'));
         }
         catch (Exception $ex) {
+            /**/trace_log($ex->getMessage());
             \Flash::error($ex->getMessage());
         }
         
