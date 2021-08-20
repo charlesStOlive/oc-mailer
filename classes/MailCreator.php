@@ -154,12 +154,17 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     }
 
     public function PrepareProductorMeta($datasEmail) {
-        if ($this->getProductor()->pjs) {
-            $pjs = $this->getProductor()->pjs;
-            $datasEmail['pjs'] = $pjs;
+        if($this->getProductor()) {
+            if ($this->getProductor()->pjs) {
+                $pjs = $this->getProductor()->pjs;
+                $datasEmail['pjs'] = $pjs;
+            }
         }
+        
         $subject = $datasEmail['subject'] ?? $this->createTwigStrSubject();
         $datasEmail['subject'] = $subject;
+        $emails = $datasEmail['emails'] ?? $this->getDefaultEmail();
+        $datasEmail['emails'] = $emails;
         return $datasEmail;
     }
 
@@ -175,6 +180,14 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         //trace_log($this->getProductor()->pdf_name);
         $nameConstruction = \Twig::parse($this->getProductor()->subject, $vars);
         return $nameConstruction;
+    }
+    private function getDefaultEmail()
+    {
+        if($this->ds) {
+          return  $this->ds->getContact('to', null)[0];
+        } else {
+            throw new ApplicationException("Il n y a pas de datasource connu et pas d'email reçu dans dataemail");
+        }
     }
 
     public function renderHtmlforTest()
