@@ -10,9 +10,10 @@ columns:
     name:
         label: waka.mailer::wakamail.name
         searchable: true
-    subject:
-        label: waka.mailer::wakamail.subject
+    slug:
+        label: waka.mailer::wakamail.slug
         searchable: true
+        clickeable: false
     no_ds:
         label: waka.mailer::wakamail.no_ds
         type: switch
