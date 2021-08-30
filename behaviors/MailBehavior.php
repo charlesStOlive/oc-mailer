@@ -238,7 +238,6 @@ class MailBehavior extends ControllerBehavior
     {
         $rules = [
             'productorId' => 'required',
-            'mailData_array.subject' => 'required | min:3'
         ];
 
         $validator = \Validator::make($inputs, $rules);
