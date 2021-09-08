@@ -14,6 +14,7 @@ class WakaMail extends Model
     use \Winter\Storm\Database\Traits\Sortable;
     use \Waka\Utils\Classes\Traits\DataSourceHelpers;
 
+
     /**
      * @var string The database table used by the model.
      */
@@ -89,7 +90,8 @@ class WakaMail extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
+    public $hasOne = [
+    ];
     public $hasMany = [
     ];
     public $hasOneThrough = [
@@ -97,9 +99,7 @@ class WakaMail extends Model
     public $hasManyThrough = [
     ];
     public $belongsTo = [
-       'layout' => [
-            'Waka\Mailer\Models\Layout'
-        ],
+       'layout' => ['Waka\Mailer\Models\Layout'],
     ];
     public $belongsToMany = [
     ];        

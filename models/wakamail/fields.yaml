@@ -46,6 +46,20 @@ tabs:
             span: left
             required: true
             tab: waka.mailer::wakamail.tab_edit
+        name:
+            label: waka.mailer::wakamail.name
+            span: left
+            required: true
+            size: giant
+            commentAbove: waka.mailer::wakamail.name_com
+            tab: waka.mailer::wakamail.tab_info
+        slug:
+            label: waka.mailer::wakamail.slug
+            span: right
+            required: true
+            commentAbove: waka.mailer::wakamail.slug_com
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_info
         data_source:
             label: waka.mailer::wakamail.data_source
             span: right
@@ -92,6 +106,13 @@ tabs:
             default: false
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_scopes
+        is_lot:
+            label: waka.mailer::wakamail.is_lot
+            span: left
+            type: switch
+            default: true
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_scopes
         scopes:
             label: waka.mailer::wakamail.scopes
             span: full
@@ -102,32 +123,11 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_scopes
-        slug:
-            label: waka.mailer::wakamail.slug
-            span: right
-            required: true
-            commentAbove: waka.mailer::wakamail.slug_com
-            permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_info
-        test_id:
-            label: waka.mailer::wakamail.test_id
-            span: auto
-            type: dropdown
-            placeholder: waka.utils::lang.global.placeholder
-            options: listDataSourceTarget
-            tab: waka.mailer::wakamail.tab_info
         has_asks:
             label: waka.mailer::wakamail.has_asks
             span: left
             type: switch
             tab: waka.mailer::wakamail.tab_edit
-        name:
-            label: waka.mailer::wakamail.name
-            span: left
-            required: true
-            size: giant
-            commentAbove: waka.mailer::wakamail.name_com
-            tab: waka.mailer::wakamail.tab_info
         asks:
             label: waka.mailer::wakamail.asks
             span: full

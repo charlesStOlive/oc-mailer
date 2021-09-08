@@ -13,10 +13,12 @@ columns:
     slug:
         label: waka.mailer::wakamail.slug
         searchable: true
-        clickeable: false
+        clickable: false
     no_ds:
         label: waka.mailer::wakamail.no_ds
         type: switch
+        searchable: false
+        sortable: true
     data_source:
         label: waka.mailer::wakamail.data_source
         searchable: true
@@ -28,6 +30,8 @@ columns:
     is_mjml:
         label: waka.mailer::wakamail.is_mjml
         type: switch
+        searchable: false
+        sortable: true
     updated_at:
         label: waka.utils::lang.global.updated_at
         type: timetense

@@ -16,6 +16,7 @@ return [
     'images' => 'Images',
     'pjs' => 'Pjs',
     'is_scope' => 'À des restrictions ?',
+    'is_lot' => 'Autorisé dans les lots ?',
     'scopes' => 'Restrictions',
     'test_id' => 'Model de test',
     'has_asks' => 'A des questions ?',
@@ -37,10 +38,9 @@ return [
     'job_title' => 'Message(s) à envoyer',
     'show' => 'Tester',
     'test' => 'Voir',
-    'force_pj_name' => 'Forrcer un nom pour la PJ',
+    'force_pj_name' => 'Forcer un nom pour la PJ',
     'mail_success' => 'Mail envoyé avec succès',
     'e' => [
         'data_source' => 'Vous devez choisir un modèle'
-    ],
-    '' => null
+    ]
 ];

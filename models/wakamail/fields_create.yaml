@@ -50,3 +50,10 @@ fields:
         label: waka.mailer::wakamail.subject
         span: left
         required: true
+    is_lot:
+        label: waka.mailer::wakamail.is_lot
+        span: left
+        type: switch
+        default: true
+        default: true
+        permissions: [waka.mailer.admin.super]
