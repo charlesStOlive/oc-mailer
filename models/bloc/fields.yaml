@@ -17,6 +17,7 @@ fields:
         span: full
         type: codeeditor
         size: giant
+        permissions: [waka.mailer.admin.super]
     description:
         label: waka.mailer::bloc.description
         span: auto
