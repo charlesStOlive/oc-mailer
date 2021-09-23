@@ -60,6 +60,12 @@ tabs:
             commentAbove: waka.mailer::wakamail.slug_com
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
+        model_functions:
+            label: waka.mailer::wakamail.model_functions
+            span: full
+            type: functionslist
+            size: giant
+            tab: waka.mailer::wakamail.tab_fnc
         data_source:
             label: waka.mailer::wakamail.data_source
             span: right
@@ -73,12 +79,6 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
-        model_functions:
-            label: waka.mailer::wakamail.model_functions
-            span: full
-            type: functionslist
-            size: giant
-            tab: waka.mailer::wakamail.tab_fnc
         layout:
             label: waka.mailer::wakamail.layout
             span: left
@@ -123,6 +123,13 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_scopes
+        test_id:
+            label: waka.mailer::wakamail.test_id
+            span: auto
+            type: dropdown
+            placeholder: waka.utils::lang.global.placeholder
+            options: listDataSourceTarget
+            tab: waka.mailer::wakamail.tab_info
         has_asks:
             label: waka.mailer::wakamail.has_asks
             span: left
