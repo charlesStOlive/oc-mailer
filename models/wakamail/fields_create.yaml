@@ -38,6 +38,15 @@ fields:
             field: no_ds
             condition: checked
         permissions: [waka.mailer.admin.super]
+    state:
+        label: waka.mailer::wakamail.state
+        span: full
+        type: balloon-selector
+        required: true
+        default: 0
+        options: ['Brouillon','Désactivé','Actif']
+        default: Actif
+        permissions: [wcli.mailer.admin]
     layout:
         label: waka.mailer::wakamail.layout
         span: left

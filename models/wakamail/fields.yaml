@@ -29,6 +29,15 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
+        state:
+            label: waka.mailer::wakamail.state
+            span: full
+            type: balloon-selector
+            required: true
+            default: 0
+            options: ['Brouillon','Désactivé','Actif']
+            default: Actif
+            permissions: [wcli.mailer.admin]
         html:
             label: waka.mailer::wakamail.html
             span: full

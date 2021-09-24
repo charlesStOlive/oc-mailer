@@ -24,3 +24,6 @@
 1.3.0:
     - "Ajout du champs is_lot"
     - create_waka_mails_table_u130.php
+1.4.0:
+    - "Ajout de l'état"
+    - create_waka_mails_table_u140.php

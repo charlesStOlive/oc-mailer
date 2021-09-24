@@ -4,6 +4,7 @@ return [
     'name_com' => 'interne uniquement',
     'slug' => 'Code/Slug',
     'slug_com' => 'permet d\'identifer l\'email dans le code',
+    'state' => 'Etat',
     'subject' => 'Sujet',
     'no_ds' => 'Pas de sources de données',
     'data_source' => 'Source des données',

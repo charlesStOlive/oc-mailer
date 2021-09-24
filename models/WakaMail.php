@@ -142,6 +142,13 @@ class WakaMail extends Model
     /**
      * SCOPES
      */
+    public function scopeActive($query) {
+        return $query->where('state', 'Actif');
+
+    }
+    public function scopeLot($query) {
+        return $query->where('is_lot',true);
+    }
 
     /**
      * SETTERS
