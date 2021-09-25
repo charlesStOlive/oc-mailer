@@ -133,6 +133,9 @@ class WakaMail extends Model
     /**
      * LISTS
      **/
+    public function listStates() {
+        return \Config::get('waka.utils::basic_state');
+    }
 
     /**
      * GETTERS

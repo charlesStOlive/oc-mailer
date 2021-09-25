@@ -43,8 +43,8 @@ fields:
         span: full
         type: balloon-selector
         required: true
-        default: 0
-        options: ['Brouillon','Désactivé','Actif']
+        default: Brouillon
+        options: listStates
         default: Actif
         permissions: [wcli.mailer.admin]
     layout:

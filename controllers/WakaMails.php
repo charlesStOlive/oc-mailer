@@ -63,7 +63,6 @@ class WakaMails extends Controller
                 $form->removeField('is_scope');
                 $form->removeField('data_source');
                 $form->removeField('pjs');
-                $form->removeField('name'); 
                 $form->removeField('images');
                 $form->removeField('model_functions');
             }

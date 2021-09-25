@@ -34,10 +34,11 @@ tabs:
             span: full
             type: balloon-selector
             required: true
-            default: 0
-            options: ['Brouillon','Désactivé','Actif']
+            default: Brouillon
+            options: listStates
             default: Actif
             permissions: [wcli.mailer.admin]
+            tab: waka.mailer::wakamail.tab_info
         html:
             label: waka.mailer::wakamail.html
             span: full
@@ -59,14 +60,13 @@ tabs:
             label: waka.mailer::wakamail.name
             span: left
             required: true
-            size: giant
-            commentAbove: waka.mailer::wakamail.name_com
+            comment: waka.mailer::wakamail.name_com
             tab: waka.mailer::wakamail.tab_info
         slug:
             label: waka.mailer::wakamail.slug
             span: right
             required: true
-            commentAbove: waka.mailer::wakamail.slug_com
+            comment: waka.mailer::wakamail.slug_com
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
         model_functions:
