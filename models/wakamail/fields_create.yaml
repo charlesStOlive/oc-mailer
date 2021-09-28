@@ -14,6 +14,11 @@ fields:
         span: left
         required: true
         commentAbove: waka.mailer::wakamail.name_com
+    has_log:
+        label: waka.mailer::wakamail.has_log
+        span: right
+        type: switch
+        permissions: [waka.mailer.admin.super]
     slug:
         label: waka.mailer::wakamail.slug
         span: right

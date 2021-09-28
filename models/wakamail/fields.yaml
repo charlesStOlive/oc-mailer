@@ -29,16 +29,6 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
-        state:
-            label: waka.mailer::wakamail.state
-            span: full
-            type: balloon-selector
-            required: true
-            default: Brouillon
-            options: listStates
-            default: Actif
-            permissions: [wcli.mailer.admin]
-            tab: waka.mailer::wakamail.tab_info
         html:
             label: waka.mailer::wakamail.html
             span: full
@@ -51,11 +41,27 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
+        state:
+            label: waka.mailer::wakamail.state
+            span: full
+            type: balloon-selector
+            required: true
+            default: Brouillon
+            options: listStates
+            default: Actif
+            permissions: [wcli.mailer.admin]
+            tab: waka.mailer::wakamail.tab_info
         subject:
             label: waka.mailer::wakamail.subject
             span: left
             required: true
             tab: waka.mailer::wakamail.tab_edit
+        has_log:
+            label: waka.mailer::wakamail.has_log
+            span: right
+            type: switch
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_info
         name:
             label: waka.mailer::wakamail.name
             span: left
@@ -69,12 +75,6 @@ tabs:
             comment: waka.mailer::wakamail.slug_com
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
-        model_functions:
-            label: waka.mailer::wakamail.model_functions
-            span: full
-            type: functionslist
-            size: giant
-            tab: waka.mailer::wakamail.tab_fnc
         data_source:
             label: waka.mailer::wakamail.data_source
             span: right
@@ -88,6 +88,12 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_info
+        model_functions:
+            label: waka.mailer::wakamail.model_functions
+            span: full
+            type: functionslist
+            size: giant
+            tab: waka.mailer::wakamail.tab_fnc
         layout:
             label: waka.mailer::wakamail.layout
             span: left

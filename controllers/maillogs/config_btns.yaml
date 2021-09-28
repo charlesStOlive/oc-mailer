@@ -1,0 +1,104 @@
+# ===================================
+#  Btn  Behavior Config
+# ===================================
+
+Description: >
+    //startKeep/
+modelClass: Waka\Mailer\Models\MailLog
+
+workflow: false 
+
+###BREADCRUMP
+breadcrump:
+    inSettings: true 
+    indexUrl: waka/mailer/maillogs
+    indexlabel: waka.mailer::maillog.title
+    title: waka.mailer::maillog.form_name
+
+###TOOL_BAR
+tool_bar:
+    base:
+        create: 
+            show: true
+            permissions: [waka.mailder.admin.super]
+            url: waka/mailer/maillogs/create
+        reorder: 
+            show: false 
+        delete: 
+            show: true
+            permissions: [waka.mailder.admin.super]
+    config_btns:
+            format: all
+            btns:
+    config_lot:
+        format: all
+        btns: 
+    # partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
+    #     testbtns:
+    #         url: $/waka/mailer/controllers/maillogs/_test_btns.htm
+
+###ACTION_BAR Producteurs. Les behavior liée aux boutons doivent êtres instanciés implements = [waka.xxx.behaviors.yyy] dans le controller. 
+action_bar:
+    config_btns:
+        format: grouped #unique : un seul bouton, all : tts les boutons
+        groups:
+            waka.utils::lang.prod.produce: oc-icon-file-text-o
+            waka.utils::lang.prod.send: oc-icon-external-link
+            waka.utils::lang.prod.tools: oc-icon-wrench
+        btns:
+
+    # partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
+    #     name:
+    #         url: $/waka/mailer/controllers/maillogs/_test_update.htm
+Description: >
+    //endKeep/
+
+
+#     ##### SAUVEGARDE PURE ########
+
+# modelClass: Waka\Mailer\Models\MailLog
+
+# workflow: false 
+
+# ###BREADCRUMP
+# breadcrump:
+#     inSettings: true 
+#     indexUrl: waka/mailer/maillogs
+#     indexlabel: waka.mailer::maillog.title
+#     title: waka.mailer::maillog.form_name
+
+# ###TOOL_BAR
+# tool_bar:
+#     base:
+#         create: 
+#             show: true
+#             permissions: [waka.mailder.admin.super]
+#             url: waka/mailer/maillogs/create
+#         reorder: 
+#             show: false#  
+#         delete: 
+#             show: true
+#             permissions: [waka.mailder.admin.super]
+#     config_btns:
+#             format: all
+#             btns:
+# # #     config_lot:
+#         format: all
+#         btns: 
+# # # # #     # partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
+#     #     testbtns:
+#     #         url: $/waka/mailer/controllers/maillogs/_test_btns.htm
+
+# ###ACTION_BAR Producteurs. Les behavior liée aux boutons doivent êtres instanciés implements = [waka.xxx.behaviors.yyy] dans le controller. 
+# action_bar:
+#     config_btns:
+#         format: grouped #unique : un seul bouton, all : tts les boutons
+#         groups:
+#             waka.utils::lang.prod.produce: oc-icon-file-text-o
+#             waka.utils::lang.prod.send: oc-icon-external-link
+#             waka.utils::lang.prod.tools: oc-icon-wrench
+#         btns:
+# # # # # # # # # # 
+#     # partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
+#     #     name:
+#     #         url: $/waka/mailer/controllers/maillogs/_test_update.htm

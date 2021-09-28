@@ -27,3 +27,7 @@
 1.4.0:
     - "Ajout de l'état"
     - create_waka_mails_table_u140.php
+1.5.0:
+    - "Ajout des logs"
+    - create_mail_logs_table.php
+    - create_waka_mails_table_u150.php

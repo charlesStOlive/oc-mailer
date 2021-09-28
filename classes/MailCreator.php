@@ -200,17 +200,34 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         return  $this->prepare();
     }
 
+    public function prepareLogs() {
+        if(!$this->getProductor()->has_log) {
+            return [];
+        }
+        return [
+            'ds' => $this->ds->class,
+            'id' => $this->modelId,
+            'mail' => $this->getProductor()->id,
+        ];
+        
+        
+    }
+
     public function renderMail($datasEmail = [])
     {
         //trace_log('renderEmail');
         try {
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
+            $logs = $this->preparelogs();
+            trace_log($logs);
 
-            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail) {
+            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $logs) {
                 //trace_log($datasEmail);
                 $message->to($datasEmail['emails']);
                 $message->subject($datasEmail['subject']);
+                $headers = $message->getSwiftMessage()->getHeaders();
+                $headers->addTextHeader('X-Mailgun-Variables', json_encode($logs));
                 $pjs = $datasEmail['pjs'] ?? null;
                 //trace_log($pjs);
                 if ($pjs) {

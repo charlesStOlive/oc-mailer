@@ -37,6 +37,7 @@ class WakaMail extends Model
     public $rules = [
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
+        'state' => 'required',
         'subject' => 'required',
         'layout' => 'required',
     ];
@@ -93,6 +94,7 @@ class WakaMail extends Model
     public $hasOne = [
     ];
     public $hasMany = [
+        'mailLog' => ['Waka\Mailer\Models\MailLog'],
     ];
     public $hasOneThrough = [
     ];

@@ -2,6 +2,7 @@
 return [
     'name' => 'Nom de l\'email',
     'name_com' => 'interne uniquement',
+    'has_log' => 'Enregistrer les logs ?',
     'slug' => 'Code/Slug',
     'slug_com' => 'permet d\'identifer l\'email dans le code',
     'state' => 'Etat',

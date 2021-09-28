@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: waka.mailer::maillog.form_name
+
+# Model Form Field configuration
+form: $/waka/mailer/models/maillog/fields.yaml
+
+# Model Class name
+modelClass: Waka\Mailer\Models\MailLog
+
+# Default redirect location
+defaultRedirect: waka/mailer/maillogs
+
+# Create page
+create:
+    title: waka.mailer::maillog.create
+    redirect: waka/mailer/maillogs/update/:id
+    redirectClose: waka/mailer/maillogs
+
+# Update page
+update:
+    title: waka.mailer::maillog.update
+    redirect: waka/mailer/maillogs/update/:id
+    redirectClose: waka/mailer/maillogs
+
+# Preview page
+preview:
+    title: waka.mailer::maillog.preview_name

@@ -10,6 +10,11 @@ columns:
     name:
         label: waka.mailer::wakamail.name
         searchable: true
+    has_log:
+        label: waka.mailer::wakamail.has_log
+        type: switch
+        searchable: false
+        sortable: true
     slug:
         label: waka.mailer::wakamail.slug
         searchable: true
