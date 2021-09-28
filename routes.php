@@ -6,9 +6,8 @@ Route::group(['middleware' => ['web']], function () {
         return '<div style="width:600px">' . $mc->renderTest() . '</div>';
     });
 });
-Route::group(['middleware' => ['mailgunWebHook']], function () {
-    Route::get('/api/mailgun/wo/{type}', function ($type) {
-        $mc = Waka\Mailer\Classes\MailgunWo::create($type);
-        return true;
+Route::group(['middleware' => ['Waka\Mailer\Classes\Middleware\MailgunWebHook']], function () {
+    Route::prefix('/api/mailgun/wo')->group(function () {
+        Route::post('{type}',  '\Waka\Mailer\Classes\MailgunWebHook@messageType')->name('messageType');
     });
 });

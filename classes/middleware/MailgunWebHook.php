@@ -2,9 +2,8 @@
 
 use ApplicationException;
 use Event;
-use Waka\Mailer\Models\WakaMail;
-use Waka\Utils\Classes\DataSource;
-
+use Closure;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class MailgunWebHook 
@@ -16,10 +15,10 @@ class MailgunWebHook
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if (!$request->isMethod('post')) {
-            abort(Response::HTTP_FORBIDDEN, 'Only POST requests are allowed.');
+           abort(Response::HTTP_FORBIDDEN, 'Only POST requests are allowed.');
         }
 
         if ($this->verify($request)) {
@@ -39,10 +38,10 @@ class MailgunWebHook
     private function buildSignature($request)
     {
         $sk = null;
-        if(\Config::get('mailgun_webhooks.signing_key')) {
-            $sk = \Config::get('mailgun_webhooks.signing_key');
+        if(\Config::get('waka.mailer::mailgun_webhooks.signing_key')) {
+            $sk = \Config::get('waka.mailer::mailgun_webhooks.signing_key');
         } else {
-            throw new ApplicationException('Problème webhook key manquant dans la config ou env');
+            throw new \ApplicationException('Problème webhook key manquant dans la config ou env');
         }
         return hash_hmac(
             'sha256',
