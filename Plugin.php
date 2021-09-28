@@ -78,6 +78,8 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        $this->app['Illuminate\Contracts\Http\Kernel']
+            ->pushMiddleware('Waka\Mailer\Classes\Middleware\MailgunWebHook');
         
     }
 

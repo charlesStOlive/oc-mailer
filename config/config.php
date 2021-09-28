@@ -15,4 +15,7 @@ return [
             'icon' => 'oc-icon-envelope',
         ],
     ],
+    'mailgun_webhooks' =>  [
+        'signing_key' => env('MAILGUN_WO'),
+    ]
 ];
