@@ -150,13 +150,16 @@ tabs:
             span: left
             type: switch
             tab: waka.mailer::wakamail.tab_edit
-        asks:
-            label: waka.mailer::wakamail.asks
-            span: full
-            type: repeater
-            groups: $/waka/utils/models/config/ask.yaml
-            trigger:
-                action: show
-                field: has_asks
-                condition: checked
+        rule_asks:
+            type: Waka\Utils\FormWidgets\AskBuilder
             tab: waka.mailer::wakamail.tab_edit
+        # asks:
+        #     label: waka.mailer::wakamail.asks
+        #     span: full
+        #     type: repeater
+        #     groups: $/waka/utils/models/config/ask.yaml
+        #     trigger:
+        #         action: show
+        #         field: has_asks
+        #         condition: checked
+        #     tab: waka.mailer::wakamail.tab_edit

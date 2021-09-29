@@ -109,6 +109,11 @@ class WakaMail extends Model
     public $morphOne = [
     ];
     public $morphMany = [
+        'rule_asks' => [
+            \Waka\Utils\Models\RuleAsk::class,
+            'name' => 'askeable',
+            'delete' => true
+        ],
     ];
     public $attachOne = [
     ];
