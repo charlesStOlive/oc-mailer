@@ -206,8 +206,8 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         }
         return [
             'ds' => $this->ds->class,
-            'id' => $this->modelId,
-            'mail' => $this->getProductor()->id,
+            'ds_id' => $this->modelId,
+            'id' => $this->getProductor()->id,
         ];
         
         
