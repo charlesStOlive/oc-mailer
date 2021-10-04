@@ -69,6 +69,48 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         return $this;
     }
 
+    public function setRuleAsksResponse($datas = [])
+    {
+        $askArray = [];
+        $srcmodel = $this->ds->getModel($this->modelId);
+        $asks = $this->getProductor()->rule_asks()->get();
+        foreach($asks as $ask) {
+            $key = $ask->getCode();
+            trace_log($key);
+            $askResolved = $ask->resolve($srcmodel, 'twig', $datas);
+            $askArray[$key] = $askResolved;
+        }
+        trace_log($askArray);
+        return array_replace($askArray,$this->askResponse);
+        
+    }
+
+    public function setRuleFncsResponse()
+    {
+        $fncArray = [];
+        $srcmodel = $this->ds->getModel($this->modelId);
+        $fncs = $this->getProductor()->rule_fncs()->get();
+        foreach($fncs as $fnc) {
+            $key = $fnc->getCode();
+            trace_log('key of the function');
+            $fncResolved = $fnc->resolve($srcmodel,$this->ds->code);
+            $fncArray[$key] = $fncArray;
+        }
+        trace_log($fncArray);
+        return $fncArray;
+        
+    }
+
+    public function setdefaultAsks($datas = [])
+    {
+        if($this->ds) {
+             $this->askResponse = $this->ds->getAsksFromData($datas, $this->getProductor()->asks);
+        } else {
+            $this->askResponse = [];
+        }
+        return $this;
+    }
+
     public function checkScopes()
     {
         //trace_log('checkScopes');
@@ -99,7 +141,8 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             throw new \ApplicationException("Le modelId n a pas ete instancié et il n' y a pas de données manuel");
         }
         $model = [];
-        //Fusion des données avec prepare model
+        //Fusion des données avec prepare model reoturne un objet avec ds, imag et fnc
+
         if($this->ds && $this->modelId) {
             $model = $this->prepareModel();
         }
@@ -107,12 +150,24 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         if(count($this->manualData)) {
             $model = array_merge($model, $this->manualData);
         }
-        //Injection des asks s'ils existent dans le model;
-        if(!$this->askResponse) {
-            $this->setAsksResponse();
+
+        //Nouveau bloc pour nouveaux asks
+        if($this->getProductor()->rule_asks()->count()) {
+            $this->askResponse = $this->setRuleAsksResponse($model);
+        } else {
+            //Injection des asks s'ils existent dans le model;
+            if(!$this->askResponse) {
+                $this->setAsksResponse($model);
+            }
         }
-        //trace_log("ASK RESPONSE");
-        //trace_log($this->askResponse);
+
+        //Nouveau bloc pour les new Fncs
+        if($this->getProductor()->rule_fncs()->count()) {
+            $fncs = $this->setRuleFncsResponse($model);
+            $model = array_merge($model, [ 'fncs' => $fncs]);
+        }
+        
+
         $model = array_merge($model, [ 'asks' => $this->askResponse]);
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
@@ -220,7 +275,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
             $logs = $this->preparelogs();
-            trace_log($logs);
+            //trace_log($logs);
 
             \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $logs) {
                 //trace_log($datasEmail);

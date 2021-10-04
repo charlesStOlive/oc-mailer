@@ -114,6 +114,11 @@ class WakaMail extends Model
             'name' => 'askeable',
             'delete' => true
         ],
+        'rule_fncs' => [
+            \Waka\Utils\Models\RuleFnc::class,
+            'name' => 'fnceable',
+            'delete' => true
+        ],
     ];
     public $attachOne = [
     ];

@@ -145,13 +145,21 @@ tabs:
             placeholder: waka.utils::lang.global.placeholder
             options: listDataSourceTarget
             tab: waka.mailer::wakamail.tab_info
-        has_asks:
-            label: waka.mailer::wakamail.has_asks
-            span: left
-            type: switch
-            tab: waka.mailer::wakamail.tab_edit
+        # has_asks:
+        #     label: waka.mailer::wakamail.has_asks
+        #     span: left
+        #     type: switch
+        #     tab: waka.mailer::wakamail.tab_edit
         rule_asks:
             type: Waka\Utils\FormWidgets\AskBuilder
+            targetClass: wakaMail
+            full_access: personne
+            tab: waka.mailer::wakamail.tab_edit
+
+        rule_fncs:
+            type: fncbuilder
+            targetClass: wakaMail
+            full_access: personne
             tab: waka.mailer::wakamail.tab_edit
         # asks:
         #     label: waka.mailer::wakamail.asks
