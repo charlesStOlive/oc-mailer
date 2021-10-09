@@ -1,13 +1,30 @@
-<button href="javascript:;"
-        class="btn btn-default oc-icon-external-link "
-        data-request-data="redirect:0,productorId:'<?=$modelId?>'"
-        data-control="popup"
-        data-handler="onLoadMailTestForm">
-    <?= e(trans('waka.mailer::wakamail.show')) ?>
-</button>
-<a class="btn btn-default oc-icon-eye"
-   href="/test/email/<?=$modelId?>"
-   target="_blank">
-    <?= e(trans('waka.mailer::wakamail.test')) ?>
+<div class="dropdown dropup">
+    <a href="#"
+       data-toggle="dropdown"
+       class="btn btn-secondary oc-icon-eye"><?= e(trans('waka.mailer::wakamail.tests')) ?>
+    </a>
+    <ul class="dropdown-menu"
+        role="menu"
+        data-dropdown-title="<?= e(trans('waka.mailer::wakamail.test')) ?>">
+        <li role="presentation">
+            <a href="javascript:;"
+               role="menuitem"
+               tabindex="-1"
+               data-request-data="redirect:0,productorId:'<?=$modelId?>'"
+               data-control="popup"
+               data-handler="onLoadMailTestForm"
+               data-toggle="dropdown"><?= e(trans('waka.mailer::wakamail.send_test')) ?>
+            </a>
+        </li>
+        <li role="presentation">
+            <a
+               role="menuitem"
+               tabindex="-1"
+               href="/test/email/<?=$modelId?>"
+               target="_blank">
+                <?= e(trans('waka.mailer::wakamail.show')) ?>
+            </a>
+        </li>
 
-</a>
+    </ul>
+</div>

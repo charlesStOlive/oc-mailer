@@ -1,12 +1,26 @@
 # ===================================
 #  Form Field Definitions
 # ===================================
+fields:
+    subject:
+        label: waka.mailer::wakamail.subject
+        span: left
+        required: true
+    state:
+        label: waka.mailer::wakamail.state
+        span: right
+        type: balloon-selector
+        required: true
+        default: Brouillon
+        options: listStates
+        default: Actif
+        permissions: [wcli.mailer.admin]
 tabs:
     defaultTab: waka.mailer::wakamail.tab_edit
     icons: 
         waka.mailer::wakamail.tab_info: icon-info-circle
         waka.mailer::wakamail.tab_edit: icon-pencil
-        waka.mailer::wakamail.tab_scopes: icon-filter
+        waka.mailer::wakamail.tab_options: icon-cog
         waka.mailer::wakamail.tab_fnc: icon-address-card-o
         waka.lp::lang.source_log.tab_lp: icon-file
     fields:    
@@ -41,68 +55,19 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
-        state:
-            label: waka.mailer::wakamail.state
-            span: full
-            type: balloon-selector
-            required: true
-            default: Brouillon
-            options: listStates
-            default: Actif
-            permissions: [wcli.mailer.admin]
-            tab: waka.mailer::wakamail.tab_info
-        subject:
-            label: waka.mailer::wakamail.subject
-            span: left
-            required: true
-            tab: waka.mailer::wakamail.tab_edit
         has_log:
             label: waka.mailer::wakamail.has_log
-            span: right
+            span: left
             type: switch
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_info
-        name:
-            label: waka.mailer::wakamail.name
-            span: left
-            required: true
-            comment: waka.mailer::wakamail.name_com
-            tab: waka.mailer::wakamail.tab_info
-        slug:
-            label: waka.mailer::wakamail.slug
-            span: right
-            required: true
-            comment: waka.mailer::wakamail.slug_com
-            permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_info
-        data_source:
-            label: waka.mailer::wakamail.data_source
-            span: right
-            type: dropdown
-            placeholder: waka.utils::lang.global.placeholder
-            disabled: true
-            options: listDataSource
-            trigger:
-                action: hide
-                field: no_ds
-                condition: checked
-            permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_info
+            tab: waka.mailer::wakamail.tab_options
         model_functions:
             label: waka.mailer::wakamail.model_functions
             span: full
             type: functionslist
             size: giant
-            tab: waka.mailer::wakamail.tab_fnc
-        layout:
-            label: waka.mailer::wakamail.layout
-            span: left
-            type: relation
-            placeholder: waka.utils::lang.global.placeholder
-            required: true
-            nameFrom: name
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_info
+            tab: waka.mailer::wakamail.tab_fnc
         images:
             label: waka.mailer::wakamail.images
             span: full
@@ -113,21 +78,22 @@ tabs:
             label: waka.mailer::wakamail.pjs
             span: full
             type: pjlist
-            tab: waka.mailer::wakamail.tab_fnc
-        is_scope:
-            label: waka.mailer::wakamail.is_scope
-            span: left
-            type: switch
-            default: false
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_scopes
+            tab: waka.mailer::wakamail.tab_fnc
         is_lot:
             label: waka.mailer::wakamail.is_lot
             span: left
             type: switch
             default: true
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_scopes
+            tab: waka.mailer::wakamail.tab_options
+        is_scope:
+            label: waka.mailer::wakamail.is_scope
+            span: left
+            type: switch
+            default: false
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
         scopes:
             label: waka.mailer::wakamail.scopes
             span: full
@@ -137,37 +103,61 @@ tabs:
                 field: is_scope
                 condition: checked
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_scopes
+            tab: waka.mailer::wakamail.tab_options
         test_id:
             label: waka.mailer::wakamail.test_id
-            span: auto
+            span: left
             type: dropdown
             placeholder: waka.utils::lang.global.placeholder
             options: listDataSourceTarget
-            tab: waka.mailer::wakamail.tab_info
-        # has_asks:
-        #     label: waka.mailer::wakamail.has_asks
-        #     span: left
-        #     type: switch
-        #     tab: waka.mailer::wakamail.tab_edit
+            tab: waka.mailer::wakamail.tab_options
+        has_asks:
+            label: waka.mailer::wakamail.has_asks
+            span: left
+            type: switch
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_edit
+        asks:
+            label: waka.mailer::wakamail.asks
+            span: full
+            type: repeater
+            groups: $/waka/utils/models/config/ask.yaml
+            trigger:
+                action: show
+                field: has_asks
+                condition: checked
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_edit
         rule_asks:
-            type: Waka\Utils\FormWidgets\AskBuilder
+            span: full
+            type: askbuilder
             targetClass: wakaMail
             full_access: personne
             tab: waka.mailer::wakamail.tab_edit
-
         rule_fncs:
+            span: full
             type: fncbuilder
             targetClass: wakaMail
             full_access: personne
             tab: waka.mailer::wakamail.tab_edit
-        # asks:
-        #     label: waka.mailer::wakamail.asks
-        #     span: full
-        #     type: repeater
-        #     groups: $/waka/utils/models/config/ask.yaml
-        #     trigger:
-        #         action: show
-        #         field: has_asks
-        #         condition: checked
-        #     tab: waka.mailer::wakamail.tab_edit
+secondaryTabs:
+    fields:
+        # info:
+        #     type: modelinfo
+        #     mode: secondary
+        #     src: /waka/mailer/models/wakamail/fields_for_side_bar.yaml
+        infos:
+            span: full
+            type: modelinfo
+            tab: waka.mailer::wakamail.tab_infos
+            src: waka/mailer/models/wakamail/fields_for_side_bar.yaml
+        attributs:
+            span: full
+            type: attributs
+            tab: waka.mailer::wakamail.tab_attributs
+        blocs:
+            span: full
+            type: comonblocs
+            twogName: mailPartial
+            blocClass: Waka\Mailer\Models\Bloc
+            tab: waka.mailer::wakamail.tab_blocs

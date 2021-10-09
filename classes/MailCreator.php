@@ -8,9 +8,9 @@ use Waka\Utils\Classes\TmpFiles;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
-class MailCreator extends \Winter\Storm\Extension\Extendable
+class MailCreator
 {
-    public static $wakamail;
+    public static $productor;
     public $ds;
     public $modelId = null;
     private $isTwigStarted;
@@ -21,30 +21,30 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     public static function find($mail_id, $slug = false)
     {
         //trace_log('find');
-        $wakamail;
+        $productor;
         if ($slug) {
-            $wakamailModel = WakaMail::where('slug', $mail_id)->first();
+            $productorModel = WakaMail::where('slug', $mail_id)->first();
         } else {
-            $wakamailModel = WakaMail::find($mail_id);
+            $productorModel = WakaMail::find($mail_id);
         }
-        if (!$wakamailModel) {
+        if (!$productorModel) {
             /**/trace_log("Le code ou id  email ne fonctionne pas : " . $mail_id. "vous dever entrer l'id ou le code suivi de true");
             throw new ApplicationException("Le code ou id  email ne fonctionne pas : " . $mail_id. "vous dever entrer l'id ou le code suivi de true");
         }
-        self::$wakamail = $wakamailModel;
+        self::$productor = $productorModel;
         return new self;
     }
     public static function getProductor()
     {
-        return self::$wakamail;
+        return self::$productor;
     }
 
     public function setModelId($modelId)
     {
         //trace_log('setModelId');
         $this->modelId = $modelId;
-        $dataSourceId = $this->getProductor()->data_source;
-        $this->ds = new DataSource($dataSourceId);
+        $dataSourceCode = $this->getProductor()->data_source;
+        $this->ds = \DataSources::find($dataSourceCode);
         $this->ds->instanciateModel($modelId);
         //trace_log('ok');
         return $this;
@@ -53,8 +53,8 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     public function setModelTest()
     {
         $this->modelId = $this->getProductor()->test_id;
-        $dataSourceId = $this->getProductor()->data_source;
-        $this->ds = new DataSource($dataSourceId);
+        $dataSourceCode = $this->getProductor()->data_source;
+        $this->ds = \DataSources::find($dataSourceCode);
         $this->ds->instanciateModel($this->modelId);
         return $this;
     }
@@ -76,11 +76,11 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         $asks = $this->getProductor()->rule_asks()->get();
         foreach($asks as $ask) {
             $key = $ask->getCode();
-            trace_log($key);
+            //trace_log($key);
             $askResolved = $ask->resolve($srcmodel, 'twig', $datas);
             $askArray[$key] = $askResolved;
         }
-        trace_log($askArray);
+        //trace_log($askArray);
         return array_replace($askArray,$this->askResponse);
         
     }
@@ -92,11 +92,11 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         $fncs = $this->getProductor()->rule_fncs()->get();
         foreach($fncs as $fnc) {
             $key = $fnc->getCode();
-            trace_log('key of the function');
+            //trace_log('key of the function');
             $fncResolved = $fnc->resolve($srcmodel,$this->ds->code);
-            $fncArray[$key] = $fncArray;
+            $fncArray[$key] = $fncResolved;
         }
-        trace_log($fncArray);
+        //trace_log($fncArray);
         return $fncArray;
         
     }
@@ -169,6 +169,8 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
         
 
         $model = array_merge($model, [ 'asks' => $this->askResponse]);
+
+        //trace_log($model);
         //Recupère des variables par des evenements exemple LP log dans la finction boot
         $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
         if ($dataModelFromEvent[0] ?? false) {
@@ -187,13 +189,13 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
     public function prepareModel() {
         
         $values = $this->ds->getValues($this->modelId);
-        $img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
-        $fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
+        //$img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
+        //$fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
         //
         return [
             'ds' => $values,
-            'IMG' => $img,
-            'FNC' => $fnc,
+            //'IMG' => $img,
+            //'FNC' => $fnc,
         ];
 
     }
@@ -293,7 +295,7 @@ class MailCreator extends \Winter\Storm\Extension\Extendable
                 }
             });
 
-            \Flash::success(trans('waka.mailer::wakamail.mail_success'));
+            \Flash::success(trans('waka.mailer::productor.mail_success'));
         }
         catch (Exception $ex) {
             /**/trace_log($ex->getMessage());

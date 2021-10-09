@@ -3,29 +3,32 @@
 # ===================================
 
 fields:
-    is_mjml:
-        label: waka.mailer::wakamail.is_mjml
+    state:
+        label: waka.mailer::wakamail.state
         span: left
-        type: switch
-        default: false
-        permissions: [waka.mailer.admin.super]
+        type: balloon-selector
+        required: true
+        default: Brouillon
+        options: listStates
+        default: Actif
+        permissions: [wcli.mailer.admin]
     name:
         label: waka.mailer::wakamail.name
         span: left
         required: true
-        commentAbove: waka.mailer::wakamail.name_com
-    has_log:
-        label: waka.mailer::wakamail.has_log
-        span: right
-        type: switch
-        permissions: [waka.mailer.admin.super]
+        comment: waka.mailer::wakamail.name_com
     slug:
         label: waka.mailer::wakamail.slug
         span: right
         required: true
         preset: name
-        commentAbove: waka.mailer::wakamail.slug_com
+        comment: waka.mailer::wakamail.slug_com
+    has_log:
+        label: waka.mailer::wakamail.has_log
+        span: left
+        type: switch
         permissions: [waka.mailer.admin.super]
+        tab: waka.mailer::wakamail.tab_options
     no_ds:
         label: waka.mailer::wakamail.no_ds
         span: left
@@ -43,15 +46,6 @@ fields:
             field: no_ds
             condition: checked
         permissions: [waka.mailer.admin.super]
-    state:
-        label: waka.mailer::wakamail.state
-        span: full
-        type: balloon-selector
-        required: true
-        default: Brouillon
-        options: listStates
-        default: Actif
-        permissions: [wcli.mailer.admin]
     layout:
         label: waka.mailer::wakamail.layout
         span: left
@@ -71,3 +65,11 @@ fields:
         default: true
         default: true
         permissions: [waka.mailer.admin.super]
+        tab: waka.mailer::wakamail.tab_options
+    is_mjml:
+        label: waka.mailer::wakamail.is_mjml
+        span: left
+        type: switch
+        default: false
+        permissions: [waka.mailer.admin.super]
+        tab: waka.mailer::wakamail.tab_edit

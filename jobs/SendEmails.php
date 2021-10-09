@@ -90,8 +90,8 @@ class SendEmails implements WakajobQueueJob
          */
         $productorId = $this->data['productorId'];
         $mailCreator = MailCreator::find($productorId);
-        $modelDataSource = $mailCreator->getProductor()->data_source;
-        $ds = new DataSource($modelDataSource);
+        $dataSourceCode = $mailCreator->getProductor()->data_source;
+        $ds = \DataSources::find($dataSourceCode);
         //
         $targets = $this->data['listIds'];
 

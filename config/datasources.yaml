@@ -1,0 +1,13 @@
+# ===================================
+#  Config des data source
+# ===================================
+datasource: 
+    wakamail:
+        hidden: true
+        label: WakaMail
+        class: Waka\Mailer\Models\WakaMail
+        controller: wcli/mailer/wakamails
+        attributes: waka/mailer/models/wakamail/attributes.yaml
+        relations:
+            layout:
+                label: Layout

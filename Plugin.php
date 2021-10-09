@@ -41,6 +41,7 @@ class Plugin extends PluginBase
     {
     }
 
+
     public function registerFormWidgets(): array
     {
         return [
@@ -78,8 +79,7 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        // $this->app['Illuminate\Contracts\Http\Kernel']
-        //     ->pushMiddleware('Waka\Mailer\Classes\Middleware\MailgunWebHook');
+        \DataSources::registerDataSources(plugins_path().'/waka/mailer/config/datasources.yaml');
         
     }
 

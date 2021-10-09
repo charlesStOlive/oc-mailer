@@ -1,7 +1,7 @@
 <?php namespace Waka\Mailer\Models;
 
-use Mjml\Client as MjmlClient;
 use Model;
+use Mjml\Client as MjmlClient;
 
 /**
  * wakaMail Model
@@ -110,12 +110,12 @@ class WakaMail extends Model
     ];
     public $morphMany = [
         'rule_asks' => [
-            \Waka\Utils\Models\RuleAsk::class,
+            'Waka\Utils\Models\RuleAsk',
             'name' => 'askeable',
             'delete' => true
         ],
         'rule_fncs' => [
-            \Waka\Utils\Models\RuleFnc::class,
+            'Waka\Utils\Models\RuleFnc',
             'name' => 'fnceable',
             'delete' => true
         ],

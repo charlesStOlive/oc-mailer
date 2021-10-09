@@ -4,7 +4,6 @@ use Backend\Classes\ControllerBehavior;
 use Session;
 use Waka\Mailer\Classes\MailCreator;
 use Waka\Mailer\Models\WakaMail;
-use Waka\Utils\Classes\DataSource;
 
 class MailBehavior extends ControllerBehavior
 {
@@ -50,7 +49,7 @@ class MailBehavior extends ControllerBehavior
         $modelClass = post('modelClass');
         $modelId = post('modelId');
         //datasource
-        $ds = new DataSource($modelClass, 'class');
+        $ds = \DataSources::findByClass($modelClass);
         $options = $ds->getProductorOptions('Waka\Mailer\Models\WakaMail', $modelId);
         $contact = $ds->getContact('to', $modelId);
         //
@@ -71,10 +70,11 @@ class MailBehavior extends ControllerBehavior
     {
         $productorId = post('productorId');
         $wakaMail = WakaMail::find($productorId);
+        $modelId = $wakaMail->test_id;
         $dataSourceCode = $wakaMail->data_source;
-        $ds = new DataSource($dataSourceCode);
-        $options = $ds->getProductorOptions('Waka\Mailer\Models\WakaMail');
-        $contact = $ds->getContact('to', null);
+        $ds = \DataSources::find($dataSourceCode);
+        $options = $ds->getProductorOptions('Waka\Mailer\Models\WakaMail', $modelId);
+        $contact = [];
         $this->mailBehaviorWidget->getField('email')->options = $contact;
         $cc = $ds->getContact('cc', null);
         $this->mailBehaviorWidget->getField('cc')->hidden = true;
@@ -82,7 +82,7 @@ class MailBehavior extends ControllerBehavior
         $this->vars['productorId'] = $productorId;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
-        $this->vars['modelId'] = null;
+        $this->vars['modelId'] = $wakaMail->test_id;
         $this->vars['options'] = $options;
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_test.htm');
     }
@@ -95,7 +95,7 @@ class MailBehavior extends ControllerBehavior
         $productorId = post('productorId');
         $modelClass = post('modelClass');
         $modelId = post('modelId');
-        $ds = new DataSource($modelClass, 'class');
+        $ds = \DataSources::findByClass($modelClass, 'class');
         $wakaMail = WakaMail::find($productorId);
 
 
@@ -189,7 +189,7 @@ class MailBehavior extends ControllerBehavior
     public function onLotMail()
     {
         $modelClass = post('modelClass');
-        $ds = new DataSource($modelClass, 'class');
+        $ds = \DataSources::findByClass($modelClass, 'class');
         $options = $ds->getPartialIndexOptions('Waka\Mailer\Models\WakaMail');
         //
         $this->vars['options'] = $options;

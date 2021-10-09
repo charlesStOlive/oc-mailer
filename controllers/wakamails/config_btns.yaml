@@ -50,10 +50,13 @@ breadcrump:
 ###ACTION BAR (dans les pages update) #Les behavior liée aux boutons doivent êtres instanciés implements = [waka.xxx.behaviors.yyy] dans le controller. 
 action_bar:
     config_btns:
-        format: all #unique : un seul bouton, all : tts les boutons
+        format: grouped #unique : un seul bouton, all : tts les boutons
+        groups:
+            waka.utils::lang.prod.tools: oc-icon-wrench
         btns:
             duplicate:
                 config: waka.utils::btns.duplicate
+                group: waka.utils::lang.prod.tools
     partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
         testbtns:
             url: $/waka/mailer/controllers/wakamails/_testbtns.htm

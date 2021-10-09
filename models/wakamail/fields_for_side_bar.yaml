@@ -1,0 +1,45 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+fields:
+    name:
+        label: waka.mailer::wakamail.name
+        span: left
+        required: true
+        comment: waka.mailer::wakamail.name_com
+        infoType: title
+    slug:
+        label: waka.mailer::wakamail.slug
+        span: right
+        required: true
+        comment: waka.mailer::wakamail.slug_com
+        noUpdate: true
+    data_source:
+        label: waka.mailer::wakamail.data_source
+        span: right
+        type: dropdown
+        placeholder: waka.utils::lang.global.placeholder
+        disabled: true
+        options: listDataSource
+        trigger:
+            action: hide
+            field: no_ds
+            condition: checked
+        permissions: [waka.mailer.admin.super]
+    layout:
+        label: waka.mailer::wakamail.layout
+        span: left
+        type: relation
+        placeholder: waka.utils::lang.global.placeholder
+        required: true
+        nameFrom: name
+        permissions: [waka.mailer.admin.super]
+        value: layout.name
+    test_id:
+        label: waka.mailer::wakamail.test_id
+        span: left
+        type: dropdown
+        placeholder: waka.utils::lang.global.placeholder
+        options: listDataSourceTarget
+        tab: waka.mailer::wakamail.tab_options
+

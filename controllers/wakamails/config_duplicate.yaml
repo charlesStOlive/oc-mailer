@@ -12,14 +12,21 @@ redirect: backend/waka/mailer/wakamails/update/
 
 duplication:
     #Les champs dans le tableau relation seront cloné et attaché au nouveau model 
-    # relations:
-    #     - quotesdetails
+    relationsMany:
+        - rule_asks
+        - rule_fncs
+    # relationsBelongsToMany:
+    #   - rule_asks
+    #   - rule_fncs
+  
+    # relationsMorphMany:
+    #     rule_asks : 
+    #         id: askeable_id
+    #     rule_fncs:
 
     #Les champs dans le tableau transformation auront les valeurs listé ci dessous 
-    # transformation:
-    #     quotestatus_id: 1
-    #     code: null
-    #     unblock: false
+    transformation:
+        state: Brouillon
 
     #Les champs qui seront modifié dans le formulaire du popup 
     fields:

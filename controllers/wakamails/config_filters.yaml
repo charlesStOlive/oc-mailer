@@ -7,4 +7,4 @@ scopes:
         label: Source de données
         conditions: data_source in (:filtered)
         modelClass: Waka\Mailer\Models\WakaMail
-        options: listAllDataSourceToArray
+        options: listDataSource

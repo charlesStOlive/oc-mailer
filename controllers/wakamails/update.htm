@@ -8,7 +8,12 @@
 <?= Form::open(['class' => 'layout']) ?>
 
 <div class="layout-row">
-    <?= $this->formRender() ?>
+    <?php if ($this->formHasOutsideFields()): ?>
+    <?= $this->formRender(['section' => 'outside']) ?>
+    <?php endif ?>
+    <?php if ($this->formHasPrimaryTabs()): ?>
+    <?= $this->formRender(['section' => 'primary']) ?>
+    <?php endif ?>
 </div>
 <div class="form-buttons">
     <div class="loading-indicator-container">
@@ -19,24 +24,9 @@
 
 <!-- Complimentary sidebar -->
 <?php Block::put('form-sidebar') ?>
-<div class="control-tabs secondary-tabs"
-     data-control="tab">
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#secondaryTabOne">Attributs</a></li>
-        <li><a href="#secondaryTabTwo">Blocs emails</a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active">
-            <div id="sidebar_attributes">
-                <?= $this->attributesRender() ?>
-            </div>
-        </div>
-        <div class="tab-pane">
-            <?= $this->widget->blocsWidget->render() ?>
-        </div>
-    </div>
+<div>
+    <?= $this->formRenderSecondaryTabs() ?>
 </div>
-
 
 
 <?php Block::endPut() ?>
@@ -53,12 +43,11 @@
     <?= Block::placeholder('breadcrumb') ?>
 </div>
 <div class="padded-container">
-    <p class="flash-message static error">
-        <?= e(trans($this->fatalError)) ?>
+    <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+    <p>
+        <a href="<?= Backend::url('backend/users') ?>"
+           class="btn btn-default"><?= e(trans('backend::lang.user.return')) ?>
+        </a>
     </p>
-    <p><a href="<?= Backend::url('backend/users') ?>"
-           class="btn btn-default">
-            <?= e(trans('backend::lang.user.return')) ?>
-        </a></p>
 </div>
 <?php endif ?>

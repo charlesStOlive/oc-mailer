@@ -14,7 +14,7 @@ class WakaMails extends Controller
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
         'Waka.Utils.Behaviors.BtnsBehavior',
-        'waka.Utils.Behaviors.SideBarAttributesBehavior',
+        'Waka.Utils.Behaviors.SideBarUpdate',
         'Waka.Mailer.Behaviors.MailBehavior',
         'Backend.Behaviors.ReorderController',
         'Waka.Utils.Behaviors.DuplicateModel',
@@ -23,7 +23,7 @@ class WakaMails extends Controller
     public $btnsConfig = 'config_btns.yaml';
     public $duplicateConfig = 'config_duplicate.yaml';
     public $reorderConfig = 'config_reorder.yaml';
-    public $sidebarAttributesConfig = 'config_attributes.yaml';    
+    public $sideBarUpdateConfig = 'config_side_bar_update.yaml';
 
     public $requiredPermissions = ['waka.mailer.admin.*'];
     //FIN DE LA CONFIG AUTO
@@ -39,11 +39,8 @@ class WakaMails extends Controller
         parent::__construct();
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Waka.Mailer', 'WakaMails');
-
-        $blocsWidget = new \Waka\Mailer\Widgets\SidebarBlocs($this);
-        $blocsWidget->alias = 'blocsWidget';
-        $blocsWidget->bindToController();
     }
+
     //startKeep/
 
     public function index($tab = null)
@@ -78,8 +75,16 @@ class WakaMails extends Controller
     public function update_onSave($recordId = null)
     {
         $this->asExtension('FormController')->update_onSave($recordId);
+        // return [
+        //     '#sidebar_attributes' => $this->attributesRender($this->params[0]),
+        // ];
+        $fieldAttributs = $this->formGetWidget()->renderField('attributs', ['useContainer' => true]);
+        $fieldInfos = $this->formGetWidget()->renderField('infos', ['useContainer' => true]);
+        //trace_log($fieldInfos);
+
         return [
-            '#sidebar_attributes' => $this->attributesRender($this->params[0]),
+            '#Form-field-WakaMail-attributs-group' => $fieldAttributs,
+            '#Form-field-WakaMail-infos-group' => $fieldInfos
         ];
     }
 

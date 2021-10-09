@@ -60,21 +60,21 @@ class PjList extends FormWidgetBase
 
     public function onShowPjList()
     {
-        $modelDataSource = $this->model->data_source;
-        $ds = new DataSource($modelDataSource, 'code');
+        $dataSourceCode = $this->model->data_source;
+        $ds = \DataSources::find($dataSourceCode);
         $options = $ds->getPublicationsType();
         if ($options) {
             $this->vars['pjList'] = $options;
             return $this->makePartial('popup');
         } else {
-            throw new \ApplicationException("Il n' y a pas de publications disponibles pour ce type de DataSource");
+            throw new \ApplicationException("Il n' y a pas de publications disponibles pour ce type de \DataSource");
         }
     }
 
     public function onSelectPjype()
     {
-        $modelDataSource = $this->model->data_source;
-        $ds = new DataSource($modelDataSource, 'code');
+        $dataSourceCode = $this->model->data_source;
+        $ds = \DataSources::find($dataSourceCode);
         $class = post('classType');
         $options = $ds->getPublicationsFromType($class);
         $this->vars['options_prod'] = $options;
