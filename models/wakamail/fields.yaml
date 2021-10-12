@@ -21,7 +21,6 @@ tabs:
         waka.mailer::wakamail.tab_info: icon-info-circle
         waka.mailer::wakamail.tab_edit: icon-pencil
         waka.mailer::wakamail.tab_options: icon-cog
-        waka.mailer::wakamail.tab_fnc: icon-address-card-o
         waka.lp::lang.source_log.tab_lp: icon-file
     fields:    
         is_mjml:
@@ -55,6 +54,18 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
+        rule_asks:
+            span: full
+            type: askbuilder
+            targetClass: wakaMail
+            full_access: personne
+            tab: waka.mailer::wakamail.tab_edit
+        rule_fncs:
+            span: full
+            type: fncbuilder
+            targetClass: wakaMail
+            full_access: personne
+            tab: waka.mailer::wakamail.tab_edit
         has_log:
             label: waka.mailer::wakamail.has_log
             span: left
@@ -67,19 +78,19 @@ tabs:
             type: functionslist
             size: giant
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_fnc
+            tab: waka.mailer::wakamail.tab_temp
         images:
             label: waka.mailer::wakamail.images
             span: full
             type: imageslist
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_fnc
+            tab: waka.mailer::wakamail.tab_temp
         pjs:
             label: waka.mailer::wakamail.pjs
             span: full
             type: pjlist
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_fnc
+            tab: waka.mailer::wakamail.tab_options
         is_lot:
             label: waka.mailer::wakamail.is_lot
             span: left
@@ -116,7 +127,7 @@ tabs:
             span: left
             type: switch
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_edit
+            tab: waka.mailer::wakamail.tab_temp
         asks:
             label: waka.mailer::wakamail.asks
             span: full
@@ -127,19 +138,7 @@ tabs:
                 field: has_asks
                 condition: checked
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_edit
-        rule_asks:
-            span: full
-            type: askbuilder
-            targetClass: wakaMail
-            full_access: personne
-            tab: waka.mailer::wakamail.tab_edit
-        rule_fncs:
-            span: full
-            type: fncbuilder
-            targetClass: wakaMail
-            full_access: personne
-            tab: waka.mailer::wakamail.tab_edit
+            tab: waka.mailer::wakamail.tab_temp
 secondaryTabs:
     fields:
         # info:

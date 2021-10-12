@@ -41,6 +41,7 @@ return [
     'tab_info' => 'Information',
     'tab_infos' => 'Infos',
     'tab_options' => 'Options',
+    'tab_temp' => 'TEMP',
     'test_id' => 'Model de test',
     'test_title' => 'Tester un email',
     'tests' => 'Tests',
