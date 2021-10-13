@@ -203,10 +203,15 @@ class MailCreator
     public function renderTest()
     {
         $testId = $this->getProductor()->test_id;
-        if(!$testId) {
-            throw new ApplicationException("Il manque le modèle de test dans l'onglet info");
+        $noDs = $this->getProductor()->no_ds;
+        if(!$testId && !$noDs ) {
+            return \Response::make(\View::make('waka.utils::access_impossible')->with('explain', 'Il manque le modèle de test dans l\'onglet info'));
+        } elseif($testId && !$noDs) {
+            $this->setModelId($this->getProductor()->test_id);
+        } else {
+            $this->manualData = ['emails' => []];
         }
-        $this->setModelId($this->getProductor()->test_id);
+        
         return $this->prepare();
     }
 

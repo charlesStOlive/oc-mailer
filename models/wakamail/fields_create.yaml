@@ -11,18 +11,20 @@ fields:
         default: Brouillon
         options: listStates
         default: Actif
-        permissions: [wcli.mailer.admin]
+        permissions: [waka.mailer.admin.*]
     name:
         label: waka.mailer::wakamail.name
         span: left
         required: true
         comment: waka.mailer::wakamail.name_com
+        permissions: [waka.mailer.admin.*]
     slug:
         label: waka.mailer::wakamail.slug
         span: right
         required: true
         preset: name
         comment: waka.mailer::wakamail.slug_com
+        permissions: [waka.mailer.*]
     has_log:
         label: waka.mailer::wakamail.has_log
         span: left
@@ -58,6 +60,7 @@ fields:
         label: waka.mailer::wakamail.subject
         span: left
         required: true
+        permissions: [waka.mailer.*]
     is_lot:
         label: waka.mailer::wakamail.is_lot
         span: left

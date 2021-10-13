@@ -7,12 +7,14 @@ fields:
         span: left
         required: true
         comment: waka.mailer::wakamail.name_com
+        permissions: [waka.mailer.admin.*]
         infoType: title
     slug:
         label: waka.mailer::wakamail.slug
         span: right
         required: true
         comment: waka.mailer::wakamail.slug_com
+        permissions: [waka.mailer.*]
         noUpdate: true
     data_source:
         label: waka.mailer::wakamail.data_source
@@ -41,5 +43,6 @@ fields:
         type: dropdown
         placeholder: waka.utils::lang.global.placeholder
         options: listDataSourceTarget
+        permissions: [waka.mailer.admin.*]
         tab: waka.mailer::wakamail.tab_options
 

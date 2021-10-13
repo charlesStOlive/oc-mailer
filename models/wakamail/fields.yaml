@@ -6,6 +6,7 @@ fields:
         label: waka.mailer::wakamail.subject
         span: left
         required: true
+        permissions: [waka.mailer.*]
     state:
         label: waka.mailer::wakamail.state
         span: right
@@ -14,7 +15,7 @@ fields:
         default: Brouillon
         options: listStates
         default: Actif
-        permissions: [wcli.mailer.admin]
+        permissions: [waka.mailer.admin.*]
 tabs:
     defaultTab: waka.mailer::wakamail.tab_edit
     icons: 
@@ -57,14 +58,16 @@ tabs:
         rule_asks:
             span: full
             type: askbuilder
-            targetClass: wakaMail
-            full_access: personne
+            targetProductor: wakaMail
+            full_access: waka.rules.asks.admin
+            permissions: [waka.rules.asks.*]
             tab: waka.mailer::wakamail.tab_edit
         rule_fncs:
             span: full
             type: fncbuilder
-            targetClass: wakaMail
-            full_access: personne
+            targetProductor: wakaMail
+            full_access: waka.rules.fncs.admin
+            permissions: [waka.rules.fncs.*]
             tab: waka.mailer::wakamail.tab_edit
         has_log:
             label: waka.mailer::wakamail.has_log
@@ -121,6 +124,7 @@ tabs:
             type: dropdown
             placeholder: waka.utils::lang.global.placeholder
             options: listDataSourceTarget
+            permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_options
         has_asks:
             label: waka.mailer::wakamail.has_asks
@@ -148,15 +152,18 @@ secondaryTabs:
         infos:
             span: full
             type: modelinfo
+            permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_infos
             src: waka/mailer/models/wakamail/fields_for_side_bar.yaml
         attributs:
             span: full
             type: attributs
+            permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_attributs
         blocs:
             span: full
             type: comonblocs
             twogName: mailPartial
             blocClass: Waka\Mailer\Models\Bloc
+            permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_blocs

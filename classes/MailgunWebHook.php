@@ -24,7 +24,7 @@ class MailgunWebHook
     public function messageType(Request $request, $type)
     {
         $logVars = $request->input('event-data.user-variables');
-        if(!$logVars) return;
+        if(!$logVars) return response()->json('Success!', 200);
         $email = $request->input('event-data.recipient');
         $test = MailLog::create([
             'name' => $email,
