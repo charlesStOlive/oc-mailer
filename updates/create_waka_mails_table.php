@@ -11,19 +11,19 @@ class CreateWakaMailsTable extends Migration
         Schema::create('waka_mailer_waka_mails', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name');
-            $table->string('slug');
             $table->string('subject');
-            $table->string('data_source');
-            $table->integer('layout_id')->unsigned()->nullable();
             $table->boolean('is_mjml')->nullable()->default(false);
             $table->text('mjml')->nullable();
-            $table->text('mjml_html')->nullable();
             $table->text('html')->nullable();
             $table->text('model_functions')->nullable();
             $table->text('images')->nullable();
             $table->boolean('is_scope')->nullable()->default(false);
             $table->text('scopes')->nullable();
+            $table->string('name');
+            $table->string('slug');
+            $table->string('data_source');
+            $table->integer('layout_id')->unsigned()->nullable();
+            $table->text('mjml_html')->nullable();
             //reorder
             $table->integer('sort_order')->default(0);
             //softDelete

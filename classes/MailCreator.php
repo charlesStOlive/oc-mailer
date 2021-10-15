@@ -267,9 +267,10 @@ class MailCreator
             return [];
         }
         return [
+            'mail_type' => 'Waka\Mailer\Models\WakaMail',
+            'mail_id' => $this->getProductor()->id,
             'ds' => $this->ds->class,
             'ds_id' => $this->modelId,
-            'id' => $this->getProductor()->id,
         ];
         
         
@@ -282,29 +283,34 @@ class MailCreator
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
             $logs = $this->preparelogs();
-            //trace_log($logs);
 
-            \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $logs) {
-                //trace_log($datasEmail);
-                $message->to($datasEmail['emails']);
-                $message->subject($datasEmail['subject']);
-                $headers = $message->getSwiftMessage()->getHeaders();
-                $headers->addTextHeader('X-Mailgun-Variables', json_encode($logs));
-                $pjs = $datasEmail['pjs'] ?? null;
-                //trace_log($pjs);
-                if ($pjs) {
-                    //trace_log("Il y a des pjs");
-                    foreach ($pjs as $pj) {
-                        $message = $this->resolvePj($message, 'swift', $pj);
-                    }
+            $mailSendBox = \Waka\Mailer\Models\SendBox::create([
+                'name' => $datasEmail['subject'],
+                'content' => $htmlLayout,
+                'tos' => $datasEmail['emails'],
+                'mail_vars' => $logs,
+                'mail_tags' => [],
+                'maileable_type' => $logs['mail_type'],
+                'maileable_id' => $this->getProductor()->id,
+                'targeteable_type' => $this->ds->class,
+                'targeteable_id' => $this->modelId,
+            ]);
+            $pjs = $datasEmail['pjs'] ?? null;
+
+            if ($pjs) {
+                foreach ($pjs as $pj) {
+                   $this->resolvePj($mailSendBox, 'swift', $pj);
                 }
-            });
+            }
+
+            if($this->getProductor()->auto_send) {
+                $mailSendBox->send();
+            }
 
             \Flash::success(trans('waka.mailer::productor.mail_success'));
         }
         catch (Exception $ex) {
-            /**/trace_log($ex->getMessage());
-            \Flash::error($ex->getMessage());
+            \Log::error($ex->getMessage());
         }
         
     }
@@ -458,7 +464,7 @@ class MailCreator
         }
         if($mailResolver == 'swift') {
             //trace_log('swift');
-           $this->returnSwiftPj($message, $pjToReturn, $pjsToReturn);
+           $this->returnMailFile($message, $pjToReturn, $pjsToReturn);
         }
     }
 
@@ -475,23 +481,26 @@ class MailCreator
         }
     }
 
-    public function returnSwiftPj($message, $pjToReturn, $pjsToReturn) {
+    public function returnMailFile($mail, $pjToReturn, $pjsToReturn) {
+        trace_log($pjsToReturn);
         if($pjToReturn) {
                 $pjName = $pjToReturn['name'] ?? null;
-                if($pjName) {
-                    $message->attach($pjToReturn['path'], ['as' => $pjToReturn['name']]);
-                } else {
-                    $message->attach($pjToReturn['path']);
-                }
+                $file = new \System\Models\File;
+                $file->data = $pjToReturn['path'];
+                $file->title = $pjName;
+                $file->is_public = false;
+                trace_log($file->toArray());
+                $mail->pjs()->add($file);
             }
         if($pjsToReturn) {
             foreach ($pjsToReturn as $pjPathUnique) {
                 $pjName = $pjPathUnique['name'] ?? null;
-                if($pjName) {
-                    $message->attach($pjPathUnique['path'], ['as' => $pjPathUnique['name']]);
-                } else {
-                    $message->attach($pjPathUnique['path']);
-                }
+                $file = new \System\Models\File;
+                $file->data = $pjPathUnique['path'];
+                $file->title = $pjName;
+                $file->is_public = false;
+                trace_log($file->toArray());
+                $mail->pjs()->add($file);
             }
         }
     }

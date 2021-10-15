@@ -12,10 +12,13 @@ class CreateMailLogsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->integer('waka_mail_id_id')->unsigned()->nullable();
+            $table->integer('send_box_id')->unsigned()->nullable();
+            $table->integer('maileable_id')->nullable();
+            $table->string('maileable_type')->nullable();
             $table->string('logeable_type')->nullable();
             $table->integer('logeable_id')->nullable();
             $table->string('type')->nullable();
+            $table->text('meta')->nullable();
             $table->text('tags')->nullable();
             $table->timestamps();
         });

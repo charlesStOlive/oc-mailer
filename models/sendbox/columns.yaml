@@ -1,0 +1,37 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    send_at:
+        label: waka.mailer::sendbox.send_at
+        type: timesince
+        searchable: true
+    state:
+        label: waka.mailer::sendbox.state
+        searchable: true
+    tos:
+        label: waka.mailer::sendbox.tos
+        searchable: true
+    name:
+        label: waka.mailer::sendbox.name
+        searchable: true
+    maileable_type:
+        label: waka.mailer::sendbox.maileable_type
+        searchable: true
+    maileable_id:
+        label: waka.mailer::sendbox.maileable_id
+        searchable: true
+    targeteable_type:
+        label: waka.mailer::sendbox.targeteable_type
+        searchable: true
+    targeteable_id:
+        label: waka.mailer::sendbox.targeteable_id
+        searchable: true
+    has_pjs:
+        label: waka.mailer::sendbox.has_pjs
+        searchable: false
+        sortable: false
+    updated_at:
+        label: waka.utils::lang.global.updated_at
+        type: timetense

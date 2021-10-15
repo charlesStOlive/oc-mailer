@@ -1,0 +1,16 @@
+# ===================================
+# Relation Behavior Config
+# ===================================
+
+mail_logs:
+    label: waka.mailer::sendbox.mail_logs
+    manage:
+    view:
+        list: $/waka/mailer/models/maillog/columns.yaml
+        recordUrl: waka/mailer/maillogs/update/:id
+        toolbarButtons: false
+        showCheckboxes: false
+        defaultSort:
+            column: name
+            direction: asc
+

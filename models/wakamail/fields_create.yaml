@@ -29,6 +29,38 @@ fields:
         label: waka.mailer::wakamail.has_log
         span: left
         type: switch
+        default: true
+        comment: waka.mailer::wakamail.has_log_com
+        permissions: [waka.mailer.admin.super]
+        tab: waka.mailer::wakamail.tab_options
+    open_log:
+        label: waka.mailer::wakamail.open_log
+        span: left
+        type: switch
+        trigger:
+            action: show
+            field: has_log
+            condition: checked
+        default: false
+        permissions: [waka.mailer.admin.super]
+        tab: waka.mailer::wakamail.tab_options
+    click_log:
+        label: waka.mailer::wakamail.click_log
+        span: right
+        type: switch
+        trigger:
+            action: show
+            field: has_log
+            condition: checked
+        default: false
+        permissions: [waka.mailer.admin.super]
+        tab: waka.mailer::wakamail.tab_options
+    auto_send:
+        label: waka.mailer::wakamail.auto_send
+        span: left
+        type: switch
+        default: true
+        comment: waka.mailer::wakamail.auto_send_com
         permissions: [waka.mailer.admin.super]
         tab: waka.mailer::wakamail.tab_options
     no_ds:

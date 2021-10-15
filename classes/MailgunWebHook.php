@@ -28,7 +28,8 @@ class MailgunWebHook
         $email = $request->input('event-data.recipient');
         $test = MailLog::create([
             'name' => $email,
-            'waka_mail_id' => $logVars['id'] ?? null,
+            'maileable_id' => $logVars['mail_id'] ?? null,
+            'maileable_type' => $logVars['mail_type'] ?? null,
             'logeable_type' => $logVars['ds'] ?? null,
             'logeable_id' => $logVars['ds_id'] ?? null,
             'type' => $type,

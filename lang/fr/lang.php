@@ -4,6 +4,8 @@ return [
         'title' => 'Contenu',
         'wakamails' => 'Mails',
         'wakamails_description' => 'Gestion des emails et de leurs blocs',
+        'sendbox' => 'Boite d\'envoie', 
+        'sendbox_description' => 'Affiche les emails en boite d\'envoie', 
         'bloc_name' => 'Blocs emails',
         'bloc_type' => 'types de blocs emails',
         'bloc_type_description' => 'Administration des types de blocs et exemples',

@@ -35,11 +35,11 @@ class WakaMail extends Model
      * @var array Validation rules for attributes
      */
     public $rules = [
+        'state' => 'required',
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
-        'state' => 'required',
-        'subject' => 'required',
         'layout' => 'required',
+        'subject' => 'required',
     ];
 
     public $customMessages = [
@@ -94,7 +94,6 @@ class WakaMail extends Model
     public $hasOne = [
     ];
     public $hasMany = [
-        'mailLog' => ['Waka\Mailer\Models\MailLog'],
     ];
     public $hasOneThrough = [
     ];
@@ -109,6 +108,14 @@ class WakaMail extends Model
     public $morphOne = [
     ];
     public $morphMany = [
+        'sendBoxs' => [
+            'Waka\Mailer\Models\SendBox',
+            'name' => 'maileable'
+        ],
+        'mailLogs' => [
+            'Waka\Mailer\Models\MailLog',
+            'name' => 'maileable'
+        ],
         'rule_asks' => [
             'Waka\Utils\Models\RuleAsk',
             'name' => 'askeable',

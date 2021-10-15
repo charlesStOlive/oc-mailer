@@ -86,7 +86,7 @@ class MailLog extends Model
     public $hasManyThrough = [
     ];
     public $belongsTo = [
-       'wakaMail' => ['Waka\Mailer\Models\WakaMail'],
+       'send_box' => ['Waka\Mailer\Models\SendBox'],
     ];
     public $belongsToMany = [
     ];        

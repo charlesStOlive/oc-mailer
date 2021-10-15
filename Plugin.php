@@ -141,6 +141,15 @@ class Plugin extends PluginBase
                 'permissions' => ['waka.mailer.admin.*'],
                 'order' => 30,
             ],
+            'sendBox' => [
+                'label' => Lang::get('waka.mailer::lang.menu.sendbox'),
+                'description' => Lang::get('waka.mailer::lang.menu.sendbox_description'),
+                'category' => Lang::get('waka.utils::lang.menu.settings_controle'),
+                'icon' => 'icon-envelope',
+                'url' => Backend::url('waka/mailer/sendboxs'),
+                'permissions' => ['waka.mailer.admin.*'],
+                'order' => 30,
+            ],
         ];
     }
 }

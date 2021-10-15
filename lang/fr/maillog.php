@@ -1,19 +1,20 @@
 <?php
 return [
-    'name' => 'Email du log',
-    'waka_mail_id' => 'Email source',
-    'logeable_type' => 'Type',
-    'logeable_id' => 'ID',
-    'type' => 'Type d\'évenement',
-    'meta' => 'Meta',
-    'tags' => 'Tags',
-    'title' => 'Gestion des logs',
-    'update' => 'Éditer un log',
     'create' => 'Créer un log',
     'edit' => 'Éditer un log',
-    'test_title' => 'Tester un log',
     'form_name' => 'Gestion de l\'log',
+    'logeable_id' => 'ID',
+    'logeable_type' => 'Type',
+    'maileable_id' => 'Email source ID',
+    'maileable_type' => 'Email source Type',
+    'meta' => 'Meta',
+    'name' => 'Email du log',
     'preview_name' => 'Voir l\'log',
+    'tags' => 'Tags',
+    'test_title' => 'Tester un log',
+    'title' => 'Gestion des logs',
+    'type' => 'Type d\'évenement',
+    'update' => 'Éditer un log',
     'e' => [
         'data_source' => null
     ]

@@ -1,0 +1,84 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+fields:
+    send_at:
+        label: waka.mailer::sendbox.send_at
+        span: left
+        type: datepicker
+        mode: date
+    state:
+        label: waka.mailer::sendbox.state
+        span: right
+tabs:
+    defaultTab: 1
+    icons: 
+    fields:    
+        content:
+            label: waka.mailer::sendbox.content
+            span: storm
+            type: partial
+            cssClass: col-xs-6
+            path: field_render_content
+            tab: waka.mailer::sendbox.tab_content
+        pjs:
+            label: waka.mailer::sendbox.pjs
+            span: storm
+            type: fileupload
+            mode: file
+            cssClass: col-xs-6
+            mode: file
+            tab: waka.mailer::sendbox.tab_content
+        name:
+            label: waka.mailer::sendbox.name
+            span: storm
+            required: true
+            cssClass: col-xs-6 col-md-6
+            default: Actif
+            tab: waka.mailer::sendbox.tab_vars
+        methode:
+            label: waka.mailer::sendbox.methode
+            span: storm
+            cssClass: col-xs-6 col-md-3
+            tab: waka.mailer::sendbox.tab_vars
+        maileable_type:
+            label: waka.mailer::sendbox.maileable_type
+            span: storm
+            cssClass: col-xs-6 col-md-3
+            tab: waka.mailer::sendbox.tab_vars
+        maileable_id:
+            label: waka.mailer::sendbox.maileable_id
+            span: storm
+            cssClass: col-xs-6 col-md-3
+            tab: waka.mailer::sendbox.tab_vars
+        targeteable_type:
+            label: waka.mailer::sendbox.targeteable_type
+            span: storm
+            cssClass: col-xs-6 col-md-3
+            tab: waka.mailer::sendbox.tab_vars
+        targeteable_id:
+            label: waka.mailer::sendbox.targeteable_id
+            span: storm
+            cssClass: col-xs-6 col-md-3
+            tab: waka.mailer::sendbox.tab_vars
+        parsedTos:
+            label: waka.mailer::sendbox.parsedTos
+            span: storm
+            cssClass: col-xs-6
+            tab: waka.mailer::sendbox.tab_vars
+        parsedVars:
+            label: waka.mailer::sendbox.parsedVars
+            span: storm
+            cssClass: col-xs-6
+            tab: waka.mailer::sendbox.tab_vars
+        meta:
+            label: waka.mailer::sendbox.meta
+            span: storm
+            cssClass: col-xs-12
+            tab: waka.mailer::sendbox.tab_vars
+        mail_logs:
+            label: waka.mailer::sendbox.mail_logs
+            span: full
+            type: partial
+            path: field_mail_logs
+            tab: waka.mailer::sendbox.tab_logs

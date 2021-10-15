@@ -69,10 +69,67 @@ tabs:
             full_access: waka.rules.fncs.admin
             permissions: [waka.rules.fncs.*]
             tab: waka.mailer::wakamail.tab_edit
+        test_id:
+            label: waka.mailer::wakamail.test_id
+            span: left
+            type: dropdown
+            placeholder: waka.utils::lang.global.placeholder
+            options: listDataSourceTarget
+            permissions: [waka.mailer.admin.*]
+            tab: waka.mailer::wakamail.tab_options
+        auto_send:
+            label: waka.mailer::wakamail.auto_send
+            span: left
+            type: switch
+            default: true
+            comment: waka.mailer::wakamail.auto_send_com
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
         has_log:
             label: waka.mailer::wakamail.has_log
             span: left
             type: switch
+            default: true
+            comment: waka.mailer::wakamail.has_log_com
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        open_log:
+            label: waka.mailer::wakamail.open_log
+            span: left
+            type: switch
+            trigger:
+                action: show
+                field: has_log
+                condition: checked
+            default: false
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        click_log:
+            label: waka.mailer::wakamail.click_log
+            span: right
+            type: switch
+            trigger:
+                action: show
+                field: has_log
+                condition: checked
+            default: false
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        has_sender:
+            label: waka.mailer::wakamail.has_sender
+            span: left
+            type: switch
+            default: false
+            comment: waka.mailer::wakamail.has_sender_com
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        sender:
+            label: waka.mailer::wakamail.sender
+            span: right
+            trigger:
+                action: show
+                field: has_sender
+                condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
         model_functions:
@@ -93,7 +150,7 @@ tabs:
             span: full
             type: pjlist
             permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_options
+            tab: waka.mailer::wakamail.tab_edit
         is_lot:
             label: waka.mailer::wakamail.is_lot
             span: left
@@ -118,14 +175,6 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
-        test_id:
-            label: waka.mailer::wakamail.test_id
-            span: left
-            type: dropdown
-            placeholder: waka.utils::lang.global.placeholder
-            options: listDataSourceTarget
-            permissions: [waka.mailer.admin.*]
-            tab: waka.mailer::wakamail.tab_options
         has_asks:
             label: waka.mailer::wakamail.has_asks
             span: left
@@ -143,6 +192,13 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_temp
+        mail_logs:
+            label: waka.mailer::wakamail.mail_logs
+            span: full
+            type: partial
+            path: field_mail_logs
+            permissions: [waka.mailer.admin.*]
+            tab: waka.mailer::wakamail.tab_logs
 secondaryTabs:
     fields:
         # info:

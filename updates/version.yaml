@@ -31,3 +31,5 @@
     - "Ajout des logs"
     - create_mail_logs_table.php
     - create_waka_mails_table_u150.php
+    - create_send_boxes_table.php
+    

@@ -1,0 +1,18 @@
+# ===================================
+# Relation Behavior Config
+# ===================================
+
+mailLogs:
+    label: waka.mailer::wakamail.mailLogs
+    manage:
+    view:
+        list: $/waka/mailer/models/maillog/columns.yaml
+        recordUrl: waka/mailer/maillogs/update/:id
+        toolbarButtons: false
+        showCheckboxes: false
+        filter: config_filters_for_mailLogs.yaml
+        showSearch: true
+        defaultSort:
+            column: created_at
+            direction: desc
+

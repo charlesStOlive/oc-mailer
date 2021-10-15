@@ -1,0 +1,12 @@
+# ===================================
+#  Config filter
+# ===================================
+
+scopes:
+    state:
+        label: Etat
+        conditions: state in (:filtered)
+        options: 
+          Attente: Attente
+          Envoyé: Envoyé
+          Erreur: Erreur

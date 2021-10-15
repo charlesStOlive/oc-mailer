@@ -15,6 +15,11 @@ columns:
         type: switch
         searchable: false
         sortable: true
+    auto_send:
+        label: waka.mailer::wakamail.auto_send
+        type: switch
+        searchable: false
+        sortable: true
     slug:
         label: waka.mailer::wakamail.slug
         searchable: true
