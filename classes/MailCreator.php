@@ -482,14 +482,14 @@ class MailCreator
     }
 
     public function returnMailFile($mail, $pjToReturn, $pjsToReturn) {
-        trace_log($pjsToReturn);
+        //trace_log($pjsToReturn);
         if($pjToReturn) {
                 $pjName = $pjToReturn['name'] ?? null;
                 $file = new \System\Models\File;
                 $file->data = $pjToReturn['path'];
                 $file->title = $pjName;
                 $file->is_public = false;
-                trace_log($file->toArray());
+                //trace_log($file->toArray());
                 $mail->pjs()->add($file);
             }
         if($pjsToReturn) {
@@ -499,7 +499,7 @@ class MailCreator
                 $file->data = $pjPathUnique['path'];
                 $file->title = $pjName;
                 $file->is_public = false;
-                trace_log($file->toArray());
+                //trace_log($file->toArray());
                 $mail->pjs()->add($file);
             }
         }

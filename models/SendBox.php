@@ -126,11 +126,11 @@ class SendBox extends Model
     }
 
     public function getParsedTosAttribute() {
-        trace_log(implode(', ',$this->tos));
+        //trace_log(implode(', ',$this->tos));
         return implode(', ',$this->tos);
     }
     public function getParsedVarsAttribute() {
-        trace_log(implode(', ',$this->mail_vars));
+        //trace_log(implode(', ',$this->mail_vars));
         return urldecode(http_build_query($this->mail_vars,'',', '));
     }
 
