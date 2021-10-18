@@ -126,12 +126,19 @@ class SendBox extends Model
     }
 
     public function getParsedTosAttribute() {
-        //trace_log(implode(', ',$this->tos));
-        return implode(', ',$this->tos);
+        if(is_array($this->tos)) {
+            return  implode(', ',$this->tos);
+        } else {
+            return $this->tos;
+        }
     }
     public function getParsedVarsAttribute() {
         //trace_log(implode(', ',$this->mail_vars));
-        return urldecode(http_build_query($this->mail_vars,'',', '));
+        if($this->mails_vars) {
+            return urldecode(http_build_query($this->mail_vars,'',', '));
+        } else {
+            return null;
+        }
     }
 
     /**

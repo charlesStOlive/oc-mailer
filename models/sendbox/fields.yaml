@@ -39,7 +39,7 @@ tabs:
         methode:
             label: waka.mailer::sendbox.methode
             span: storm
-            cssClass: col-xs-6 col-md-3
+            cssClass: col-xs-6 col-md-6
             tab: waka.mailer::sendbox.tab_vars
         maileable_type:
             label: waka.mailer::sendbox.maileable_type

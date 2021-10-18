@@ -290,9 +290,9 @@ class MailCreator
                 'tos' => $datasEmail['emails'],
                 'mail_vars' => $logs,
                 'mail_tags' => [],
-                'maileable_type' => $logs['mail_type'],
+                'maileable_type' => $logs['mail_type'] ?? 'Waka\Mailer\Models\WakaMail',
                 'maileable_id' => $this->getProductor()->id,
-                'targeteable_type' => $this->ds->class,
+                'targeteable_type' => $this->ds->class ?? Null,
                 'targeteable_id' => $this->modelId,
             ]);
             $pjs = $datasEmail['pjs'] ?? null;
