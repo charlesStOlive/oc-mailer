@@ -13,6 +13,10 @@ columns:
     name:
         label: waka.mailer::sendbox.name
         searchable: true
+    lastLog:
+        label: waka.mailer::sendbox.lastlog
+        type: partial
+        path: ~/plugins/waka/mailer/models/sendbox/_column_state.htm
     maileable_type:
         label: waka.mailer::sendbox.maileable_type
         searchable: true

@@ -268,9 +268,9 @@ class MailCreator
         }
         return [
             'mail_type' => 'Waka\Mailer\Models\WakaMail',
-            'mail_id' => $this->getProductor()->id,
-            'ds' => $this->ds->class,
-            'ds_id' => $this->modelId,
+            'mail_id' => $this->getProductor()->id ?? null,
+            'ds' => $this->ds->class ?? null,
+            'ds_id' => $this->modelId ?? null,
         ];
         
         
@@ -297,9 +297,9 @@ class MailCreator
                 'sender' => $sender,
                 'mail_tags' => [],
                 'maileable_type' => $logs['mail_type'] ?? 'Waka\Mailer\Models\WakaMail',
-                'maileable_id' => $this->getProductor()->id,
+                'maileable_id' => $this->getProductor()->id ?? null,
                 'targeteable_type' => $this->ds->class ?? Null,
-                'targeteable_id' => $this->modelId,
+                'targeteable_id' => $this->modelId ?? null,
             ]);
             $pjs = $datasEmail['pjs'] ?? null;
 

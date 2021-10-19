@@ -23,11 +23,16 @@ class MailgunWebHook
      */
     public function messageType(Request $request, $type)
     {
+        trace_log('messageType');
         $logVars = $request->input('event-data.user-variables');
-        if(!$logVars) return response()->json('Success!', 200);
+        if(!$logVars) {
+            \Log::error('Pas de log var on enregistre rien');
+            return response()->json('Success!', 200);
+        }
         $email = $request->input('event-data.recipient');
         $test = MailLog::create([
             'name' => $email,
+            'send_box_id' => $logVars['send_box_id'] ?? null,
             'maileable_id' => $logVars['mail_id'] ?? null,
             'maileable_type' => $logVars['mail_type'] ?? null,
             'logeable_type' => $logVars['ds'] ?? null,

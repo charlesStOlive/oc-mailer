@@ -1,0 +1,11 @@
+<?php if($value == 'delivered') : ?>
+<span class="text-success oc-icon-circle-o">Mail envoyé</span>
+<?php elseif($value == 'failure') : ?>
+<span class="text-danger oc-icon-circle">Hard Bounce</span>
+<?php elseif($value == 'temp_fail') : ?>
+<span class="text-danger oc-icon-circle-o">Soft Bounce</span>
+<?php elseif($value == 'opened') : ?>
+<span class="text-success oc-icon-circle">Ouvert</span>
+<?php else : ?>
+<?=e($value)?>
+<?php endif ?>

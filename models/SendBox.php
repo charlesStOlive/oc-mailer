@@ -139,6 +139,8 @@ class SendBox extends Model
         } else {
             return null;
         }
+    }public function getLastLogAttribute() {
+        return $this->mail_logs()->latest('updated_at')->first()->type ?? "Inc";
     }
 
     /**
@@ -163,6 +165,7 @@ class SendBox extends Model
             return false;
         }
         try {
+            trace_log("tentative envoie email");
             \Mail::raw(['html' => $this->content], function ($message) {
                 //trace_log($datasEmail);
                 $message->to($this->tos);
@@ -172,7 +175,10 @@ class SendBox extends Model
                 }
                 $message->subject($this->name);
                 $headers = $message->getSwiftMessage()->getHeaders();
-                $headers->addTextHeader('X-Mailgun-Variables', json_encode($this->logs));
+                //Ajout ID dans les variables.
+                $mailVars = array_merge($this->mail_vars, ['send_box_id' => $this->id]);
+                //
+                $headers->addTextHeader('X-Mailgun-Variables', json_encode($mailVars));
                 if ($this->pjs->count()) {
                     //trace_log("Il y a des pjs");
                     foreach ($this->pjs as $pj) {
