@@ -283,7 +283,7 @@ class MailCreator
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
             $logs = $this->preparelogs();
-            trace_log($logs);
+            //trace_log($logs);
             $sender = null;
             if($this->getProductor()->has_sender) {
                 $sender = $this->getProductor()->sender;

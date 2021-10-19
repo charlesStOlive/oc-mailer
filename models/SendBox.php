@@ -139,7 +139,8 @@ class SendBox extends Model
         } else {
             return null;
         }
-    }public function getLastLogAttribute() {
+    }
+    public function getLastLogAttribute() {
         return $this->mail_logs()->latest('updated_at')->first()->type ?? "Inc";
     }
 
@@ -165,7 +166,7 @@ class SendBox extends Model
             return false;
         }
         try {
-            trace_log("tentative envoie email");
+          _log("tentative envoie email");
             \Mail::raw(['html' => $this->content], function ($message) {
                 //trace_log($datasEmail);
                 $message->to($this->tos);

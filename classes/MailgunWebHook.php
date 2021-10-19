@@ -23,7 +23,7 @@ class MailgunWebHook
      */
     public function messageType(Request $request, $type)
     {
-        trace_log('messageType');
+        //trace_log('messageType');
         $logVars = $request->input('event-data.user-variables');
         if(!$logVars) {
             \Log::error('Pas de log var on enregistre rien');
