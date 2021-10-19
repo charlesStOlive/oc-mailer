@@ -32,4 +32,6 @@
     - create_mail_logs_table.php
     - create_waka_mails_table_u150.php
     - create_send_boxes_table.php
-    
+1.5.1:
+    - "Ajout émetteur"
+    - create_send_boxes_table_u151.php

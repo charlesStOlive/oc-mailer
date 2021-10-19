@@ -283,12 +283,18 @@ class MailCreator
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
             $logs = $this->preparelogs();
+            trace_log($logs);
+            $sender = null;
+            if($this->getProductor()->has_sender) {
+                $sender = $this->getProductor()->sender;
+            }
 
             $mailSendBox = \Waka\Mailer\Models\SendBox::create([
                 'name' => $datasEmail['subject'],
                 'content' => $htmlLayout,
                 'tos' => $datasEmail['emails'],
                 'mail_vars' => $logs,
+                'sender' => $sender,
                 'mail_tags' => [],
                 'maileable_type' => $logs['mail_type'] ?? 'Waka\Mailer\Models\WakaMail',
                 'maileable_id' => $this->getProductor()->id,

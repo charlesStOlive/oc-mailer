@@ -134,7 +134,7 @@ class SendBox extends Model
     }
     public function getParsedVarsAttribute() {
         //trace_log(implode(', ',$this->mail_vars));
-        if($this->mails_vars) {
+        if($this->mail_vars) {
             return urldecode(http_build_query($this->mail_vars,'',', '));
         } else {
             return null;
@@ -166,6 +166,10 @@ class SendBox extends Model
             \Mail::raw(['html' => $this->content], function ($message) {
                 //trace_log($datasEmail);
                 $message->to($this->tos);
+                if($this->sender) {
+                    $message->from($this->sender, null);
+                    $message->replyTo($this->sender, null);
+                }
                 $message->subject($this->name);
                 $headers = $message->getSwiftMessage()->getHeaders();
                 $headers->addTextHeader('X-Mailgun-Variables', json_encode($this->logs));

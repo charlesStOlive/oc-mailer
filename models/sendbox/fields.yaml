@@ -71,10 +71,15 @@ tabs:
             span: storm
             cssClass: col-xs-6
             tab: waka.mailer::sendbox.tab_vars
+        sender:
+            label: waka.mailer::sendbox.sender
+            span: storm
+            cssClass: col-xs-6
+            tab: waka.mailer::sendbox.tab_vars
         meta:
             label: waka.mailer::sendbox.meta
             span: storm
-            cssClass: col-xs-12
+            cssClass: col-xs-6
             tab: waka.mailer::sendbox.tab_vars
         mail_logs:
             label: waka.mailer::sendbox.mail_logs

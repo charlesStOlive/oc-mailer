@@ -10,9 +10,6 @@ columns:
     state:
         label: waka.mailer::sendbox.state
         searchable: true
-    tos:
-        label: waka.mailer::sendbox.tos
-        searchable: true
     name:
         label: waka.mailer::sendbox.name
         searchable: true

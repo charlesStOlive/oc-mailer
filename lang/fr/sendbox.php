@@ -18,6 +18,7 @@ return [
     'pjs' => 'pjs',
     'preview_name' => 'Voir l\'email',
     'send_at' => 'Envoyé le',
+    'sender' => 'Emetteur/Réponse',
     'state' => 'Etat',
     'tab_content' => 'Contenu',
     'tab_logs' => 'Logs',
