@@ -19,7 +19,7 @@ class CreateSendBoxesTable extends Migration
             $table->string('maileable_type');
             $table->integer('maileable_id');
             $table->string('targeteable_type')->nullable();
-            $table->integer('targeteable_id')->nullable();
+            $table->string('targeteable_id')->nullable();
             $table->text('meta')->nullable();
             $table->string('tos')->nullable();
             $table->text('mail_vars')->nullable();
