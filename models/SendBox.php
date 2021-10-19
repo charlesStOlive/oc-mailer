@@ -166,7 +166,6 @@ class SendBox extends Model
             return false;
         }
         try {
-          _log("tentative envoie email");
             \Mail::raw(['html' => $this->content], function ($message) {
                 //trace_log($datasEmail);
                 $message->to($this->tos);

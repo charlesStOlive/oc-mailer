@@ -88,7 +88,7 @@ class SendSendBox implements WakajobQueueJob
         /**
          * travail preparatoire sur les donnes
          */
-        $mails = \Waka\Mailer\Models\Sendbox::where('state', 'Attente');
+        $mails = \Waka\Mailer\Models\SendBox::where('state', 'Attente');
         //Ajouter ici la séléection par checkbox si besoin.
         $mails = $mails->get();
         /**
