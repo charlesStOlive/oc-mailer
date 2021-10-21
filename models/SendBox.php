@@ -102,7 +102,7 @@ class SendBox extends Model
     public $attachOne = [
     ];
     public $attachMany = [
-        'pjs' => ['System\Models\File'],
+        'pjs' => ['System\Models\File', 'delete' => true],
     ];
 
     //startKeep/
