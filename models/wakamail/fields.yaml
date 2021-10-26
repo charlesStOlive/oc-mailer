@@ -165,6 +165,13 @@ tabs:
             default: false
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
+        rule_conditions:
+            span: full
+            type: rulebuilder
+            ruleMode: condition
+            targetProductor: wakaMail
+            permissions: [waka.rules.conds.*]
+            tab: waka.mailer::wakamail.tab_options
         scopes:
             label: waka.mailer::wakamail.scopes
             span: full

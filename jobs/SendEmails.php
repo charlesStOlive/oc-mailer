@@ -129,7 +129,7 @@ class SendEmails implements WakajobQueueJob
                      */
                     //trace_log("DEBUT TRAITEMENT **************");
                     $mailCreator->setModelId($targetId);
-                    $scopeIsOk = $mailCreator->checkScopes();
+                    $scopeIsOk = $mailCreator->checkConditions();
                     if (!$scopeIsOk) {
                         $scopeError++;
                         continue;
