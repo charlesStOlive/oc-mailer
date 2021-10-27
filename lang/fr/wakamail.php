@@ -36,6 +36,7 @@ return [
     'open_log' => 'Log ouverture',
     'pjs' => 'Pjs',
     'preview_name' => 'Voir l\'email',
+    'rule_conditions' => 'Conditions',
     'scopes' => 'Restrictions',
     'send_test' => 'Envoyer un test',
     'sender' => 'Adresse envoyeur',

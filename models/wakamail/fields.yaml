@@ -166,11 +166,12 @@ tabs:
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
         rule_conditions:
+            label: waka.mailer::wakamail.rule_conditions
             span: full
             type: rulebuilder
             ruleMode: condition
             targetProductor: wakaMail
-            permissions: [waka.rules.conds.*]
+            permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
         scopes:
             label: waka.mailer::wakamail.scopes
@@ -218,11 +219,6 @@ secondaryTabs:
             permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_infos
             src: waka/mailer/models/wakamail/fields_for_side_bar.yaml
-        attributs:
-            span: full
-            type: attributs
-            permissions: [waka.mailer.admin.*]
-            tab: waka.mailer::wakamail.tab_attributs
         blocs:
             span: full
             type: comonblocs

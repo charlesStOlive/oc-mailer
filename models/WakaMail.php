@@ -35,11 +35,11 @@ class WakaMail extends Model
      * @var array Validation rules for attributes
      */
     public $rules = [
+        'subject' => 'required',
         'state' => 'required',
         'name' => 'required',
         'slug' => 'required|unique:waka_mailer_waka_mails',
         'layout' => 'required',
-        'subject' => 'required',
     ];
 
     public $customMessages = [
