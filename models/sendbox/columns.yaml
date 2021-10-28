@@ -22,13 +22,17 @@ columns:
         searchable: true
     maileable_id:
         label: waka.mailer::sendbox.maileable_id
-        searchable: true
+        searchable: false
+        sortable: false
+        valueFrom: maileableName
     targeteable_type:
         label: waka.mailer::sendbox.targeteable_type
         searchable: true
-    targeteable_id:
+    targeteable:
         label: waka.mailer::sendbox.targeteable_id
-        searchable: true
+        searchable: false
+        sortable: false
+        valueFrom: targeteableName
     has_pjs:
         label: waka.mailer::sendbox.has_pjs
         searchable: false

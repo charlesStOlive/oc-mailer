@@ -94,7 +94,11 @@ class SendBox extends Model
     ];
     public $belongsToMany = [
     ];        
-    public $morphTo = [];
+    public $morphTo = [
+        'targeteable' => [],
+        'maileable' => [],
+
+    ];
     public $morphOne = [
     ];
     public $morphMany = [
@@ -142,6 +146,13 @@ class SendBox extends Model
     }
     public function getLastLogAttribute() {
         return $this->mail_logs()->latest('updated_at')->first()->type ?? "Inc";
+    }
+    public function getMaileableNameAttribute() {
+        return $this->maileable->name;
+    }
+
+    public function getTargeteableNameAttribute() {
+        return $this->targeteable->name;
     }
 
     /**
