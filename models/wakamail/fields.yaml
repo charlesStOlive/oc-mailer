@@ -219,10 +219,15 @@ secondaryTabs:
             permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_infos
             src: waka/mailer/models/wakamail/fields_for_side_bar.yaml
+        attributs:
+            span: full
+            type: attributs
+            permissions: [waka.mailer.admin.*]
+            tab: waka.mailer::wakamail.tab_attributs
         blocs:
             span: full
             type: comonblocs
-            twogName: mailPartial
+            twigName: mailPartial
             blocClass: Waka\Mailer\Models\Bloc
             permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_blocs
