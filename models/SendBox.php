@@ -152,7 +152,7 @@ class SendBox extends Model
     }
 
     public function getTargeteableNameAttribute() {
-        return $this->targeteable->name;
+        return $this->targeteable->name ?? 'Inc';
     }
 
     /**

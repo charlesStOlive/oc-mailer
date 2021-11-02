@@ -5,6 +5,7 @@ return [
     'edit' => 'NO',
     'form_name' => 'Voir l\'email',
     'has_pjs' => 'A des PJ',
+    'lastlog' => 'dernier Log',
     'mail_logs' => 'Logs',
     'mail_tags' => 'Tag d\'envois',
     'mail_vars' => 'Variables d\'envois',
