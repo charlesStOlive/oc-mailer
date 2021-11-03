@@ -24,6 +24,8 @@ class CreateSendBoxesTable extends Migration
             $table->string('tos')->nullable();
             $table->text('mail_vars')->nullable();
             $table->text('mail_tags')->nullable();
+            //anaymisation
+            $table->boolean('is_anonymized')->default(0);
             $table->timestamps();
         });
     }

@@ -98,6 +98,23 @@ class Plugin extends PluginBase
     }
 
     /**
+     * Register model to clean.
+     *
+     * @return void
+     */
+    public function registerModelToClean()
+    {
+        return [
+            'anonymize' => [
+                \Waka\Mailer\Models\SendBox::class => [
+                    'nb_day' => 2,
+                    'column' => 'created_at',
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Registers any back-end permissions used by this plugin.
      *
      * @return array

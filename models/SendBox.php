@@ -9,6 +9,7 @@ use Model;
 class SendBox extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
+    use \Waka\Utils\Classes\Traits\WakAnonymize;
 
 
     /**
@@ -42,6 +43,16 @@ class SendBox extends Model
      * @var array attributes send to datasource for creating document
      */
     public $attributesToDs = [
+    ];
+
+    /**
+     * @var array field anaymisés par wakAnonymize
+     */
+    public $anonymizeFields = [
+        'content',
+        'pjs',
+        'name',
+        'tos',
     ];
 
     /**
