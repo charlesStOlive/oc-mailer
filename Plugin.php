@@ -111,6 +111,9 @@ class Plugin extends PluginBase
                     'column' => 'created_at',
                 ],
             ],
+            'cleanSoftDelete' => [
+                \Waka\Mailer\Models\WakaMail::class => 0,
+            ],
         ];
     }
 
