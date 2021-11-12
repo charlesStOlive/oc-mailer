@@ -37,12 +37,4 @@ fields:
         nameFrom: name
         permissions: [waka.mailer.admin.super]
         value: layout.name
-    test_id:
-        label: waka.mailer::wakamail.test_id
-        span: left
-        type: dropdown
-        placeholder: waka.utils::lang.global.placeholder
-        options: listDataSourceTarget
-        permissions: [waka.mailer.admin.*]
-        tab: waka.mailer::wakamail.tab_options
 

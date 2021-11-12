@@ -22,7 +22,6 @@ columns:
         sortable: true
     slug:
         label: waka.mailer::wakamail.slug
-        searchable: true
         clickable: false
     state:
         label: waka.mailer::wakamail.state
