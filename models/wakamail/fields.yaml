@@ -56,6 +56,7 @@ tabs:
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
         rule_asks:
+            label: waka.mailer::wakamail.rule_asks
             span: full
             type: askbuilder
             targetProductor: wakaMail
@@ -63,6 +64,7 @@ tabs:
             permissions: [waka.rules.asks.*]
             tab: waka.mailer::wakamail.tab_edit
         rule_fncs:
+            label: waka.mailer::wakamail.rule_fncs
             span: full
             type: fncbuilder
             targetProductor: wakaMail
