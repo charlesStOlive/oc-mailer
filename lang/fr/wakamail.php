@@ -36,6 +36,7 @@ return [
     'open_log' => 'Log ouverture',
     'pjs' => 'Pjs',
     'preview_name' => 'Voir l\'email',
+    'replyTo' => 'Adresse de réponse',
     'rule_asks' => 'Champs éditables',
     'rule_conditions' => 'Conditions',
     'rule_fncs' => 'Fonctions éditables',

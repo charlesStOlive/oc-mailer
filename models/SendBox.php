@@ -159,7 +159,7 @@ class SendBox extends Model
         return $this->mail_logs()->latest('updated_at')->first()->type ?? "Inc";
     }
     public function getMaileableNameAttribute() {
-        return $this->maileable->name;
+        return $this->maileable->name ?? null;
     }
 
     public function getTargeteableNameAttribute() {
@@ -193,7 +193,10 @@ class SendBox extends Model
                 $message->to($this->tos);
                 if($this->sender) {
                     $message->from($this->sender, null);
-                    $message->replyTo($this->sender, null);
+                    
+                }
+                if($this->replyTo) {
+                    $message->replyTo($this->replyTo, null);
                 }
                 $message->subject($this->name);
                 $headers = $message->getSwiftMessage()->getHeaders();
@@ -201,6 +204,12 @@ class SendBox extends Model
                 $mailVars = array_merge($this->mail_vars, ['send_box_id' => $this->id]);
                 //
                 $headers->addTextHeader('X-Mailgun-Variables', json_encode($mailVars));
+                if($this->open_log) {
+                    $headers->addTextHeader('X-Mailgun-Track-Opens', true);
+                }
+                if($this->open_click) {
+                    $headers->addTextHeader('X-Mailgun-Track-Clicks', true);
+                }
                 if ($this->pjs->count()) {
                     //trace_log("Il y a des pjs");
                     foreach ($this->pjs as $pj) {

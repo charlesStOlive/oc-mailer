@@ -119,7 +119,7 @@ tabs:
             tab: waka.mailer::wakamail.tab_options
         has_sender:
             label: waka.mailer::wakamail.has_sender
-            span: left
+            span: full
             type: switch
             default: false
             comment: waka.mailer::wakamail.has_sender_com
@@ -127,6 +127,15 @@ tabs:
             tab: waka.mailer::wakamail.tab_options
         sender:
             label: waka.mailer::wakamail.sender
+            span: left
+            trigger:
+                action: show
+                field: has_sender
+                condition: checked
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        replyTo:
+            label: waka.mailer::wakamail.replyTo
             span: right
             trigger:
                 action: show
