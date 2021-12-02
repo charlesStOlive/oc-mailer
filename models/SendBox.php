@@ -207,7 +207,7 @@ class SendBox extends Model
                 if($this->open_log) {
                     $headers->addTextHeader('X-Mailgun-Track-Opens', true);
                 }
-                if($this->open_click) {
+                if($this->click_log) {
                     $headers->addTextHeader('X-Mailgun-Track-Clicks', true);
                 }
                 if ($this->pjs->count()) {
