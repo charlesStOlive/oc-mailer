@@ -21,11 +21,13 @@ class MailgunWebHook
            abort(Response::HTTP_FORBIDDEN, 'Only POST requests are allowed.');
         }
 
+        trace_log("verifiy");
+
         if ($this->verify($request)) {
             return $next($request);
         }
 
-        abort(Response::HTTP_FORBIDDEN);
+        return response()->json('Error signature non verifie!', 403);
     }
 
     /**
@@ -40,12 +42,16 @@ class MailgunWebHook
         $sk = null;
         if(\Config::get('waka.mailer::mailgun_webhooks.signing_key')) {
             $sk = \Config::get('waka.mailer::mailgun_webhooks.signing_key');
+            
+            $hashMac = hash_hmac(
+                'sha256',
+                sprintf('%s%s', $request->input('signature.timestamp'), $request->input('signature.token')), $sk);
+            return $hashMac;
         } else {
-            throw new \ApplicationException('Problème webhook key manquant dans la config ou env');
+            \Log::error('Problème  MAILGUN_SECRET manquant dans env');
+            return null;
         }
-        return hash_hmac(
-            'sha256',
-            sprintf('%s%s', $request->input('signature.timestamp'), $request->input('signature.token')), $sk);
+        
     }
 
     /**
@@ -58,8 +64,21 @@ class MailgunWebHook
         if (abs(time() - $request->input('signature.timestamp')) > 15) {
             return false;
         }
+        $buidSignature = null;
+        try {
+            $buidSignature = $this->buildSignature($request);
+        } catch (Error $e) {
+            \Log::error('Impossible de calculer la signature');
+            return false;
+        }
 
-        return $this->buildSignature($request) === $request->input('signature.signature');
+        if(!$buidSignature) {
+            return false;
+        } else {
+            return $buidSignature === $request->input('signature.signature');
+        }
+        
+        
     }
 
 }
