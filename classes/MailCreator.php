@@ -265,7 +265,7 @@ class MailCreator
         
     }
 
-    public function renderMail($datasEmail = [])
+    public function renderMail($datasEmail = [], $forceAuto = null)
     {
         //trace_log('renderEmail');
         try {
@@ -306,10 +306,17 @@ class MailCreator
                    $this->resolvePj($mailSendBox, 'swift', $pj);
                 }
             }
-
-            if($this->getProductor()->auto_send) {
+            if($forceAuto) {
+                if($forceAuto =="send") {
+                    $mailSendBox->send();
+                } else {
+                    //On ne fait rien. 
+                }
+            } else if($this->getProductor()->auto_send) {
                 $mailSendBox->send();
             }
+
+            
 
             \Flash::success(trans('waka.mailer::productor.mail_success'));
         }
