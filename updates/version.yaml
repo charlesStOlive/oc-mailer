@@ -39,5 +39,10 @@
     - "Modif des fncs"
     - seed_regex_waka_mail.php
 1.5.3:
-    - "Modif des fncs"
-    - seed_regex_waka_mail.php
+    - "Ajout de reply_to"
+    - create_waka_mails_table_u153.php
+    - create_send_boxes_table_u153.php
+1.6.0:
+    - "Changement du champs content"
+    - create_send_boxes_table_u160.php
+    - create_waka_mails_table_u160.php

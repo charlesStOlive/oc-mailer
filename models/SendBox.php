@@ -195,8 +195,8 @@ class SendBox extends Model
                     $message->from($this->sender, null);
                     
                 }
-                if($this->replyTo) {
-                    $message->replyTo($this->replyTo, null);
+                if($this->reply_to) {
+                    $message->replyTo($this->reply_to, null);
                 }
                 $message->subject($this->name);
                 $headers = $message->getSwiftMessage()->getHeaders();

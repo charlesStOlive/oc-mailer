@@ -134,8 +134,8 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
-        replyTo:
-            label: waka.mailer::wakamail.replyTo
+        reply_to:
+            label: waka.mailer::wakamail.reply_to
             span: right
             trigger:
                 action: show

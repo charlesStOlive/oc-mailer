@@ -13,26 +13,26 @@ columns:
     name:
         label: waka.mailer::sendbox.name
         searchable: true
-    lastLog:
+    lastlog:
         label: waka.mailer::sendbox.lastlog
         type: partial
+        searchable: false
+        sortable: false
         path: ~/plugins/waka/mailer/models/sendbox/_column_state.htm
     maileable_type:
         label: waka.mailer::sendbox.maileable_type
         searchable: true
     maileable_id:
         label: waka.mailer::sendbox.maileable_id
-        searchable: false
-        sortable: false
         valueFrom: maileableName
+        sortable: false
     targeteable_type:
         label: waka.mailer::sendbox.targeteable_type
         searchable: true
-    targeteable:
+    targeteable_id:
         label: waka.mailer::sendbox.targeteable_id
-        searchable: false
-        sortable: false
         valueFrom: targeteableName
+        sortable: false
     has_pjs:
         label: waka.mailer::sendbox.has_pjs
         searchable: false
