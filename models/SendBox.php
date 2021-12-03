@@ -192,11 +192,13 @@ class SendBox extends Model
                 //trace_log($datasEmail);
                 $message->to($this->tos);
                 if($this->sender) {
-                    $message->from($this->sender, null);
+                    $senders = array_map('trim', explode(',', $this->sender));
+                    $message->from($senders[0], $senders[1] );
                     
                 }
                 if($this->reply_to) {
-                    $message->replyTo($this->reply_to, null);
+                    $replys = array_map('trim', explode(',', $this->reply_to));
+                    $message->replyTo($replys[0], $replys[1] ?? null);
                 }
                 $message->subject($this->name);
                 $headers = $message->getSwiftMessage()->getHeaders();

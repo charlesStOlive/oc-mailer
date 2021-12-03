@@ -69,21 +69,32 @@ class MailBehavior extends ControllerBehavior
     public function onLoadMailTestForm()
     {
         $productorId = post('productorId');
-        $wakaMail = WakaMail::find($productorId);
+        $wakaMail = \Waka\Mailer\Models\WakaMail::find($productorId);
+        $ds = \DataSources::find($wakaMail->data_source);
         $modelId = $wakaMail->test_id;
-        $dataSourceCode = $wakaMail->data_source;
-        $ds = \DataSources::find($dataSourceCode);
-        $options = $ds->getProductorOptions('Waka\Mailer\Models\WakaMail', $modelId);
-        $contact = [];
-        $this->mailBehaviorWidget->getField('email')->options = $contact;
-        $cc = $ds->getContact('cc', null);
-        $this->mailBehaviorWidget->getField('cc')->hidden = true;
-        $this->mailDataWidget->getField('subject')->value = $wakaMail->subject;
-        $this->vars['productorId'] = $productorId;
+        
+        $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
+        $this->mailDataWidget->getField('subject')->value = $subject;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
+
+
+        $askDataWidget = $this->createAskDataWidget();
+        $asks = $ds->getProductorAsks('Waka\Mailer\Models\WakaMail',$productorId, $modelId);
+        $askDataWidget->addFields($asks);
+
+        $contact = $ds->getContact('to', $modelId);
+        $this->mailBehaviorWidget->getField('email')->options = $contact;
+        $cc = $ds->getContact('cc', $modelId);
+        $this->mailBehaviorWidget->getField('cc')->options = $cc;
+
+
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
-        $this->vars['modelId'] = $wakaMail->test_id;
-        $this->vars['options'] = $options;
+        $this->vars['modelId'] = $modelId;
+        $this->vars['productorId'] = $productorId;
+
+        $this->vars['askDataWidget'] = $askDataWidget;
+
+
         return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_test.htm');
     }
     /**
