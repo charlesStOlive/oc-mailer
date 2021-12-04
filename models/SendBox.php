@@ -193,7 +193,7 @@ class SendBox extends Model
                 $message->to($this->tos);
                 if($this->sender) {
                     $senders = array_map('trim', explode(',', $this->sender));
-                    $message->from($senders[0], $senders[1] );
+                    $message->from($senders[0], $senders[1] ?? null );
                     
                 }
                 if($this->reply_to) {
