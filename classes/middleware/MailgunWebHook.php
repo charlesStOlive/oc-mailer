@@ -21,7 +21,7 @@ class MailgunWebHook
            abort(Response::HTTP_FORBIDDEN, 'Only POST requests are allowed.');
         }
 
-        trace_log("verifiy");
+        //trace_log("verifiy");
 
         if ($this->verify($request)) {
             return $next($request);
