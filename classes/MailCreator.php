@@ -140,6 +140,14 @@ class MailCreator
             $model = array_merge($model, $this->manualData);
         }
 
+        //Recupère des variables par des evenements exemple LP log dans la finction boot
+        $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
+        if ($dataModelFromEvent[0] ?? false) {
+            foreach ($dataModelFromEvent as $dataEvent) {
+               $model[key($dataEvent)] = $dataEvent[key($dataEvent)];
+            }
+        }
+
         //Nouveau bloc pour nouveaux asks
         if($this->getProductor()->rule_asks()->count()) {
             $this->askResponse = $this->setRuleAsksResponse($model);
@@ -160,14 +168,7 @@ class MailCreator
         $model = array_merge($model, [ 'asks' => $this->askResponse]);
 
         //trace_log($model);
-        //Recupère des variables par des evenements exemple LP log dans la finction boot
-        $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
-        if ($dataModelFromEvent[0] ?? false) {
-            foreach ($dataModelFromEvent as $dataEvent) {
-                //trace_log($dataEvent);
-               $model[key($dataEvent)] = $dataEvent[key($dataEvent)];
-            }
-        }
+        
         if ($this->getProductor()->is_mjml) {
             return $this->renderMjml($model);
         } else {
