@@ -11,12 +11,14 @@ use Waka\Utils\Classes\TmpFiles;
 class MailCreator
 {
     public static $productor;
+    public static $maileable_type;
     public $ds;
     public $modelId = null;
     private $isTwigStarted;
     public $manualData = [];
     public $implement = [];
     public $askResponse = [];
+    
 
     public static function find($mail_id, $slug = false)
     {
@@ -32,11 +34,16 @@ class MailCreator
             throw new ApplicationException("Le code ou id  email ne fonctionne pas : " . $mail_id. "vous dever entrer l'id ou le code suivi de true");
         }
         self::$productor = $productorModel;
+        self::$maileable_type = "Waka\Mailer\Models\WakaMail";
         return new self;
     }
     public static function getProductor()
     {
         return self::$productor;
+    }
+    public static function getProductorClass()
+    {
+        return get_class(self::$productor);
     }
 
     public function setModelId($modelId)
@@ -257,7 +264,7 @@ class MailCreator
             return [];
         }
         return [
-            'mail_type' => 'Waka\Mailer\Models\WakaMail',
+            'mail_type' => $this->getProductorClass(),
             'mail_id' => $this->getProductor()->id ?? null,
             'ds' => $this->ds->class ?? null,
             'ds_id' => $this->modelId ?? null,
@@ -268,7 +275,8 @@ class MailCreator
 
     public function renderMail($datasEmail = [], $forceAuto = null)
     {
-        //trace_log('renderEmail');
+       //trace_log('renderEmail');
+       //trace_log($this->getProductorClass());
         try {
             $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
@@ -291,7 +299,7 @@ class MailCreator
                 'tos' => $datasEmail['emails'],
                 'mail_vars' => $logs,
                 'mail_tags' => [],
-                'maileable_type' => $logs['mail_type'] ?? 'Waka\Mailer\Models\WakaMail',
+                'maileable_type' => $this->getProductorClass(),
                 'maileable_id' => $this->getProductor()->id ?? null,
                 'targeteable_type' => $this->ds->class ?? Null,
                 'targeteable_id' => $this->modelId ?? null,
