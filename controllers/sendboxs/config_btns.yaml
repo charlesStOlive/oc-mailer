@@ -47,9 +47,9 @@ action_bar:
             waka.utils::lang.prod.tools: oc-icon-wrench
         btns:
 
-    # partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
-    #     name:
-    #         url: $/waka/mailer/controllers/sendboxs/_test_update.htm
+    partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
+        name:
+            url: $/waka/mailer/controllers/sendboxs/_sendone.htm
 Description: >
     //endKeep/
 

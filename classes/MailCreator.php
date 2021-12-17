@@ -292,6 +292,7 @@ class MailCreator
             $reply_to = $productor->reply_to;
             $open_log = $productor->open_log;
             $click_log = $productor->click_log;
+            $is_embed = $productor->is_embed;
 
             $mailSendBox = \Waka\Mailer\Models\SendBox::create([
                 'name' => $datasEmail['subject'],
@@ -307,6 +308,7 @@ class MailCreator
                 'reply_to' =>   $reply_to,
                 'open_log' =>   $open_log,
                 'click_log' =>  $click_log,
+                'is_embed' =>  $click_log,
             ]);
             $pjs = $datasEmail['pjs'] ?? null;
 

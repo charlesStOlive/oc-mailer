@@ -17,6 +17,8 @@ return [
     'html' => 'Éditeur',
     'images' => 'Images',
     'is_cammpagner' => 'Autorisé pour les  campagnes',
+    'is_embed' => 'Embarquer les images',
+    'is_embed_com' => 'Ralentie les envois mais permet d\'incruster les images dans le coprtdu mail',
     'is_lot' => 'Autorisé dans les lots ?',
     'is_mjml' => 'En MJML ?',
     'is_scope' => 'À des restrictions ?',

@@ -1,6 +1,8 @@
 <?php namespace Waka\Mailer\Models;
 
 use Model;
+use PHPHtmlParser\Dom;
+use PHPHtmlParser\Options as DomOptions;
 
 /**
  * sendBox Model
@@ -129,6 +131,8 @@ class SendBox extends Model
         $this->state = "Attente";
     }
 
+    public $embedImages = [];
+
     /**
      * LISTS
      **/
@@ -187,8 +191,18 @@ class SendBox extends Model
             $this->save();
             return false;
         }
+       
         try {
-            \Mail::raw(['html' => $this->content], function ($message) {
+            
+            \Mail::raw([], function ($message)  {
+                
+                $contenu = $this->content;
+                if($this->is_embed) {
+                    //embedAll change les src des images et crée les $message->embed(...)
+                    $contenu = $this->embedAllImage($message);
+                }
+                
+                $message->setBody($contenu, 'text/html');
                 //trace_log($datasEmail);
                 $message->to($this->tos);
                 if($this->sender) {
@@ -200,6 +214,7 @@ class SendBox extends Model
                     $replys = array_map('trim', explode(',', $this->reply_to));
                     $message->replyTo($replys[0], $replys[1] ?? null);
                 }
+                
                 $message->subject($this->name);
                 $headers = $message->getSwiftMessage()->getHeaders();
                 //Ajout ID dans les variables.
@@ -209,6 +224,7 @@ class SendBox extends Model
                 if($this->open_log) {
                     $headers->addTextHeader('X-Mailgun-Track-Opens', true);
                 }
+               //trace_log("ok3");
                 if($this->click_log) {
                     $headers->addTextHeader('X-Mailgun-Track-Clicks', true);
                 }
@@ -218,13 +234,14 @@ class SendBox extends Model
                         $message->attach($pj->getLocalPath(), ['as' => $pj->title]);
                     }
                 }
+               //trace_log("ok4");
             });
             $this->state = 'Envoyé';
             $this->send_at = \Carbon\Carbon::now();
             $this->save();
             return true;
 
-        } catch (Exeption $e) {
+        } catch (\Exeption $e) {
             $this->state = 'Erreur';
             $this->meta = $e;
             $this->save();
@@ -232,6 +249,33 @@ class SendBox extends Model
         }
         
 
+    }
+
+    public function embedAllImage($message) {
+        $content = $this->content;
+        $dom = new Dom;
+        $dom->setOptions((new DomOptions())->setCleanupInput(false));
+        $dom->loadStr($content);
+        $imgs = $dom->find('img');
+        $tempFiles = new \Waka\Utils\Models\TempFile;
+        $embedededs = [];
+        foreach($imgs as $img) {
+            $file = new \System\Models\File;
+            $file->fromUrl($img->getAttribute('src'));
+            $tempFiles->files()->add($file);
+            $path = $file->getLocalPath();
+            $cid = $message->embed($path);
+            $img->setAttribute('src', $cid);
+        } 
+        return $dom->outerHtml;
+
+
+        // $tempFile = new \Waka\Utils\Models\TempFile();
+        
+        // $file = new \System\Models\File;
+        // $file->fromUrl($url);
+        // $tempFile->file()->add($file);
+        // $tempFile->save();
     }
 
 //endKeep/

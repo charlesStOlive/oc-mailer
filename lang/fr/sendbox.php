@@ -6,6 +6,7 @@ return [
     'edit' => 'NO',
     'form_name' => 'Voir l\'email',
     'has_pjs' => 'A des PJ',
+    'is_embed' => 'Embarquer les images',
     'lastlog' => 'Dernier log',
     'mail_logs' => 'Logs',
     'mail_tags' => 'Tag d\'envois',

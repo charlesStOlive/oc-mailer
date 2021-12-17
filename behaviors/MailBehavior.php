@@ -10,12 +10,17 @@ class MailBehavior extends ControllerBehavior
     use \Waka\Utils\Classes\Traits\StringRelation;
     protected $mailBehaviorWidget;
     protected $mailDataWidget;
+    public $errors;
 
     public function __construct($controller)
     {
         parent::__construct($controller);
         $this->mailBehaviorWidget = $this->createMailBehaviorWidget();
         $this->mailDataWidget = $this->createMailDataWidget();
+        $this->errors = [];
+        \Event::listen('waka.utils::conditions.error', function ($error) {
+            array_push($this->errors, $error);
+        });
     }
 
     /**
@@ -60,6 +65,7 @@ class MailBehavior extends ControllerBehavior
         $this->vars['mailBehaviorWidget'] = $this->mailBehaviorWidget;
         $this->vars['modelId'] = $modelId;
         $this->vars['modelClass'] = $modelClass;
+        $this->vars['errors'] = $this->errors;
         $this->vars['options'] = $options;
     }
 

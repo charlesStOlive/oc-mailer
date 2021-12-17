@@ -29,6 +29,13 @@ tabs:
             cssClass: col-xs-6
             mode: file
             tab: waka.mailer::sendbox.tab_content
+        is_embed:
+            label: waka.mailer::sendbox.is_embed
+            span: full
+            type: switch
+            cssClass: col-xs-12
+            default: false
+            tab: waka.mailer::sendbox.tab_content
         name:
             label: waka.mailer::sendbox.name
             span: storm

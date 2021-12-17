@@ -39,6 +39,12 @@ class SendBoxs extends Controller
         return $this->makePartial('$/waka/wakajob/controllers/jobs/_confirm_popup.htm');
     }
 
+    public function onSendOne() {
+        $id = $this->params[0];
+        $mail = \Waka\Mailer\Models\SendBox::find($id);
+        $mail->send();
+    }
+
     //endKeep/
 }
 

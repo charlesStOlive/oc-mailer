@@ -46,3 +46,7 @@
     - "Changement du champs content"
     - create_send_boxes_table_u160.php
     - create_waka_mails_table_u160.php
+1.6.1:
+    - "Ajout du champs is_embed"
+    - create_send_boxes_table_u161.php
+    - create_waka_mails_table_u161.php
