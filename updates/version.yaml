@@ -50,3 +50,6 @@
     - "Ajout du champs is_embed"
     - create_send_boxes_table_u161.php
     - create_waka_mails_table_u161.php
+1.7.0:
+    - "Nettoyage des ancines champs"
+    - create_waka_mails_table_u170.php

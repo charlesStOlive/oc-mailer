@@ -16,9 +16,9 @@ class CreateWakaMailsTable extends Migration
             $table->text('mjml')->nullable();
             $table->text('html')->nullable();
             $table->text('model_functions')->nullable();
-            $table->text('images')->nullable();
             $table->boolean('is_scope')->nullable()->default(false);
             $table->text('scopes')->nullable();
+            $table->text('images')->nullable();
             $table->string('name');
             $table->string('slug');
             $table->string('data_source');
