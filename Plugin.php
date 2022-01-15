@@ -149,6 +149,16 @@ class Plugin extends PluginBase
     {
         return [];
     }
+
+    public function registerWakaRules()
+    {
+        return [
+            'blocs' => [
+                ['\Waka\Mailer\WakaRules\Blocs\Mjml', 'onlyClass' => ['wakaMail']], 
+            ],
+        ];
+    }
+
     public function registerSettings()
     {
         return [

@@ -22,6 +22,7 @@ tabs:
         waka.mailer::wakamail.tab_info: icon-info-circle
         waka.mailer::wakamail.tab_edit: icon-pencil
         waka.mailer::wakamail.tab_options: icon-cog
+        waka.mailer::wakamail.tab_contents: icon-pencil
         waka.lp::lang.source_log.tab_lp: icon-file
     fields:    
         is_mjml:
@@ -55,51 +56,25 @@ tabs:
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_edit
-        # rule_asks:
-        #     label: waka.mailer::wakamail.rule_asks
-        #     span: full
-        #     type: askbuilder
-        #     ruleMode: fncs
-        #     targetProductor: wakaMail
-        #     full_access: waka.rules.asks.admin
-        #     permissions: [waka.rules.asks.*]
-        #     tab: waka.mailer::wakamail.tab_edit
         rule_asks:
             label: waka.mailer::wakamail.rule_asks
             span: full
             type: rulebuilder
-            ruleMode: ask
             targetProductor: wakaMail
-            showAttributes: true
             full_access: waka.rules.asks.admin
+            ruleMode: ask
+            showAttributes: true
             permissions: [waka.rules.asks.*]
             tab: waka.mailer::wakamail.tab_edit
-        # rule_fncs:
-        #     label: waka.mailer::wakamail.rule_fncs
-        #     span: full
-        #     type: fncbuilder
-        #     ruleMode: fncs
-        #     targetProductor: wakaMail
-        #     full_access: waka.rules.fncs.admin
-        #     permissions: [waka.rules.fncs.*]
-        #     tab: waka.mailer::wakamail.tab_edit
         rule_fncs:
             label: waka.mailer::wakamail.rule_fncs
             span: full
             type: rulebuilder
-            ruleMode: fnc
             targetProductor: wakaMail
             full_access: waka.rules.fncs.admin
+            ruleMode: fnc
             permissions: [waka.rules.fncs.*]
             tab: waka.mailer::wakamail.tab_edit
-        rule_conditions:
-            label: waka.mailer::wakamail.rule_conditions
-            span: full
-            type: rulebuilder
-            ruleMode: condition
-            targetProductor: wakaMail
-            permissions: [waka.mailer.admin.super]
-            tab: waka.mailer::wakamail.tab_options
         test_id:
             label: waka.mailer::wakamail.test_id
             span: left
@@ -193,7 +168,25 @@ tabs:
             default: true
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
-        
+        rule_blocs:
+            label: waka.mailer::wakamail.rule_blocs
+            span: full
+            type: rulebuilder
+            targetProductor: wakaMail
+            full_access: waka.rules.fncs.admin
+            ruleMode: bloc
+            comment: waka.mailer::wakamail.rule_blocs_com
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_contents
+        rule_conditions:
+            label: waka.mailer::wakamail.rule_conditions
+            span: full
+            type: rulebuilder
+            ruleMode: condition
+            targetProductor: wakaMail
+            showAttributes: true
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
         mail_logs:
             label: waka.mailer::wakamail.mail_logs
             span: full

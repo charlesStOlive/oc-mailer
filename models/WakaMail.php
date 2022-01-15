@@ -62,11 +62,7 @@ class WakaMail extends Model
      * @var array Attributes to be cast to JSON
      */
     protected $jsonable = [
-        'model_functions',
-        'images',
         'pjs',
-        'scopes',
-        'asks',
     ];
 
     /**
@@ -132,6 +128,11 @@ class WakaMail extends Model
             'name' => 'conditioneable',
             'delete' => true
         ],
+        'rule_blocs' => [
+            'Waka\Utils\Models\RuleBloc',
+            'name' => 'bloceable',
+            'delete' => true
+        ],
     ];
     public $attachOne = [
     ];
@@ -149,9 +150,12 @@ class WakaMail extends Model
             $applicationId = env('MJML_API_ID');
             $secretKey = env('MJML_API_SECRET');
             $clientMjml = new MjmlClient($applicationId, $secretKey);
-            //constructtion du mjml final avec les blocs.
-
-            $this->mjml_html = $clientMjml->render($this->mjml);
+            //Creation du final html
+            $finalMjml = $this->mjml;
+            // //constructtion du mjml final avec les blocs.
+            $additionalBlocs  = $this->rule_blocs->pluck('mjml', 'code')->toArray();
+            $finalMjml = \Winter\Storm\Parse\Bracket::parse($finalMjml, $additionalBlocs);
+            $this->mjml_html = $clientMjml->render($finalMjml);
         }
     }
 
