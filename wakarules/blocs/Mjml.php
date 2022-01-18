@@ -24,7 +24,7 @@ class Mjml extends BlocBase  implements BlocInterface
     public function getText()
     {
         $name = $this->host->config_data['name'] ?? 'Nom du bloc manquant';
-        return $name;
+        return "Ce bloc est exploitable dans le template en utilisant le code : {".$this->host->code."}";
     }
     
 }

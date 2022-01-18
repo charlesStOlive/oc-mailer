@@ -2,6 +2,8 @@
 
 use Model;
 use Mjml\Client as MjmlClient;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * wakaMail Model
@@ -146,16 +148,30 @@ class WakaMail extends Model
     public function beforeSave()
     {
         if ($this->is_mjml && $this->mjml) {
-            //transformation du mjmm en html via api mailjet.
-            $applicationId = env('MJML_API_ID');
-            $secretKey = env('MJML_API_SECRET');
-            $clientMjml = new MjmlClient($applicationId, $secretKey);
-            //Creation du final html
             $finalMjml = $this->mjml;
             // //constructtion du mjml final avec les blocs.
             $additionalBlocs  = $this->rule_blocs->pluck('mjml', 'code')->toArray();
             $finalMjml = \Winter\Storm\Parse\Bracket::parse($finalMjml, $additionalBlocs);
-            $this->mjml_html = $clientMjml->render($finalMjml);
+            $this->mjml_html = $this->sendApi($finalMjml);
+        }
+    }
+
+
+    public function sendApi($mjml) {
+        $applicationId = env('MJML_API_ID');
+        $secretKey = env('MJML_API_SECRET');
+        $client = new Client(['base_uri' => 'https://api.mjml.io/v1/']);
+        $response = $client->request('POST', 'render', [
+            'auth' => [$applicationId, $secretKey],
+            'body' => json_encode(['mjml' => $mjml]),
+        ]);
+        if($response->getReasonPhrase()) {
+            $body = json_decode($response->getBody()->getContents());
+            trace_log($body);
+            //trace_log($body->html);
+            return $body->html;
+        } else {
+            throw new ValidationException(['mjml' => 'Problème de transcodage MJML contactez votre administrateur']);
         }
     }
 
