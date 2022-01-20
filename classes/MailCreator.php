@@ -79,7 +79,10 @@ class MailCreator
     public function setRuleAsksResponse($datas = [])
     {
         $askArray = [];
-        $srcmodel = $this->ds->getModel($this->modelId);
+        $srcmodel = null;
+        if($this->ds) {
+            $srcmodel = $this->ds->getModel($this->modelId);
+        }
         $asks = $this->getProductor()->rule_asks()->get();
         foreach($asks as $ask) {
             $key = $ask->getCode();

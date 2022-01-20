@@ -8,9 +8,11 @@ class CreateWakaMailsTableU161 extends Migration
 {
     public function up()
     {
-        Schema::table('waka_mailer_waka_mails', function (Blueprint $table) {
-            $table->boolean('is_embed')->nullable()->default(false);
-        });
+        if (!Schema::hasColumn('waka_mailer_waka_mails', 'is_embed')){
+            Schema::table('waka_mailer_waka_mails', function (Blueprint $table) {
+                $table->boolean('is_embed')->nullable()->default(false);
+            });
+        }
     }
 
     public function down()
