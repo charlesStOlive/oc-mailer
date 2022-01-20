@@ -1,0 +1,9 @@
+ 
+mailer_mjml:
+    title: Les emails MJML 
+    group: user
+mailer_edit_email:
+    title: Rule builder
+    group: dev
+
+
