@@ -1,0 +1,19 @@
+ 
+files:
+    mailer_mjml:
+        title: Les emails MJML 
+        comment: "Niveau developpeur/intégrateur"
+        group: "02 Configuration"
+        relativePath: waka/mailer/docs
+    mailer_edit_email:
+        title: Rule builder
+        group: "03 Edition"
+        omment: "Niveau Utilisateur"
+        relativePath: waka/mailer/docs
+parts:
+    env:
+        relativePath: waka/mailer/docs/parts
+        from: mailer
+
+
+
