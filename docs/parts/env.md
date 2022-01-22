@@ -11,5 +11,4 @@ MAIL_HOST=smtp.mailgun.org
 MAIL_PORT=587
 MAIL_ENCRYPTION=tls
 # le code et le secret sont à entrer dans le backoffice version mail. 
-
 ```
