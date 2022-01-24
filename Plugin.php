@@ -49,7 +49,7 @@ class Plugin extends PluginBase
             'Waka\Mailer\FormWidgets\PjList' => 'pjlist',
         ];
     }
-
+    //TODO : supprimer ?
     public function registerMarkupTags()
     {
         return [
