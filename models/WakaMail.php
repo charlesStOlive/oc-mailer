@@ -167,7 +167,7 @@ class WakaMail extends Model
         ]);
         if($response->getReasonPhrase()) {
             $body = json_decode($response->getBody()->getContents());
-            trace_log($body);
+            //trace_log($body);
             //trace_log($body->html);
             return $body->html;
         } else {
