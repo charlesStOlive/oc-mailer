@@ -5,21 +5,16 @@ use Event;
 use Waka\Mailer\Models\WakaMail;
 use Waka\Utils\Classes\DataSource;
 use Waka\Utils\Classes\TmpFiles;
+use Waka\Utils\Classes\ProductorCreator;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
-class MailCreator
+class MailCreator extends ProductorCreator
 {
-    public static $productor;
     public static $maileable_type;
-    public $ds;
-    public $modelId = null;
     private $isTwigStarted;
     public $manualData = [];
-    public $implement = [];
-    public $askResponse = [];
     
-
     public static function find($mail_id, $slug = false)
     {
         //trace_log('find');
@@ -37,95 +32,6 @@ class MailCreator
         self::$maileable_type = "Waka\Mailer\Models\WakaMail";
         return new self;
     }
-    public static function getProductor()
-    {
-        return self::$productor;
-    }
-    public static function getProductorClass()
-    {
-        return get_class(self::$productor);
-    }
-
-    public function setModelId($modelId)
-    {
-        //trace_log('setModelId');
-        $this->modelId = $modelId;
-        $dataSourceCode = $this->getProductor()->data_source;
-        $this->ds = \DataSources::find($dataSourceCode);
-        $this->ds->instanciateModel($modelId);
-        //trace_log('ok');
-        return $this;
-    }
-
-    public function setModelTest()
-    {
-        $this->modelId = $this->getProductor()->test_id;
-        $dataSourceCode = $this->getProductor()->data_source;
-        $this->ds = \DataSources::find($dataSourceCode);
-        $this->ds->instanciateModel($this->modelId);
-        return $this;
-    }
-
-    public function setAsksResponse($datas = [])
-    {
-        if($this->ds) {
-             $this->askResponse = $this->ds->getAsksFromData($datas, $this->getProductor()->asks);
-        } else {
-            $this->askResponse = [];
-        }
-        return $this;
-    }
-
-    public function setRuleAsksResponse($datas = [])
-    {
-        $askArray = [];
-        $srcmodel = null;
-        if($this->ds) {
-            $srcmodel = $this->ds->getModel($this->modelId);
-        }
-        $asks = $this->getProductor()->rule_asks()->get();
-        foreach($asks as $ask) {
-            $key = $ask->getCode();
-            //trace_log($key);
-            $askResolved = $ask->resolve($srcmodel, 'twig', $datas);
-            $askArray[$key] = $askResolved;
-        }
-        //trace_log($askArray);
-        return array_replace($askArray,$this->askResponse);
-        
-    }
-
-    public function setRuleFncsResponse()
-    {
-        $fncArray = [];
-        $srcmodel = $this->ds->getModel($this->modelId);
-        $fncs = $this->getProductor()->rule_fncs()->get();
-        foreach($fncs as $fnc) {
-            $key = $fnc->getCode();
-            //trace_log('key of the function');
-            $fncResolved = $fnc->resolve($srcmodel,$this->ds->code);
-            $fncArray[$key] = $fncResolved;
-        }
-        //trace_log($fncArray);
-        return $fncArray;
-        
-    }
-
-    public function setdefaultAsks($datas = [])
-    {
-        if($this->ds) {
-             $this->askResponse = $this->ds->getAsksFromData($datas, $this->getProductor()->asks);
-        } else {
-            $this->askResponse = [];
-        }
-        return $this;
-    }
-
-    public function checkConditions()//Ancienement checkScopes
-    {
-        $conditions = new \Waka\Utils\Classes\Conditions($this->getProductor(), $this->ds->model);
-        return $conditions->checkConditions();
-    }
 
     
 
@@ -136,68 +42,21 @@ class MailCreator
 
     public function prepare()
     {
-        if ((!$this->ds || !$this->modelId) && !count($this->manualData)) {
+        if ((!self::$ds || !$this->modelId) && !count($this->manualData)) {
             throw new \ApplicationException("Le modelId n a pas ete instancié et il n' y a pas de données manuel");
         }
-        $model = [];
-        //Fusion des données avec prepare model reoturne un objet avec ds, imag et fnc
+        $model = $this->getProductorVars();
 
-        if($this->ds && $this->modelId) {
-            $model = $this->prepareModel();
-        }
         //Ajout des donnnées manuels
         if(count($this->manualData)) {
             $model = array_merge($model, $this->manualData);
         }
-
-        //Recupère des variables par des evenements exemple LP log dans la finction boot
-        $dataModelFromEvent = Event::fire('waka.productor.subscribeData', [$this]);
-        if ($dataModelFromEvent[0] ?? false) {
-            foreach ($dataModelFromEvent as $dataEvent) {
-               $model[key($dataEvent)] = $dataEvent[key($dataEvent)];
-            }
-        }
-
-        //Nouveau bloc pour nouveaux asks
-        if($this->getProductor()->rule_asks()->count()) {
-            $this->askResponse = $this->setRuleAsksResponse($model);
-        } else {
-            //Injection des asks s'ils existent dans le model;
-            if(!$this->askResponse) {
-                $this->setAsksResponse($model);
-            }
-        }
-
-        //Nouveau bloc pour les new Fncs
-        if($this->getProductor()->rule_fncs()->count()) {
-            $fncs = $this->setRuleFncsResponse($model);
-            $model = array_merge($model, [ 'fncs' => $fncs]);
-        }
-        
-
-        $model = array_merge($model, [ 'asks' => $this->askResponse]);
-
-        //trace_log($model);
         
         if ($this->getProductor()->is_mjml) {
             return $this->renderMjml($model);
         } else {
             return $this->renderHtml($model);
         }
-    }
-
-    public function prepareModel() {
-        
-        $values = $this->ds->getValues($this->modelId);
-        //$img = $this->ds->wimages->getPicturesUrl($this->getProductor()->images);
-        //$fnc = $this->ds->getFunctionsCollections($this->modelId, $this->getProductor()->model_functions);
-        //
-        return [
-            'ds' => $values,
-            //'IMG' => $img,
-            //'FNC' => $fnc,
-        ];
-
     }
 
     public function renderTest()
@@ -227,30 +86,18 @@ class MailCreator
             }
         }
         
-        $subject = $datasEmail['subject'] ?? $this->createTwigStrSubject();
+        $subject = $datasEmail['subject'] ?? $this->createTwigStrSubject('subject');
         $datasEmail['subject'] = $subject;
         $emails = $datasEmail['emails'] ?? $this->getDefaultEmail();
         $datasEmail['emails'] = $emails;
         return $datasEmail;
     }
 
-    public function createTwigStrSubject()
-    {
-        //C est pas le top puisque je double la requete getValues à réorganiser.
-        if(!$this->ds) {
-            return $this->getProductor()->subject;
-        }
-        $vars = [
-            'ds' => $this->ds->getValues($this->modelId),
-        ];
-        //trace_log($this->getProductor()->pdf_name);
-        $nameConstruction = \Twig::parse($this->getProductor()->subject, $vars);
-        return $nameConstruction;
-    }
+    
     private function getDefaultEmail()
     {
-        if($this->ds) {
-          return  $this->ds->getContact('to', null)[0];
+        if(self::$ds) {
+          return  self::$ds->getContact('to', null)[0];
         } else {
             throw new ApplicationException("Il n y a pas de datasource connu et pas d'email reçu dans dataemail");
         }
@@ -269,7 +116,7 @@ class MailCreator
         return [
             'mail_type' => $this->getProductorClass(),
             'mail_id' => $this->getProductor()->id ?? null,
-            'ds' => $this->ds->class ?? null,
+            'ds' => self::$ds->class ?? null,
             'ds_id' => $this->modelId ?? null,
         ];
         
@@ -305,7 +152,7 @@ class MailCreator
                 'mail_tags' => [],
                 'maileable_type' => $this->getProductorClass(),
                 'maileable_id' => $this->getProductor()->id ?? null,
-                'targeteable_type' => $this->ds->class ?? Null,
+                'targeteable_type' => self::$ds->class ?? Null,
                 'targeteable_id' => $this->modelId ?? null,
                 'sender' =>   $sender,
                 'reply_to' =>   $reply_to,
@@ -442,7 +289,7 @@ class MailCreator
             $dotedAttributeClass = explode(".", $classProductor);
             $type = $dotedAttributeClass[0] ?? false;
             $attribute = $dotedAttributeClass[1] ?? false;
-            $model = $this->ds->model;
+            $model = self::$ds->model;
             //trace_log("type : ".$type);
             if ($type =='file_one') {
                 //trace_log($attribute);
@@ -542,7 +389,7 @@ class MailCreator
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
         //trace_log($data);
-        if($this->ds) {
+        if(self::$ds) {
             $data['data'] =  $model['ds'];
         } else {
             $data['data'] =  $model;
@@ -565,43 +412,10 @@ class MailCreator
         return $htmlContent;
     }
 
-    /**
-     * Temporarily registers mail based token parsers with Twig.
-     * @return void
-     */
-    protected function startTwig()
-    {
-        if ($this->isTwigStarted) {
-            return;
-        }
-
-        $this->isTwigStarted = true;
-
-        $markupManager = \System\Classes\MarkupManager::instance();
-        $markupManager->beginTransaction();
-        $markupManager->registerTokenParsers([
-            new \System\Twig\MailPartialTokenParser,
-        ]);
-    }
-
-    /**
-     * Indicates that we are finished with Twig.
-     * @return void
-     */
-    protected function stopTwig()
-    {
-        if (!$this->isTwigStarted) {
-            return;
-        }
-
-        $markupManager = \System\Classes\MarkupManager::instance();
-        $markupManager->endTransaction();
-
-        $this->isTwigStarted = false;
-    }
+    
 
     public function getModelEmails()
     {
-        return $this->ds->getContact('to', null);
+        return self::$ds->getContact('to', null);
     }
 }

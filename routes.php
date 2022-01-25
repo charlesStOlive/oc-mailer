@@ -2,8 +2,7 @@
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('/test/email/{templateId}/', function ($templateId) {
-        $mc = Waka\Mailer\Classes\MailCreator::find($templateId);
-            return '<div transform: scale(1);">' . $mc->renderTest() . '</div>';
+            return '<div transform: scale(1);">' . Waka\Mailer\Classes\MailCreator::find($templateId)->renderTest() . '</div>';
     });
 });
 Route::group(['middleware' => ['Waka\Mailer\Classes\Middleware\MailgunWebHook']], function () {
