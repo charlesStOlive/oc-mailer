@@ -14,6 +14,7 @@ class MailCreator extends ProductorCreator
     public static $maileable_type;
     private $isTwigStarted;
     public $manualData = [];
+    public $resolveContext = 'mail';
     
     public static function find($mail_id, $slug = false)
     {
