@@ -87,7 +87,7 @@ class MailCreator extends ProductorCreator
             }
         }
         
-        $subject = $datasEmail['subject'] ?? $this->createTwigStrSubject('subject');
+        $subject = $datasEmail['subject'] ?? $this->createTwigStrName('subject');
         $datasEmail['subject'] = $subject;
         $emails = $datasEmail['emails'] ?? $this->getDefaultEmail();
         $datasEmail['emails'] = $emails;
