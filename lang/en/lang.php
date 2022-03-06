@@ -7,7 +7,9 @@ return [
         'bloc_name' => 'Email blocks',
         'bloc_type' => 'email block types',
         'bloc_type_description' => 'Administration of block types and examples',
-        'btn_lot' => 'Lot Email'
+        'btn_lot' => 'Lot Email',
+        'sendbox' => 'Outbox',
+        'sendbox_description' => 'Displays emails in outbox'
     ],
     'objtext' => [
         'data' => 'Paragraphs',
