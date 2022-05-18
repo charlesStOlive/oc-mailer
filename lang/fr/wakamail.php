@@ -23,6 +23,8 @@ return [
     'job_skipped' => 'Mails bloqués par restrictions',
     'job_title' => 'Message(s) à envoyer',
     'layout' => 'Maquette',
+    'lot_email' => 'Lot emails',
+    'lp_data' => 'Landing page',
     'mail_logs' => 'Logs des emails',
     'mail_success' => 'Mail envoyé avec succès',
     'mjml' => 'Code MJML',

@@ -103,8 +103,14 @@ class WakaMail extends Model
     ];
     public $belongsToMany = [
     ];        
-    public $morphTo = [];
+    public $morphTo = [
+    ];
     public $morphOne = [
+        'lp_data' => [
+            'Waka\Lp\Models\LpData',
+            'name' => 'lpeable',
+            'delete' => true
+        ],
     ];
     public $morphMany = [
         'sendBoxs' => [

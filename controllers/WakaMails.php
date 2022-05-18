@@ -29,12 +29,13 @@ class WakaMails extends Controller
 
     public $requiredPermissions = ['waka.mailer.admin.*'];
     //FIN DE LA CONFIG AUTO
-
+    
     public $listConfig = [
         'wakaMails' => 'config_list.yaml',
         'layouts' => 'config_layouts_list.yaml',
         'blocs' => 'config_blocs_list.yaml',
     ];
+    //startKeep/
 
     public function __construct()
     {
@@ -42,8 +43,6 @@ class WakaMails extends Controller
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Waka.Mailer', 'WakaMails');
     }
-
-    //startKeep/
 
     public function index($tab = null)
     {

@@ -14,7 +14,6 @@ fields:
         required: true
         default: Brouillon
         options: listStates
-        default: Actif
         permissions: [waka.mailer.admin.*]
 tabs:
     defaultTab: waka.mailer::wakamail.tab_edit
@@ -187,6 +186,12 @@ tabs:
             showAttributes: true
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
+        lp_data:
+            label: waka.mailer::wakamail.lp_data
+            span: full
+            type: partial
+            path: field_lp_data
+            tab: waka.mailer::wakamail.tab_logs
         mail_logs:
             label: waka.mailer::wakamail.mail_logs
             span: full
@@ -211,10 +216,10 @@ secondaryTabs:
             type: attributs
             permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_attributs
-        # blocs:
-        #     span: full
-        #     type: comonblocs
-        #     twigName: mailPartial
-        #     blocClass: Waka\Mailer\Models\Bloc
-        #     permissions: [waka.mailer.admin.*]
-        #     tab: waka.mailer::wakamail.tab_blocs
+        blocs:
+            span: full
+            type: comonblocs
+            twigName: mailPartial
+            blocClass: Waka\Mailer\Models\Bloc
+            permissions: [waka.mailer.admin.*]
+            tab: waka.mailer::wakamail.tab_blocs

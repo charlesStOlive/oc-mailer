@@ -16,3 +16,15 @@ mailLogs:
             column: created_at
             direction: desc
 
+lp_data:
+    label: waka.mailer::wakamail.lp_data
+    manage:
+        form: $/waka/lp/models/lpdata/fields.yaml
+    view:
+        form: $/waka/lp/models/lpdata/fields.yaml
+        toolbarButtons: update|delete
+        showCheckboxes: false
+        defaultSort:
+            column: name
+            direction: asc
+
