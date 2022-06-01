@@ -2,14 +2,14 @@
 return [
     'btns' => [
         'mail' => [
-            'label' => 'waka.mailer::wakaMail.create',
+            'label' => 'waka.mailer::wakamail.create',
             'class' => 'btn-secondary',
             'ajaxCaller' => 'onLoadMailBehaviorPopupForm',
             'ajaxInlineCaller' => 'onLoadMailBehaviorContentForm',
             'icon' => 'oc-icon-envelope',
         ],
         'lot_mail' => [
-            'label' => 'waka.mailer::wakaMail.lot_email',
+            'label' => 'waka.mailer::wakamail.lot_email',
             'class' => 'btn-secondary',
             'ajaxInlineCaller' => 'onLotMail',
             'icon' => 'oc-icon-envelope',
