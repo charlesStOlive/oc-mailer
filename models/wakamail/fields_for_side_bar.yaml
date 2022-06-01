@@ -15,7 +15,6 @@ fields:
         required: true
         comment: waka.mailer::wakamail.slug_com
         permissions: [waka.mailer.*]
-        noUpdate: true
     data_source:
         label: waka.mailer::wakamail.data_source
         span: right
