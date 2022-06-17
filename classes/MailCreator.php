@@ -6,6 +6,8 @@ use Waka\Mailer\Models\WakaMail;
 use Waka\Utils\Classes\DataSource;
 use Waka\Utils\Classes\TmpFiles;
 use Waka\Utils\Classes\ProductorCreator;
+use PHPHtmlParser\Dom;
+use PHPHtmlParser\Options as DomOptions;
 
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
@@ -202,12 +204,42 @@ class MailCreator extends ProductorCreator
             if(!$userMsId) {
                 throw new ApplicationException('Missing userMsId in renderOutlook');
             }
+
+            
             
             $mail = \MsGraphAdmin::emails()
                     ->userid($userMsId)
                     ->to($datasEmail['emails'])
-                    ->subject($datasEmail['subject'])
-                    ->body($htmlLayout);
+                    ->subject($datasEmail['subject']);
+            
+                    // ->body($htmlLayout);
+            // GESTION SI EMBED IMAGE 
+            
+            
+            if($this->getProductor()->is_embed) {
+                //trace_log("IS EMBED");
+                $dom = new Dom;
+                $dom->setOptions((new DomOptions())->setCleanupInput(false));
+                $dom->loadStr($htmlLayout);
+                $imgs = $dom->find('img');
+                $tempFiles = new \Waka\Utils\Models\TempFile;
+                foreach($imgs as $img) {
+                    $file = new \System\Models\File;
+                    $file->fromUrl($img->getAttribute('src'));
+                    $tempFiles->files()->add($file);
+                    $path = $file->getLocalPath();
+                    $cid = uniqid();
+                    $cids[$cid] = $path;
+                    $img->setAttribute('src', "cid:".$cid);
+                } 
+                
+                $mail->attachmentsInLine($cids);
+                $mail->body($dom->outerHtml);
+                //trace_log($dom->outerHtml);
+            } else {
+                $mail->body($htmlLayout);
+            }
+            
 
             //trace_log("mail ok");
                     
