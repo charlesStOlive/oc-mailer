@@ -173,6 +173,10 @@ class SendBox extends Model
     /**
      * SCOPES
      */
+    public function scopeSended($query)
+    {
+        return $query->where('state', 'Envoyé');
+    }
 
     /**
      * SETTERS
