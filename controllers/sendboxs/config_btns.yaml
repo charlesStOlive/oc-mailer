@@ -2,8 +2,7 @@
 #  Btn  Behavior Config
 # ===================================
 
-Description: >
-    //startKeep/
+
 modelClass: Waka\Mailer\Models\SendBox
 
 workflow: false 
@@ -50,8 +49,7 @@ action_bar:
     partials: #Attention seul les variables modelId et modelClass (class du controller) sont disponible sans les partials.  
         name:
             url: $/waka/mailer/controllers/sendboxs/_sendone.htm
-Description: >
-    //endKeep/
+
 
 
 #     ##### SAUVEGARDE PURE ########

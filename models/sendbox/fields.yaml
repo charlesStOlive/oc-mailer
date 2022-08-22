@@ -27,7 +27,6 @@ tabs:
             type: fileupload
             mode: file
             cssClass: col-xs-6
-            mode: file
             tab: waka.mailer::sendbox.tab_content
         is_embed:
             label: waka.mailer::sendbox.is_embed

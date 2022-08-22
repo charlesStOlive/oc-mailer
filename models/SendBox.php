@@ -206,7 +206,7 @@ class SendBox extends Model
                     $contenu = $this->embedAllImage($message);
                 }
                 
-                $message->setBody($contenu, 'text/html');
+                $message->html($contenu);
                 //trace_log($datasEmail);
                 $message->to($this->tos);
                 if($this->sender) {
@@ -220,7 +220,7 @@ class SendBox extends Model
                 }
                 
                 $message->subject($this->name);
-                $headers = $message->getSwiftMessage()->getHeaders();
+                $headers = $message->getSymfonyMessage()->getHeaders();
                 //Ajout ID dans les variables.
                 $mailVars = array_merge($this->mail_vars, ['send_box_id' => $this->id]);
                 //
@@ -265,21 +265,19 @@ class SendBox extends Model
         $embedededs = [];
         foreach($imgs as $img) {
             $file = new \System\Models\File;
-            $file->fromUrl($img->getAttribute('src'));
+            $srcUrl = $img->getAttribute('src');
+            if(empty($srcUrl)) continue;
+            if(!starts_with($srcUrl, 'https'))  {
+                $srcUrl = url($srcUrl);
+            }
+            $file->fromUrl($srcUrl);
             $tempFiles->files()->add($file);
             $path = $file->getLocalPath();
             $cid = $message->embed($path);
             $img->setAttribute('src', $cid);
         } 
+
         return $dom->outerHtml;
-
-
-        // $tempFile = new \Waka\Utils\Models\TempFile();
-        
-        // $file = new \System\Models\File;
-        // $file->fromUrl($url);
-        // $tempFile->file()->add($file);
-        // $tempFile->save();
     }
 
 //endKeep/

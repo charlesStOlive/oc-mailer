@@ -161,7 +161,7 @@ class MailCreator extends ProductorCreator
                 'reply_to' =>   $reply_to,
                 'open_log' =>   $open_log,
                 'click_log' =>  $click_log,
-                'is_embed' =>  $click_log,
+                'is_embed' =>  $is_embed,
             ]);
             $pjs = $datasEmail['pjs'] ?? null;
 
@@ -225,7 +225,12 @@ class MailCreator extends ProductorCreator
                 $tempFiles = new \Waka\Utils\Models\TempFile;
                 foreach($imgs as $img) {
                     $file = new \System\Models\File;
-                    $file->fromUrl($img->getAttribute('src'));
+                    $srcUrl = $img->getAttribute('src');
+                    if(empty($srcUrl)) continue;
+                    if(!starts_with($srcUrl, 'https'))  {
+                        $srcUrl = url($srcUrl);
+                    }
+                    $file->fromUrl($srcUrl);
                     $tempFiles->files()->add($file);
                     $path = $file->getLocalPath();
                     $cid = uniqid();
@@ -259,42 +264,13 @@ class MailCreator extends ProductorCreator
             if($sendType == 'send') {
                 return $mail->send();
             }
-            
+            $tempFiles->delete();
         }
+        
         catch (Exception $ex) {
             \Flash::error($ex->getMessage());
         }
         
-    }
-
-    public function renderGMail($modelId, $datasEmail)
-    {
-        //$htmlLayout = $this->prepare($modelId);
-        //trace_log('send with gmail');
-
-        // $pjs = [];
-        // if ($this->getProductor()->pjs) {
-        //     $pjs = $this->getProductor()->pjs;
-        // }
-        // //$backup = Mail::getSwiftMailer();
-        // $gmail = new Swift_Mailer(new GmailTransport());
-        // // Set the mailer as gmail
-        // Mail::setSwiftMailer($gmail);
-
-        // \Mail::raw(['html' => $htmlLayout], function ($message) use ($datasEmail, $pjs) {
-        //     $message->to($datasEmail['emails']);
-        //     $message->subject($datasEmail['subject']);
-        //     if ($pjs) {
-        //         foreach ($pjs as $pj) {
-        //             $mailPj = $this->resolvePj($pj, $this->modelId);
-        //             //trace_log($mailPj);
-        //             $message->attach(storage_path('app/' . $mailPj));
-        //         }
-        //     }
-        // });
-        // //Mail::setSwiftMailer($backup);
-        // trace_log("fin du mail");
-        return true;
     }
 
     public function resolvePj($message, $mailResolver,  $data)
@@ -368,7 +344,6 @@ class MailCreator extends ProductorCreator
             return $this->returnOutlookPj($message, $pjToReturn, $pjsToReturn);
         }
         if($mailResolver == 'swift') {
-            //trace_log('swift');
            $this->returnMailFile($message, $pjToReturn, $pjsToReturn);
         }
     }
@@ -412,7 +387,7 @@ class MailCreator extends ProductorCreator
 
     public function renderHtml($model)
     {
-        $this->startTwig();
+        
         $text = $this->getProductor()->html;
         $htmlContent = \Twig::parse($text, $model);
         $data = [
@@ -431,17 +406,17 @@ class MailCreator extends ProductorCreator
         //trace_log($data);
         
         $htmlLayout = \Twig::parse($this->getProductor()->layout->contenu, $data);
-        $this->stopTwig();
+        
         return $htmlLayout;
     }
 
     public function renderMjml($model)
     {
-        $this->startTwig();
+        
         $htm = $this->getProductor()->mjml_html;
         //$htm = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
         $htmlContent = \Twig::parse($htm, $model);
-        $this->stopTwig();
+        
         return $htmlContent;
     }
 

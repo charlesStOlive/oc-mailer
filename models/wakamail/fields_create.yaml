@@ -10,7 +10,6 @@ fields:
         required: true
         default: Brouillon
         options: listStates
-        default: Actif
         permissions: [waka.mailer.admin.*]
     name:
         label: waka.mailer::wakamail.name
@@ -105,7 +104,6 @@ fields:
         label: waka.mailer::wakamail.is_lot
         span: left
         type: switch
-        default: true
         default: true
         permissions: [waka.mailer.admin.super]
         tab: waka.mailer::wakamail.tab_options
