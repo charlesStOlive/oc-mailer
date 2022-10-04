@@ -31,9 +31,6 @@ columns:
         type: switch
         searchable: false
         sortable: true
-    data_source:
-        label: waka.mailer::wakamail.data_source
-        searchable: true
     layout_r:
         label: waka.mailer::wakamail.layout
         relation: layout

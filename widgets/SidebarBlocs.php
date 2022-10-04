@@ -5,7 +5,6 @@ use Waka\Utils\Classes\DataSource;
 
 class SideBarBlocs extends WidgetBase
 {
-    use \Waka\Utils\Classes\Traits\StringRelation;
     /**
      * @var string A unique alias to identify this widget.
      */

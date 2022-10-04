@@ -7,7 +7,6 @@ use Waka\Mailer\Models\WakaMail;
 
 class MailBehavior extends ControllerBehavior
 {
-    use \Waka\Utils\Classes\Traits\StringRelation;
     protected $mailBehaviorWidget;
     protected $mailDataWidget;
     public $errors;
@@ -76,9 +75,9 @@ class MailBehavior extends ControllerBehavior
     {
         $productorId = post('productorId');
         $wakaMail = \Waka\Mailer\Models\WakaMail::find($productorId);
-        $ds = \DataSources::find($wakaMail->data_source);
-        $modelId = $wakaMail->test_id;
-        
+        $ds = \DataSources::find($wakaMail->waka_session->data_source);
+        $modelId = $wakaMail->waka_session->ds_id_test;
+        //trace_log("modelID : ".$modelId);
         $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
         $this->mailDataWidget->getField('subject')->value = $subject;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
@@ -115,7 +114,7 @@ class MailBehavior extends ControllerBehavior
         $ds = \DataSources::findByClass($modelClass, 'class');
         $wakaMail = WakaMail::find($productorId);
 
-
+        //trace_log("modelId : ".$modelId);
         $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
         $this->mailDataWidget->getField('subject')->value = $subject;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
@@ -167,14 +166,6 @@ class MailBehavior extends ControllerBehavior
             ];
             return MailCreator::find($productorId)->setModelTest()->setAsksResponse($datas['asks_array'] ?? [])->renderMail($datasEmail);
         }
-    }
-
-    public function onMailTestShow()
-    {
-        //trace_log('onMailTestShow');
-        $productorId = post('productorId');
-        $this->vars['html'] = MailCreator::find($productorId)->setModelId($modelId)->renderTest();
-        return $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_html.htm');
     }
     /**
      * Validations

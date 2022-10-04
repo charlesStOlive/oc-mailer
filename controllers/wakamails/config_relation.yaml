@@ -16,12 +16,12 @@ mailLogs:
             column: created_at
             direction: desc
 
-lp_data:
-    label: waka.mailer::wakamail.lp_data
+waka_session:
+    label: waka.mailer::wakamail.waka_session
     manage:
-        form: $/waka/lp/models/lpdata/fields.yaml
+        form: $/waka/session/models/wakasession/fields.yaml
     view:
-        form: $/waka/lp/models/lpdata/fields.yaml
+        form: $/waka/session/models/wakasession/fields.yaml
         toolbarButtons: update|delete
         showCheckboxes: false
         defaultSort:

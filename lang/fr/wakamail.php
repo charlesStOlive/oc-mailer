@@ -24,7 +24,6 @@ return [
     'job_title' => 'Message(s) à envoyer',
     'layout' => 'Maquette',
     'lot_email' => 'Lot emails',
-    'lp_data' => 'Landing page',
     'mail_logs' => 'Logs des emails',
     'mail_success' => 'Mail envoyé avec succès',
     'mjml' => 'Code MJML',
@@ -57,12 +56,14 @@ return [
     'tab_infos' => 'Infos',
     'tab_logs' => 'Logs',
     'tab_options' => 'Options',
+    'tab_session' => 'Session',
     'tab_temp' => 'TEMP',
     'test_id' => 'Modèle de test',
     'test_title' => 'Tester un email',
     'tests' => 'Tests',
     'title' => 'Gestion des emails',
     'update' => 'Éditer un email',
+    'waka_session' => 'Clef pour LP',
     'e' => [
         'data_source' => 'Vous devez choisir un modèle'
     ]

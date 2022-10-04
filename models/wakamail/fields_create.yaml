@@ -8,8 +8,8 @@ fields:
         span: left
         type: balloon-selector
         required: true
-        default: Brouillon
         options: listStates
+        default: Actif
         permissions: [waka.mailer.admin.*]
     name:
         label: waka.mailer::wakamail.name
@@ -75,17 +75,6 @@ fields:
         span: left
         type: switch
         default: false
-        permissions: [waka.mailer.admin.super]
-    data_source:
-        label: waka.mailer::wakamail.data_source
-        span: right
-        type: dropdown
-        placeholder: waka.utils::lang.global.placeholder
-        options: listDataSource
-        trigger:
-            action: hide
-            field: no_ds
-            condition: checked
         permissions: [waka.mailer.admin.super]
     layout:
         label: waka.mailer::wakamail.layout

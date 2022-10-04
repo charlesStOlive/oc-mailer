@@ -1,8 +1,6 @@
 <?php namespace Waka\Mailer\Models;
 
 use Model;
-use PHPHtmlParser\Dom;
-use PHPHtmlParser\Options as DomOptions;
 
 /**
  * sendBox Model
@@ -12,6 +10,7 @@ class SendBox extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
     use \Waka\Utils\Classes\Traits\WakAnonymize;
+    private  $tempFiles;
 
 
     /**
@@ -203,7 +202,7 @@ class SendBox extends Model
                 $contenu = $this->content;
                 if($this->is_embed) {
                     //embedAll change les src des images et crée les $message->embed(...)
-                    $contenu = $this->embedAllImage($message);
+                    $contenu = $this->embedAllImages($message);
                 }
                 
                 $message->html($contenu);
@@ -254,31 +253,30 @@ class SendBox extends Model
         
 
     }
-
-    public function embedAllImage($message) {
-        $content = $this->content;
-        $dom = new Dom;
-        $dom->setOptions((new DomOptions())->setCleanupInput(false));
-        $dom->loadStr($content);
-        $imgs = $dom->find('img');
+    public function embedAllImages($message) {
         $tempFiles = new \Waka\Utils\Models\TempFile;
-        $embedededs = [];
-        foreach($imgs as $img) {
+        $regex = '/<img\s.*?src=(?:\'|")([^\'">]+)(?:\'|")/';
+        $html = $this->content;
+        $result = preg_replace_callback($regex, function($match) use($tempFiles, $message) {
+            //trace_log($match);
             $file = new \System\Models\File;
-            $srcUrl = $img->getAttribute('src');
-            if(empty($srcUrl)) continue;
-            if(!starts_with($srcUrl, 'https'))  {
-                $srcUrl = url($srcUrl);
-            }
-            $file->fromUrl($srcUrl);
-            $tempFiles->files()->add($file);
-            $path = $file->getLocalPath();
-            $cid = $message->embed($path);
-            $img->setAttribute('src', $cid);
-        } 
+            $srcUrl = $match[1];
+            if(empty($srcUrl)) {
+                return $match[0];
+            } else {
+                if(!starts_with($srcUrl, 'https'))  {
+                    $srcUrl = url($srcUrl);
+                }
+                $file->fromUrl($srcUrl);
+                $tempFiles->files()->add($file);
+                $path = $file->getLocalPath();
+                $cid = $message->embed($path);
+                $match[0] = str_replace($match[1], $cid,  $match[0] );
+                return $match[0];
+            };
+        }, $this->content);
+        return $result;
 
-        return $dom->outerHtml;
     }
-
 //endKeep/
 }

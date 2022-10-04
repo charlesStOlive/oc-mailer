@@ -1,9 +1,9 @@
 <?php namespace Waka\Mailer\Models;
 
 use Model;
-use Mjml\Client as MjmlClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use \Qferrer\Mjml\Renderer\BinaryRenderer;
 
 /**
  * wakaMail Model
@@ -15,6 +15,7 @@ class WakaMail extends Model
     use \Winter\Storm\Database\Traits\SoftDelete;
     use \Winter\Storm\Database\Traits\Sortable;
     use \Waka\Utils\Classes\Traits\DataSourceHelpers;
+    use \Waka\Session\Classes\Traits\WakaSessionTrait;
 
 
     /**
@@ -87,6 +88,12 @@ class WakaMail extends Model
         'deleted_at',
     ];
 
+/**
+    * @var array Spécifié le type d'export à utiliser pour chaque champs
+    */
+    public $importExportConfig = [
+    ]; 
+
     /**
      * @var array Relations
      */
@@ -106,9 +113,9 @@ class WakaMail extends Model
     public $morphTo = [
     ];
     public $morphOne = [
-        'lp_data' => [
-            'Waka\Lp\Models\LpData',
-            'name' => 'lpeable',
+        'waka_session' => [
+            'Waka\Session\Models\WakaSession',
+            'name' => 'sessioneable',
             'delete' => true
         ],
     ];
@@ -159,6 +166,16 @@ class WakaMail extends Model
             $additionalBlocs  = $this->rule_blocs->pluck('mjml', 'code')->toArray();
             $finalMjml = \Winter\Storm\Parse\Bracket::parse($finalMjml, $additionalBlocs);
             $this->mjml_html = $this->sendApi($finalMjml);
+            //
+            // $finalMjml = $this->mjml;
+            // //constructtion du mjml final avec les blocs.
+            // $additionalBlocs  = $this->rule_blocs->pluck('mjml', 'code')->toArray();
+            // $finalMjml = \Winter\Storm\Parse\Bracket::parse($finalMjml, $additionalBlocs);
+            // // $this->mjml_html = $this->sendApi($finalMjml);
+            // $renderer =  new BinaryRenderer(__DIR__ . '/node_modules/.bin/mjml');
+            // $rended = $renderer->render($finalMjml);
+            // trace_log($rended);
+            // $this->mjml_html = $rended;
         }
     }
 

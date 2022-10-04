@@ -3,25 +3,20 @@
 use ApplicationException;
 use Event;
 use Waka\Mailer\Models\WakaMail;
-use Waka\Utils\Classes\DataSource;
 use Waka\Utils\Classes\TmpFiles;
 use Waka\Utils\Classes\ProductorCreator;
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Options as DomOptions;
-
 //use Zaxbux\GmailMailerDriver\Classes\GmailDraftTransport;
 
 class MailCreator extends ProductorCreator
 {
     public static $maileable_type;
-    private $isTwigStarted;
     public $manualData = [];
     public $resolveContext = 'mail';
     
     public static function find($mail_id, $slug = false)
     {
-        //trace_log('find');
-        $productor;
         if ($slug) {
             $productorModel = WakaMail::where('slug', $mail_id)->first();
         } else {
@@ -39,13 +34,13 @@ class MailCreator extends ProductorCreator
     
 
     public function setManualData($data) {
-        $this->manualData = array_merge($this->manualData, $data);
+        $this->manualData = array_merge($this->productorDs, $data);
         return $this;
     }
 
     public function prepare()
     {
-        if ((!self::$ds || !$this->modelId) && !count($this->manualData)) {
+        if ((!$this->productorDs || !$this->modelId) && !count($this->manualData)) {
             throw new \ApplicationException("Le modelId n a pas ete instancié et il n' y a pas de données manuel");
         }
         $model = $this->getProductorVars();
@@ -64,16 +59,13 @@ class MailCreator extends ProductorCreator
 
     public function renderTest()
     {
-        $testId = $this->getProductor()->test_id;
-        $noDs = $this->getProductor()->no_ds;
-        if(!$testId && !$noDs ) {
-            return \Response::make(\View::make('waka.utils::access_impossible')->with('explain', 'Il manque le modèle de test dans l\'onglet info'));
-        } elseif($testId && !$noDs) {
-            $this->setModelId($this->getProductor()->test_id);
+        $testId = $this->getProductor()->waka_session?->ds_id_test;
+        //
+        if($testId) {
+            $this->setModelId($testId);
         } else {
             $this->manualData = ['emails' => []];
         }
-        
         return $this->prepare();
     }
 
@@ -99,8 +91,8 @@ class MailCreator extends ProductorCreator
     
     private function getDefaultEmail()
     {
-        if(self::$ds) {
-          return  self::$ds->getContact('to', null)[0];
+        if($this->productorDs) {
+          return  $this->productorDs->getContact('to', null)[0];
         } else {
             throw new ApplicationException("Il n y a pas de datasource connu et pas d'email reçu dans dataemail");
         }
@@ -108,7 +100,6 @@ class MailCreator extends ProductorCreator
 
     public function renderHtmlforTest()
     {
-        $datasEmail = [];
         return  $this->prepare();
     }
 
@@ -119,7 +110,7 @@ class MailCreator extends ProductorCreator
         return [
             'mail_type' => $this->getProductorClass(),
             'mail_id' => $this->getProductor()->id ?? null,
-            'ds' => self::$ds->class ?? null,
+            'ds' => $this->productorDs->class ?? null,
             'ds_id' => $this->modelId ?? null,
         ];
         
@@ -155,7 +146,7 @@ class MailCreator extends ProductorCreator
                 'mail_tags' => [],
                 'maileable_type' => $this->getProductorClass(),
                 'maileable_id' => $this->getProductor()->id ?? null,
-                'targeteable_type' => self::$ds->class ?? Null,
+                'targeteable_type' => $this->productorDs->class ?? Null,
                 'targeteable_id' => $this->modelId ?? null,
                 'sender' =>   $sender,
                 'reply_to' =>   $reply_to,
@@ -212,41 +203,38 @@ class MailCreator extends ProductorCreator
                     ->to($datasEmail['emails'])
                     ->subject($datasEmail['subject']);
             
+            
                     // ->body($htmlLayout);
             // GESTION SI EMBED IMAGE 
-            
-            
             if($this->getProductor()->is_embed) {
                 //trace_log("IS EMBED");
-                $dom = new Dom;
-                $dom->setOptions((new DomOptions())->setCleanupInput(false));
-                $dom->loadStr($htmlLayout);
-                $imgs = $dom->find('img');
                 $tempFiles = new \Waka\Utils\Models\TempFile;
-                foreach($imgs as $img) {
+                $regex = '/<img\s.*?src=(?:\'|")([^\'">]+)(?:\'|")/';
+                $htmlCorrected = preg_replace_callback($regex, function($match) use($tempFiles) {
                     $file = new \System\Models\File;
-                    $srcUrl = $img->getAttribute('src');
-                    if(empty($srcUrl)) continue;
-                    if(!starts_with($srcUrl, 'https'))  {
-                        $srcUrl = url($srcUrl);
-                    }
-                    $file->fromUrl($srcUrl);
-                    $tempFiles->files()->add($file);
-                    $path = $file->getLocalPath();
-                    $cid = uniqid();
-                    $cids[$cid] = $path;
-                    $img->setAttribute('src', "cid:".$cid);
-                } 
-                
-                $mail->attachmentsInLine($cids);
-                $mail->body($dom->outerHtml);
-                //trace_log($dom->outerHtml);
+                    $srcUrl = $match[1];
+                    if(empty($srcUrl)) {
+                        return $match[0];
+                    } else {
+                        if(!starts_with($srcUrl, 'https'))  {
+                            $srcUrl = url($srcUrl);
+                        }
+                        $file->fromUrl($srcUrl);
+                        $tempFiles->files()->add($file);
+                        $path = $file->getLocalPath();
+                        $cid = uniqid();
+                        $this->cids[$cid] = $path;
+                        $match[0] = str_replace($match[1], 'cid:'.$cid,  $match[0] );
+                        return $match[0];
+                    };
+                }, $htmlLayout);
+                //trace_log($this->cids);
+                $mail->attachmentsInLine($this->cids);
+                $mail->body($htmlCorrected);
+                //trace_log($htmlCorrected);
             } else {
                 $mail->body($htmlLayout);
             }
-            
-
-            //trace_log("mail ok");
                     
             $pjs = $datasEmail['pjs'] ?? null;
             if($pjs) {
@@ -271,6 +259,15 @@ class MailCreator extends ProductorCreator
             \Flash::error($ex->getMessage());
         }
         
+    }
+
+    public $cids = [];
+    public function addCids() {
+
+    }
+
+    public function getCids() {
+
     }
 
     public function resolvePj($message, $mailResolver,  $data)
@@ -298,7 +295,7 @@ class MailCreator extends ProductorCreator
             $dotedAttributeClass = explode(".", $classProductor);
             $type = $dotedAttributeClass[0] ?? false;
             $attribute = $dotedAttributeClass[1] ?? false;
-            $model = self::$ds->model;
+            $model = $this->productorDs->model;
             //trace_log("type : ".$type);
             if ($type =='file_one') {
                 //trace_log($attribute);
@@ -397,7 +394,7 @@ class MailCreator extends ProductorCreator
             'AddCss' => $this->getProductor()->layout->Addcss,
         ];
         //trace_log($data);
-        if(self::$ds) {
+        if($this->productorDs) {
             $data['data'] =  $model['ds'];
         } else {
             $data['data'] =  $model;
@@ -424,6 +421,6 @@ class MailCreator extends ProductorCreator
 
     public function getModelEmails()
     {
-        return self::$ds->getContact('to', null);
+        return $this->productorDs->getContact('to', null);
     }
 }

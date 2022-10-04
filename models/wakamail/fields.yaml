@@ -12,8 +12,8 @@ fields:
         span: right
         type: balloon-selector
         required: true
-        default: Brouillon
         options: listStates
+        default: Actif
         permissions: [waka.mailer.admin.*]
 tabs:
     defaultTab: waka.mailer::wakamail.tab_edit
@@ -22,7 +22,7 @@ tabs:
         waka.mailer::wakamail.tab_edit: icon-pencil
         waka.mailer::wakamail.tab_options: icon-cog
         waka.mailer::wakamail.tab_contents: icon-pencil
-        waka.lp::lang.source_log.tab_lp: icon-file
+        waka.mailer::wakamail.tab_session: icon-file
     fields:    
         is_mjml:
             label: waka.mailer::wakamail.is_mjml
@@ -74,14 +74,6 @@ tabs:
             ruleMode: fnc
             permissions: [waka.rules.fncs.*]
             tab: waka.mailer::wakamail.tab_edit
-        test_id:
-            label: waka.mailer::wakamail.test_id
-            span: left
-            type: dropdown
-            placeholder: waka.utils::lang.global.placeholder
-            options: listDataSourceTarget
-            permissions: [waka.mailer.admin.*]
-            tab: waka.mailer::wakamail.tab_options
         auto_send:
             label: waka.mailer::wakamail.auto_send
             span: left
@@ -186,12 +178,6 @@ tabs:
             showAttributes: true
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
-        lp_data:
-            label: waka.mailer::wakamail.lp_data
-            span: full
-            type: partial
-            path: field_lp_data
-            tab: waka.mailer::wakamail.tab_logs
         mail_logs:
             label: waka.mailer::wakamail.mail_logs
             span: full
@@ -199,6 +185,13 @@ tabs:
             path: field_mail_logs
             permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_logs
+        waka_session:
+            label: waka.mailer::wakamail.waka_session
+            span: full
+            type: partial
+            path: field_waka_session
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_session
 secondaryTabs:
     fields:
         # info:

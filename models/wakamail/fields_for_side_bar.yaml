@@ -15,18 +15,6 @@ fields:
         required: true
         comment: waka.mailer::wakamail.slug_com
         permissions: [waka.mailer.*]
-    data_source:
-        label: waka.mailer::wakamail.data_source
-        span: right
-        type: dropdown
-        placeholder: waka.utils::lang.global.placeholder
-        disabled: true
-        options: listDataSource
-        trigger:
-            action: hide
-            field: no_ds
-            condition: checked
-        permissions: [waka.mailer.admin.super]
     layout:
         label: waka.mailer::wakamail.layout
         span: left
