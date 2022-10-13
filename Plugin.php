@@ -107,7 +107,7 @@ class Plugin extends PluginBase
         return [
             'anonymize' => [
                 \Waka\Mailer\Models\SendBox::class => [
-                    'nb_day' => 7,
+                    'nb_day' => 45,
                     'column' => 'created_at',
                 ],
             ],
