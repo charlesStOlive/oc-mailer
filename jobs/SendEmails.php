@@ -88,10 +88,9 @@ class SendEmails implements WakajobQueueJob
         /**
          * travail preparatoire sur les donnes
          */
+
         $productorId = $this->data['productorId'];
-        $mailCreator = MailCreator::find($productorId);
-        $dataSourceCode = $mailCreator->getProductor()->waka_session?->data_source;
-        $ds = \DataSources::find($dataSourceCode);
+        
         //
         $targets = $this->data['listIds'];
 
@@ -108,6 +107,7 @@ class SendEmails implements WakajobQueueJob
         $send = 0;
         $scopeError = 0;
         $skipped = 0;
+        $idsError = [];
         // Fin inistialisation
 
         //Travail sur les données
@@ -127,8 +127,16 @@ class SendEmails implements WakajobQueueJob
                     /**
                      * DEBUT TRAITEMENT **************
                      */
-                    //trace_log("DEBUT TRAITEMENT **************");
-                    $mailCreator->setModelId($targetId);
+                    $mailCreator = MailCreator::find($productorId)->setAsksResponse($this->data['askResponse']);
+                    $dataSourceCode = $mailCreator->getProductor()->waka_session?->data_source;
+                    $ds = \DataSources::find($dataSourceCode);
+                    try {
+                        $mailCreator->setModelId($targetId);
+                    } catch(\Exception $ex) {
+                        $scopeError++;
+                        continue;
+                    }
+                    
                     $scopeIsOk = $mailCreator->checkConditions();
                     if (!$scopeIsOk) {
                         $scopeError++;
@@ -145,9 +153,16 @@ class SendEmails implements WakajobQueueJob
                     ];
                     //trace_log($datasEmail);
                     
+                    try {
+                        $mailCreator->renderMail($datasEmail);
+                        ++$send;
+                    }  catch(\Exception $ex) {
+                        array_push($idsError, $targetId);
+                        continue;
+
+                    }
                     
-                    $mailCreator->renderMail($datasEmail);
-                    ++$send;
+                    
                     /**
                      * FIN TRAITEMENT **************
                      */
@@ -162,6 +177,7 @@ class SendEmails implements WakajobQueueJob
                 'waka.mailer::wakamail.job_send' => $send,
                 'waka.mailer::wakamail.job_scoped' => $scopeError,
                 'waka.mailer::wakamail.job_skipped' => $skipped,
+                'waka.mailer::wakamail.ids_error' => implode(',',$idsError),
                 ]
             );
         } catch (\Exception $ex) {

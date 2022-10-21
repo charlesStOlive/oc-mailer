@@ -74,22 +74,20 @@ class MailBehavior extends ControllerBehavior
     public function onLoadMailTestForm()
     {
         $productorId = post('productorId');
-        $wakaMail = \Waka\Mailer\Models\WakaMail::find($productorId);
-        $ds = \DataSources::find($wakaMail->waka_session->data_source);
-        $modelId = $wakaMail->waka_session->ds_id_test;
+        $productor = MailCreator::find($productorId)->setModelTest();
+        $modelId = $productor->modelId;
         //trace_log("modelID : ".$modelId);
-        $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
+        $subject = $productor->getProductor()->subject;
         $this->mailDataWidget->getField('subject')->value = $subject;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
-
-
+        //
         $askDataWidget = $this->createAskDataWidget();
-        $asks = $ds->getProductorAsks('Waka\Mailer\Models\WakaMail',$productorId, $modelId);
+        $asks = $productor->getProductorAsks();
         $askDataWidget->addFields($asks);
-
-        $contact = $ds->getContact('to', $modelId);
+        //
+        $contact = $productor->productorDs->getContact('to', $modelId);
         $this->mailBehaviorWidget->getField('email')->options = $contact;
-        $cc = $ds->getContact('cc', $modelId);
+        $cc = $productor->productorDs->getContact('cc', $modelId);
         $this->mailBehaviorWidget->getField('cc')->options = $cc;
 
 
@@ -111,16 +109,14 @@ class MailBehavior extends ControllerBehavior
         $productorId = post('productorId');
         $modelClass = post('modelClass');
         $modelId = post('modelId');
-        $ds = \DataSources::findByClass($modelClass, 'class');
-        $wakaMail = WakaMail::find($productorId);
-
-        //trace_log("modelId : ".$modelId);
-        $subject = $ds->dynamyseText($wakaMail->subject, $modelId);
+        $productor = MailCreator::find($productorId)->setModelId($modelId);
+        //
+        $subject = $productor->getProductor()->subject;
         $this->mailDataWidget->getField('subject')->value = $subject;
         $this->vars['mailDataWidget'] = $this->mailDataWidget;
 
         $askDataWidget = $this->createAskDataWidget();
-        $asks = $ds->getProductorAsks('Waka\Mailer\Models\WakaMail',$productorId, $modelId);
+        $asks = $productor->getProductorAsks();
         $askDataWidget->addFields($asks);
         $this->vars['askDataWidget'] = $askDataWidget;
         return [
@@ -207,6 +203,26 @@ class MailBehavior extends ControllerBehavior
         return ['#popupActionContent' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_lot.htm')];
     }
 
+    public function onLotMailSelectWakaMail() {
+        $productorId = post('productorId');
+        $productor = MailCreator::find($productorId);
+        $subject = $productor->getProductor()->subject;
+        $this->mailDataWidget->getField('subject')->value = $subject;
+        $this->vars['mailDataWidget'] = $this->mailDataWidget;
+
+        $askDataWidget = $this->createAskDataWidget();
+        $asks = $productor->getProductorAsks();
+        $askDataWidget->addFields($asks);
+        $this->vars['askDataWidget'] = $askDataWidget;
+        return [
+            '#mailDataWidget' => $this->makePartial('$/waka/mailer/behaviors/mailbehavior/_widget_data.htm'),
+            '#askDataWidget' => $this->makePartial('$/waka/utils/models/ask/_widget_ask_data.htm'),
+        ];
+
+
+        
+    }
+
     public function onLotMailBehaviorValidation()
     {
         $errors = $this->CheckIndexValidation(\Input::all());
@@ -215,6 +231,7 @@ class MailBehavior extends ControllerBehavior
         }
         $lotType = post('lotType');
         $productorId = post('productorId');
+        $askResponse = post('asks_array');
         $listIds = null;
         if ($lotType == 'filtered') {
             $listIds = Session::get('lot.listId');
@@ -223,11 +240,13 @@ class MailBehavior extends ControllerBehavior
         }
         Session::forget('lot.listId');
         Session::forget('lot.checkedIds');
+
         //
         $datas = [
             'listIds' => $listIds,
             'productorId' => $productorId,
-            'subject' => post('mailData_array.subject')
+            'subject' => post('mailData_array.subject'),
+            'askResponse' => $askResponse,
         ];
         try {
             $job = new \Waka\Mailer\Jobs\SendEmails($datas);
