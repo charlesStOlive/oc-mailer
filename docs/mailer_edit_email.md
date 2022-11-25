@@ -1,10 +1,12 @@
 # Editer un email
 
-## Les champs éditables
-Lorem
+## Accès
+l'accès se fait dans règlage ( groupe GESTION DES MODELES ) -> Mails
 
-## les fonctions éditables
-Lorem
+## les mails MJML et HTML
+Les emails peuvent être édité en MJML ou HTML
 
-## les conditions
-Lorem
+En fonction de vos droits vous n'aurez peut être pas accès à l'ossature du mail. 
+
+## les blocs d'éditions
+Pour mettre à jours les emails, veuillez exploiter les blocs d'éditions 

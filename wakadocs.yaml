@@ -1,17 +1,12 @@
  
 files:
-    mailer_mjml:
-        title: Créer un email MJML
-        comment: "Niveau developpeur/intégrateur"
-        group: "03 Edition"
-        relativePath: waka/mailer/docs
-        order: 20
     mailer_edit_email:
         title: Editer un email MJML
         group: "03 Edition"
         comment: "Comprendre les fonctions"
         relativePath: waka/mailer/docs
-        order: 10
+        permission: waka.mailer.admin
+        order: 50
 parts:
     env:
         relativePath: waka/mailer/docs/parts
