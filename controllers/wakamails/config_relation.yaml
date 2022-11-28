@@ -8,6 +8,7 @@ mailLogs:
     view:
         list: $/waka/mailer/models/maillog/columns.yaml
         recordUrl: waka/mailer/maillogs/update/:id
+        recordsPerPage: 20
         toolbarButtons: false
         showCheckboxes: false
         filter: config_filters_for_mailLogs.yaml

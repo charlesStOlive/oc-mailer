@@ -34,7 +34,11 @@ class MailCreator extends ProductorCreator
     
 
     public function setManualData($data) {
-        $this->manualData = array_merge($this->productorDs, $data);
+        if($this->productorDs) {
+            $this->manualData = array_merge($this->productorDs, $data);
+        } else {
+            $this->manualData = $data;
+        }
         return $this;
     }
 
@@ -173,7 +177,7 @@ class MailCreator extends ProductorCreator
 
             
 
-            \Flash::success(trans('waka.mailer::productor.mail_success'));
+            \Flash::success(trans('waka.mailer::wakamail.mail_success'));
         }
         catch (Exception $ex) {
             \Log::error($ex->getMessage());
