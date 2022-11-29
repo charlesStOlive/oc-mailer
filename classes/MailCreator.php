@@ -299,7 +299,8 @@ class MailCreator extends ProductorCreator
             $dotedAttributeClass = explode(".", $classProductor);
             $type = $dotedAttributeClass[0] ?? false;
             $attribute = $dotedAttributeClass[1] ?? false;
-            $model = $this->productorDs->model;
+            $model = $this->productorDsQuery;
+            //trace_log($this->productorDsQuery);
             //trace_log("type : ".$type);
             if ($type =='file_one') {
                 //trace_log($attribute);

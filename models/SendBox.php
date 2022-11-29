@@ -227,14 +227,14 @@ class SendBox extends Model
                 if($this->open_log) {
                     $headers->addTextHeader('X-Mailgun-Track-Opens', true);
                 }
-               trace_log("ok3");
+               //trace_log("ok3");
                 if($this->click_log) {
                     $headers->addTextHeader('X-Mailgun-Track-Clicks', true);
                 }
                 if ($this->pjs->count()) {
-                    trace_log("Il y a des pjs");
+                    //trace_log("Il y a des pjs");
                     foreach ($this->pjs as $pj) {
-                        trace_log($pj->getLocalPath());
+                        //trace_log($pj->getLocalPath());
                         $message->attach($pj->getLocalPath(), ['as' => $pj->title]);
                     }
                 }
