@@ -113,7 +113,7 @@ class SendEmails implements WakajobQueueJob
         //Travail sur les données
         $targets = array_chunk($targets, $this->chunk);
 
-        //trace_log($targets);
+
         
         try {
             foreach ($targets as $chunk) {
@@ -127,8 +127,10 @@ class SendEmails implements WakajobQueueJob
                     /**
                      * DEBUT TRAITEMENT **************
                      */
-                    $mailCreator = MailCreator::find($productorId)->setAsksResponse($this->data['askResponse']);
+                    $askResponse = $this->data['askResponse'] ?? [];
+                    $mailCreator = MailCreator::find($productorId)->setAsksResponse($askResponse);
                     $dataSourceCode = $mailCreator->getProductor()->waka_session?->data_source;
+
                     $ds = \DataSources::find($dataSourceCode);
                     try {
                         $mailCreator->setModelId($targetId);
