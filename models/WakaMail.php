@@ -126,7 +126,8 @@ class WakaMail extends Model
         ],
         'mailLogs' => [
             'Waka\Mailer\Models\MailLog',
-            'name' => 'maileable'
+            'name' => 'maileable',
+            'delete' => true
         ],
         'rule_asks' => [
             'Waka\Utils\Models\RuleAsk',
