@@ -209,10 +209,10 @@ secondaryTabs:
             type: attributs
             permissions: [waka.mailer.admin.*]
             tab: waka.mailer::wakamail.tab_attributs
-        blocs:
-            span: full
-            type: comonblocs
-            twigName: mailPartial
-            blocClass: Waka\Mailer\Models\Bloc
-            permissions: [waka.mailer.admin.*]
-            tab: waka.mailer::wakamail.tab_blocs
+        # blocs:
+        #     span: full
+        #     type: comonblocs
+        #     twigName: mailPartial
+        #     blocClass: Waka\Mailer\Models\Bloc
+        #     permissions: [waka.mailer.admin.*]
+        #     tab: waka.mailer::wakamail.tab_blocs
