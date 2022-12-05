@@ -105,10 +105,11 @@ class Plugin extends PluginBase
      */
     public function registerModelToClean()
     {
+        $nbdays = \Config::get('wcli.wconfig::anonymize.sendBox', 7);
         return [
             'anonymize' => [
                 \Waka\Mailer\Models\SendBox::class => [
-                    'nb_day' => 7,
+                    'nb_day' => $nbdays,
                     'column' => 'created_at',
                 ],
             ],
