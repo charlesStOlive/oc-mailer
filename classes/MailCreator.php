@@ -34,8 +34,8 @@ class MailCreator extends ProductorCreator
     
 
     public function setManualData($data) {
-        if($this->productorDs) {
-            $this->manualData = array_merge($this->productorDs, $data);
+        if($this->productorDsQuery) {
+            $this->manualData = array_merge($this->productorDsQuery->toArray(), $data);
         } else {
             $this->manualData = $data;
         }
@@ -85,7 +85,16 @@ class MailCreator extends ProductorCreator
             }
         }
         
-        $subject = $datasEmail['subject'] ?? $this->createTwigStrName('subject');
+        
+        $subject = null;
+        $subjectTemp = $datasEmail['subject'] ?? null;
+        if($subjectTemp) {
+            trace_log('$subjectTemp : '. $subjectTemp);
+            trace_log($this->productorDsQuery->toArray());
+            $subject = \Twig::parse($subjectTemp, ['ds' => $this->productorDsQuery->toArray()]);
+        }  else {
+            $subject = $this->createTwigStrName('subject');
+        }
         $datasEmail['subject'] = $subject;
         $emails = $datasEmail['emails'] ?? $this->getDefaultEmail();
         $datasEmail['emails'] = $emails;
@@ -126,8 +135,9 @@ class MailCreator extends ProductorCreator
        //trace_log('renderEmail');
        //trace_log($this->getProductorClass());
         try {
-            $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
+            $datasEmail = $this->PrepareProductorMeta($datasEmail);
+            
             $logs = $this->preparelogs();
             //trace_log($logs);
             $sender = null;
@@ -188,8 +198,9 @@ class MailCreator extends ProductorCreator
     public function renderOutlook($datasEmail = [], $userMsId = null, $sendType = 'draft')
     {
         try {
-            $datasEmail = $this->PrepareProductorMeta($datasEmail);
             $htmlLayout = $this->prepare();
+            $datasEmail = $this->PrepareProductorMeta($datasEmail);
+            
             //trace_log("ok pour prepare");
             
             //trace_log("ok pour data email ensuite connect");
