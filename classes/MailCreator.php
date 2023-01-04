@@ -88,7 +88,7 @@ class MailCreator extends ProductorCreator
         
         $subject = null;
         $subjectTemp = $datasEmail['subject'] ?? null;
-        if($subjectTemp) {
+        if($subjectTemp && $this->productorDsQuery) {
             //trace_log('$subjectTemp : '. $subjectTemp);
             //trace_log($this->productorDsQuery->toArray());
             $subject = \Twig::parse($subjectTemp, ['ds' => $this->productorDsQuery->toArray()]);
