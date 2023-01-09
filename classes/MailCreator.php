@@ -14,6 +14,7 @@ class MailCreator extends ProductorCreator
     public static $maileable_type;
     public $manualData = [];
     public $resolveContext = 'mail';
+    public $manualLogs = [];
     
     public static function find($mail_id, $slug = false)
     {
@@ -34,11 +35,17 @@ class MailCreator extends ProductorCreator
     
 
     public function setManualData($data) {
+
         if($this->productorDsQuery) {
-            $this->manualData = array_merge($this->productorDsQuery->toArray(), $data);
+            $this->manualData = array_merge($this->getSessionModelData(), $data);
         } else {
             $this->manualData = $data;
         }
+        return $this;
+    }
+
+    public function setManualLogs(array $logs = []) {
+        $this->manualLogs = $logs;
         return $this;
     }
 
@@ -126,12 +133,14 @@ class MailCreator extends ProductorCreator
         if(!$this->getProductor()->has_log) {
             return [];
         }
-        return [
+        $baseLogs = [
             'mail_type' => $this->getProductorClass(),
             'mail_id' => $this->getProductor()->id ?? null,
             'ds' => $this->productorDs->class ?? null,
             'ds_id' => $this->modelId ?? null,
         ];
+        $logs = array_merge($baseLogs, $this->manualLogs);
+        return $logs;
         
         
     }
@@ -164,10 +173,10 @@ class MailCreator extends ProductorCreator
                 'tos' => $datasEmail['emails'],
                 'mail_vars' => $logs,
                 'mail_tags' => [],
-                'maileable_type' => $this->getProductorClass(),
-                'maileable_id' => $this->getProductor()->id ?? null,
-                'targeteable_type' => $this->productorDs->class ?? Null,
-                'targeteable_id' => $this->modelId ?? null,
+                'maileable_type' => $logs['mail_type'] ?? null,
+                'maileable_id' => $logs['mail_id'] ?? null,
+                'targeteable_type' => $logs['ds']?? null,
+                'targeteable_id' => $logs['ds_id']?? null,
                 'sender' =>   $sender,
                 'reply_to' =>   $reply_to,
                 'open_log' =>   $open_log,
@@ -408,6 +417,7 @@ class MailCreator extends ProductorCreator
     {
         
         $text = $this->getProductor()->html;
+        
         $htmlContent = \Twig::parse($text, $model);
         $data = [
             'subject' => $this->getProductor()->toArray(),
@@ -417,7 +427,7 @@ class MailCreator extends ProductorCreator
         ];
         //trace_log($data);
         if($this->productorDs) {
-            $data['data'] =  $model['ds'];
+            $data['data'] =  $model['ds'] ?? [];
         } else {
             $data['data'] =  $model;
         }
@@ -434,6 +444,7 @@ class MailCreator extends ProductorCreator
         
         $htm = $this->getProductor()->mjml_html;
         //$htm = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
+        trace_log($model['posts']);
         $htmlContent = \Twig::parse($htm, $model);
         
         return $htmlContent;

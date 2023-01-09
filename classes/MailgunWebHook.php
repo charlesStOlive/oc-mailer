@@ -27,20 +27,23 @@ class MailgunWebHook
         $logVars = $request->input('event-data.user-variables');
         //trace_log($logVars);
         if(!$logVars) {
-            \Log::error('Pas de log var on enregistre rien');
+            \Log::error('Pas de log var on enregistre rien dans MailgunWebHook');
             return response()->json('Success!', 200);
         }
         $email = $request->input('event-data.recipient');
         //trace_log($email);
-        $test = MailLog::create([
+        $mailLogData = [
             'name' => $email,
             'send_box_id' => $logVars['send_box_id'] ?? null,
             'maileable_id' => $logVars['mail_id'] ?? null,
             'maileable_type' => $logVars['mail_type'] ?? null,
             'logeable_type' => $logVars['ds'] ?? null,
             'logeable_id' => $logVars['ds_id'] ?? null,
+            'meta' => $logVars['meta'] ?? null,
             'type' => $type,
-        ]);
+        ];
+        $test = MailLog::create($mailLogData);
+        \Event::fire('wcli.mailer.mailgun_web_hook', [$mailLogData]);
         return response()->json('Success!', 200);
     }
 }
