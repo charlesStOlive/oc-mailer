@@ -43,7 +43,7 @@ class MailgunWebHook
             'type' => $type,
         ];
         $test = MailLog::create($mailLogData);
-        \Event::fire('wcli.mailer.mailgun_web_hook', [$mailLogData]);
+        Event::fire('wcli.mailer.mailgun_web_hook', [$mailLogData]);
         return response()->json('Success!', 200);
     }
 }

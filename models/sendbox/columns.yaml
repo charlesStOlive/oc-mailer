@@ -5,7 +5,7 @@
 columns:
     send_at:
         label: waka.mailer::sendbox.send_at
-        type: timesince
+        type: datetime
         searchable: true
     state:
         label: waka.mailer::sendbox.state

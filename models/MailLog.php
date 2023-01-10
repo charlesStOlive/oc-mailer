@@ -90,7 +90,10 @@ class MailLog extends Model
     ];
     public $belongsToMany = [
     ];        
-    public $morphTo = [];
+    public $morphTo = [
+       'logeable' => [],
+       'maileable' => [],
+    ];
     public $morphOne = [
     ];
     public $morphMany = [
