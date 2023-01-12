@@ -444,7 +444,6 @@ class MailCreator extends ProductorCreator
         
         $htm = $this->getProductor()->mjml_html;
         //$htm = html_entity_decode(preg_replace("/[\r\n]{2,}/", "\n", $text), ENT_QUOTES, 'UTF-8');
-        trace_log($model['posts']);
         $htmlContent = \Twig::parse($htm, $model);
         
         return $htmlContent;
