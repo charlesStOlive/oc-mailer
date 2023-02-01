@@ -93,8 +93,9 @@ class SendBox extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [
-    ];
+    // public $hasOne = [
+    //     'last_log' => ['Waka\Mailer\Models\MailLog', 'scope' => 'latestOfMany']
+    // ];
     public $hasMany = [
         'mail_logs' => ['Waka\Mailer\Models\MailLog'],
     ];
@@ -161,13 +162,14 @@ class SendBox extends Model
     public function getLastLogAttribute() {
         return $this->mail_logs()->latest('updated_at')->first()->type ?? "Inc";
     }
-    public function getMaileableNameAttribute() {
-        return $this->maileable->name ?? null;
-    }
 
-    public function getTargeteableNameAttribute() {
-        return $this->targeteable->name ?? 'Inc';
-    }
+    // public function getMaileableNameAttribute() {
+    //     return $this->maileable->name ?? null;
+    // }
+
+    // public function getTargeteableNameAttribute() {
+    //     return $this->targeteable->name ?? 'Inc';
+    // }
 
     /**
      * SCOPES
@@ -175,6 +177,28 @@ class SendBox extends Model
     public function scopeSended($query)
     {
         return $query->where('state', 'Envoyé');
+    }
+
+    public function scopeTargeteableName($query, $value)
+    {
+        trace_log($value);
+        return $query->whereHasMorph('targeteable','*', function ($query) use($value) {
+            $query->where('name', 'like', '%'.$value.'%');
+        });
+    }
+
+    public function scopeMaileableName($query, $value)
+    {
+        return $query->whereHasMorph('maileable','*', function ($query) use($value) {
+            $query->where('name', 'like', '%'.$value.'%');
+        });
+    }
+
+    public function scopeLastLogEvent($query, $filtered)
+    {
+        return $query->whereHas('mail_logs',function ($query) use($filtered) {
+            $query->whereIn('type', $filtered);
+        });
     }
 
     /**
@@ -188,6 +212,9 @@ class SendBox extends Model
     /**
      * OTHERS
      */
+    public function listAllModeleable() {
+        return $this->maileable()->pluck('name', 'id')->unique();
+    }
     public function send() {
         if($this->state == "Envoyé") {
             $this->meta = "Email déjà envoyé il est interdit de l'envoyer de nouveau";

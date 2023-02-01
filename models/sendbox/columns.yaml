@@ -10,8 +10,19 @@ columns:
     state:
         label: waka.mailer::sendbox.state
         searchable: true
+    tos:
+        label: Email
+        searchable: false
+    maileable[name]:
+        label: Modèle
+        sortable: false
+        searchable: false
+    targeteable[name]:
+        label: Nom cible
+        sortable: false
+        searchable: false
     name:
-        label: waka.mailer::sendbox.name
+        label: Sujet
         searchable: true
     lastlog:
         label: waka.mailer::sendbox.lastlog
@@ -19,20 +30,7 @@ columns:
         searchable: false
         sortable: false
         path: ~/plugins/waka/mailer/models/sendbox/_column_state.htm
-    maileable_type:
-        label: waka.mailer::sendbox.maileable_type
-        searchable: true
-    maileable_id:
-        label: waka.mailer::sendbox.maileable_id
-        valueFrom: maileableName
-        sortable: false
-    targeteable_type:
-        label: waka.mailer::sendbox.targeteable_type
-        searchable: true
-    targeteable_id:
-        label: waka.mailer::sendbox.targeteable_id
-        valueFrom: targeteableName
-        sortable: false
+    
     has_pjs:
         label: waka.mailer::sendbox.has_pjs
         searchable: false
@@ -40,3 +38,4 @@ columns:
     updated_at:
         label: waka.utils::lang.global.updated_at
         type: timetense
+        invisible: true

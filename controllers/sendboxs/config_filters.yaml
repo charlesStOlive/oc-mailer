@@ -7,6 +7,47 @@ scopes:
         label: Etat
         conditions: state in (:filtered)
         options: 
-          Attente: Attente
-          Envoyé: Envoyé
-          Erreur: Erreur
+            Attente: Attente
+            Envoyé: Envoyé
+            Erreur: Erreur
+   
+
+    lastLog:
+        label: Logs
+        type: group
+        scope: lastLogEvent
+        options: 
+            accepted: Accepté
+            rejected: Rejeté
+            delivered: Délivré
+            failure: Erreur
+            failure_temp: Erreur temporaire
+            opened: Ouvert (* certain modèles)
+            clicked: Cliqué (* certain modèles)
+            unsubscribed: Desinscription
+            complained: Plainte
+
+    send_at:
+        label: Date
+        type: daterange
+        conditions: send_at >= ':after' AND send_at <= ':before'
+
+            
+
+    checkTargetId:
+        label: Cible
+        type: text
+        scope: targeteableName
+
+    tos:
+        label: Email
+        type: text
+        conditions: tos LIKE concat('%', :value, '%')
+
+    models:
+        label: Modèle email
+        type: text
+        scope: maileableName
+
+   
+    
