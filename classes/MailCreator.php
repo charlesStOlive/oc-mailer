@@ -28,7 +28,7 @@ class MailCreator extends ProductorCreator
             throw new ApplicationException("Le code ou id  email ne fonctionne pas : " . $mail_id. "vous dever entrer l'id ou le code suivi de true");
         }
         self::$productor = $productorModel;
-        self::$maileable_type = "Waka\Mailer\Models\WakaMail";
+        self::$maileable_type = "Waka\Mailer\Models\WakaMail";//todotargeteable
         return new self;
     }
 
@@ -133,10 +133,16 @@ class MailCreator extends ProductorCreator
         if(!$this->getProductor()->has_log) {
             return [];
         }
+        $className = $morphName =  $this->productorDs->class ?? null;
+
+        if($className) {
+            $DsInstance = new $className();
+            $morphName = $DsInstance->getMorphClass();
+        }
         $baseLogs = [
             'mail_type' => $this->getProductorClass(),
             'mail_id' => $this->getProductor()->id ?? null,
-            'ds' => $this->productorDs->class ?? null,
+            'ds' => $morphName, //todotargeteable
             'ds_id' => $this->modelId ?? null,
         ];
         $logs = array_merge($baseLogs, $this->manualLogs);
@@ -173,9 +179,9 @@ class MailCreator extends ProductorCreator
                 'tos' => $datasEmail['emails'],
                 'mail_vars' => $logs,
                 'mail_tags' => [],
-                'maileable_type' => $logs['mail_type'] ?? null,
-                'maileable_id' => $logs['mail_id'] ?? null,
-                'targeteable_type' => $logs['ds']?? null,
+                'maileable_type' => $logs['mail_type'] ?? null,//todotargeteable
+                'maileable_id' => $logs['mail_id'] ?? null, 
+                'targeteable_type' => $logs['ds']?? null, //todotargeteable
                 'targeteable_id' => $logs['ds_id']?? null,
                 'sender' =>   $sender,
                 'reply_to' =>   $reply_to,
