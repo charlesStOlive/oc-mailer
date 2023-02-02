@@ -181,7 +181,7 @@ class SendBox extends Model
 
     public function scopeTargeteableName($query, $value)
     {
-        trace_log($value);
+        //trace_log($value);
         return $query->whereHasMorph('targeteable','*', function ($query) use($value) {
             $query->where('name', 'like', '%'.$value.'%');
         });
