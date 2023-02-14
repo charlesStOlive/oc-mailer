@@ -130,9 +130,9 @@ class MailCreator extends ProductorCreator
     }
 
     public function prepareLogs() {
-        if(!$this->getProductor()->has_log) {
-            return [];
-        }
+        // if(!$this->getProductor()->has_log) {
+        //     return [];
+        // }
         $className = $morphName =  $this->productorDs->class ?? null;
 
         if($className) {
