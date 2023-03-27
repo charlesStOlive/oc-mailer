@@ -21,7 +21,7 @@ return [
     "preview_name" => "Voir l'email",
     "reply_to" => "Adresse de réponse",
     "send_at" => "Envoyé le",
-    "sender" => "Emetteur\\\\\\\\\/Réponse",
+    "sender" => "Emetteur - Réponse",
     "state" => "Etat",
     "tab_content" => "Contenu",
     "tab_logs" => "Logs",
