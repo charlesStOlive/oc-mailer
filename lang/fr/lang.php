@@ -1,27 +1,19 @@
 <?php
+
 return [
-    'menu' => [
-        'title' => 'Contenu',
-        'wakamails' => 'Mails',
-        'wakamails_description' => 'Gestion des emails et de leurs blocs',
-        'sendbox' => 'Boite d\'envoi', 
-        'sendbox_description' => 'Affiche les emails en boite d\'envoi', 
-        'bloc_name' => 'Blocs emails',
-        'bloc_type' => 'types de blocs emails',
-        'bloc_type_description' => 'Administration des types de blocs et exemples',
-        'btn_lot' => 'Lot Email'
+    "content" => [
+        "sector" => "Secteur"
     ],
-    'objtext' => [
-        'data' => 'Paragraphes',
-        'data_prompt' => 'Cliquez ici pour ajouter un paragraphe',
-        'value' => 'Paragraphe',
-        'jump' => 'Saut de ligne entre les deux paragraphes'
+    "menu" => [
+        "sendbox" => "Boite d'envoi",
+        "sendbox_description" => "Affiche les emails en boite d'envoi",
+        "wakamails" => "Mails",
+        "wakamails_description" => "Gestion des emails et de leurs blocs"
     ],
-    'lot' => [
-        'title' => 'Créer des lots word',
-        'all' => 'Tout',
-        'filtered' => 'Liste filtrée',
-        'checked' => 'Lignes cochées'
-    ],
-    '' => null
+    "objtext" => [
+        "data" => "Paragraphes",
+        "data_prompt" => "Cliquez ici pour ajouter un paragraphe",
+        "jump" => "Saut de ligne entre les deux paragraphes",
+        "value" => "Paragraphe"
+    ]
 ];
