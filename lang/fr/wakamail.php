@@ -58,5 +58,9 @@ return [
     "tests" => "Tests",
     "title" => "Gestion des emails",
     "update" => "Éditer un email",
-    "waka_session" => "Clef pour LP"
+    "waka_session" => "Clef pour LP",
+    "ids_error" => "Liste des erreurs",
+    "job_send" => "Mail envoyés",
+    "job_scoped" => "Mail avec erreur sur le scope",
+    "job_skipped" => "Mail abandonnées"
 ];
