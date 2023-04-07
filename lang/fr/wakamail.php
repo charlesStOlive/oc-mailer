@@ -5,6 +5,7 @@ return [
     "auto_send_com" => "Il est inutile de valider les emails dans la boite d'envoi",
     "click_log" => "Log click",
     "create" => "Créer un Email",
+    "e" => null,
     "force_pj_name" => "Forcer un nom pour la PJ",
     "form_name" => "Gestion de l'email",
     "has_log" => "Enregistrer les logs ?",
@@ -12,10 +13,14 @@ return [
     "has_sender" => "Personnaliser l'adresse envoi ou réponse",
     "has_sender_com" => "sinon l'adresse par défaut sera utilisée",
     "html" => "Éditeur",
+    "ids_error" => "Liste des erreurs",
     "is_embed" => "Embarquer les images",
     "is_embed_com" => "Ralentie les envois mais permet d'incruster les images dans le coprtdu mail",
     "is_lot" => "Autorisé dans les lots ?",
     "is_mjml" => "En MJML ?",
+    "job_scoped" => "Mail avec erreur sur le scope",
+    "job_send" => "Mail envoyés",
+    "job_skipped" => "Mail abandonnées",
     "job_title" => "Message(s) à envoyer",
     "layout" => "Maquette",
     "lot_email" => "Lot emails",
@@ -58,9 +63,5 @@ return [
     "tests" => "Tests",
     "title" => "Gestion des emails",
     "update" => "Éditer un email",
-    "waka_session" => "Clef pour LP",
-    "ids_error" => "Liste des erreurs",
-    "job_send" => "Mail envoyés",
-    "job_scoped" => "Mail avec erreur sur le scope",
-    "job_skipped" => "Mail abandonnées"
+    "waka_session" => "Clef pour LP"
 ];

@@ -4,6 +4,7 @@ return [
     "click_log" => "Contrôle de clique",
     "content" => "content",
     "create" => "NO",
+    "e" => null,
     "form_name" => "Voir l'email",
     "has_pjs" => "A des PJ",
     "is_embed" => "Embarquer les images",
