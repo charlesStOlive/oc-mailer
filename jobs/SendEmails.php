@@ -7,12 +7,8 @@
 namespace Waka\Mailer\Jobs;
 
 use Waka\Wakajob\Classes\JobManager;
-use Waka\Wakajob\Classes\RequestSender;
 use Waka\Wakajob\Contracts\WakajobQueueJob;
-use Winter\Storm\Database\Model;
-use Viamage\CallbackManager\Models\Rate;
 use Waka\Mailer\Classes\MailCreator;
-use Waka\Utils\Classes\DataSource;
 
 /**
  * Class SendRequestJob
