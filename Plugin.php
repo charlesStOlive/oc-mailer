@@ -50,28 +50,6 @@ class Plugin extends PluginBase
             'Waka\Mailer\FormWidgets\PjList' => 'pjlist',
         ];
     }
-    //TODO : supprimer ?
-    public function registerMarkupTags()
-    {
-        return [
-            'functions' => [
-                'mailPartial' => function ($twig, $data, $dataKey2 = null, $data2 = null) {
-                    $bloc = \Waka\Mailer\Models\Bloc::where('slug', $twig)->first();
-                    if ($dataKey2) {
-                        $data[$dataKey2] = $data2;
-                        $test = compact('data');
-                    }
-                    if ($bloc) {
-                        $bloc_html = \Twig::parse($bloc->contenu, compact('data'));
-                        return $bloc_html;
-                    } else {
-                        return null;
-                    }
-                    return null;
-                },
-            ],
-        ];
-    }
 
     /**
      * Boot method, called right before the request route.

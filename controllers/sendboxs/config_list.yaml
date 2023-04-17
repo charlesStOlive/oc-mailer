@@ -35,7 +35,7 @@ showSorting: true
 #     column: created_at
 #     direction: desc
 defaultSort:
-    column: updated_at
+    column: sended_at
     direction: desc
     # Display checkboxes next to each record
 showCheckboxes: true

@@ -33,7 +33,6 @@ class WakaMails extends Controller
     public $listConfig = [
         'wakaMails' => 'config_list.yaml',
         'layouts' => 'config_layouts_list.yaml',
-        'blocs' => 'config_blocs_list.yaml',
     ];
     //startKeep/
 
