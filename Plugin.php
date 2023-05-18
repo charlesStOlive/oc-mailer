@@ -3,6 +3,9 @@
 use Backend;
 use Lang;
 use System\Classes\PluginBase;
+use App;
+use Config;
+use Illuminate\Foundation\AliasLoader;
 
 /**
  * Mailer Plugin Information File
@@ -58,8 +61,12 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+         $aliasLoader = AliasLoader::getInstance();
+        //boot qferr/mjml-php
+        // $aliasLoader->alias('Excel', \Maatwebsite\Excel\Facades\Excel::class);
+        // App::register(\Maatwebsite\Excel\ExcelServiceProvider::class);
+
         \DataSources::registerDataSources(plugins_path().'/waka/mailer/config/datasources.yaml');
-        
     }
 
     /**
