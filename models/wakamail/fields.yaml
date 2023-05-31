@@ -122,7 +122,7 @@ tabs:
             tab: waka.mailer::wakamail.tab_options
         has_sender:
             label: waka.mailer::wakamail.has_sender
-            span: full
+            span: left
             type: switch
             default: false
             comment: waka.mailer::wakamail.has_sender_com
@@ -130,11 +130,19 @@ tabs:
             tab: waka.mailer::wakamail.tab_options
         sender:
             label: waka.mailer::wakamail.sender
-            span: left
+            span: right
             trigger:
                 action: show
                 field: has_sender
                 condition: checked
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        has_reply_to:
+            label: waka.mailer::wakamail.has_reply_to
+            span: left
+            type: switch
+            default: false
+            comment: waka.mailer::wakamail.has_reply_to_com
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options
         reply_to:
@@ -142,7 +150,24 @@ tabs:
             span: right
             trigger:
                 action: show
-                field: has_sender
+                field: has_reply_to
+                condition: checked
+            permissions: [waka.mailer.admin.super]
+            tab: waka.mailer::wakamail.tab_options
+        has_cci: 
+            label: waka.mailer::wakamail.has_cciss
+            span: left
+            type: switch
+            default: false
+            permissions: [waka.mailer.admin.super]
+            comment: waka.mailer::wakamail.cci_com
+            tab: waka.mailer::wakamail.tab_options
+        cci:
+            label: waka.mailer::wakamail.cci
+            span: right
+            trigger:
+                action: show
+                field: has_cci
                 condition: checked
             permissions: [waka.mailer.admin.super]
             tab: waka.mailer::wakamail.tab_options

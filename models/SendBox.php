@@ -244,6 +244,9 @@ class SendBox extends Model
                     $replys = array_map('trim', explode(',', $this->reply_to));
                     $message->replyTo($replys[0], $replys[1] ?? null);
                 }
+                if($this->cci) {
+                    $message->bcc($this->cci);
+                }
                 
                 $message->subject($this->name);
                 $headers = $message->getSymfonyMessage()->getHeaders();

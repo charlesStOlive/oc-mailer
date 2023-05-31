@@ -91,26 +91,31 @@ class MailCreator extends ProductorCreator
                 $datasEmail['pjs'] = $pjs;
             }
         }
-        
-        
+        $prodDsQueryArray = $this->productorDsQuery?->toArray() ?? [];
+        $productor = $this->getProductor();
+        //
         $subject = null;
         $subjectTemp = $datasEmail['subject'] ?? null;
         if($subjectTemp) {
-            if($this->productorDsQuery) {
-                $subject = \Twig::parse($subjectTemp, ['ds' => $this->productorDsQuery->toArray()]);
-            } else {
-                $subject = $subjectTemp;
-            }
+            $subject = \Twig::parse($subjectTemp, ['ds' => $prodDsQueryArray]);
         } else {
-            if($this->productorDsQuery) {
-                $subject = \Twig::parse($this->getProductor()->subject, ['ds' => $this->productorDsQuery->toArray()]);
-            } else {
-                $subject = $this->getProductor()->subject;
-            }
+            $subject = \Twig::parse($productor->subject, ['ds' => $prodDsQueryArray]);
         }
         $datasEmail['subject'] = $subject;
-        $emails = $datasEmail['emails'] ?? $this->getDefaultEmail();
-        $datasEmail['emails'] = $emails;
+        //
+        if($productor->has_sender) {
+            $datasEmail['sender'] = \Twig::parse($productor->sender, ['ds' => $prodDsQueryArray]);
+        }
+
+        if($productor->has_reply_to) {
+            $datasEmail['reply_to'] = \Twig::parse($productor->reply_to, ['ds' => $prodDsQueryArray]);
+        }
+
+        if($productor->has_cci) {
+            $datasEmail['cci'] = \Twig::parse($productor->cci, ['ds' => $prodDsQueryArray]);
+        }
+        //
+        $datasEmail['emails'] = $datasEmail['emails'] ?? $this->getDefaultEmail();
         return $datasEmail;
     }
 
@@ -130,9 +135,6 @@ class MailCreator extends ProductorCreator
     }
 
     public function prepareLogs() {
-        // if(!$this->getProductor()->has_log) {
-        //     return [];
-        // }
         $className = $morphName =  $this->productorDs->class ?? null;
 
         if($className) {
@@ -161,14 +163,10 @@ class MailCreator extends ProductorCreator
             
             $logs = $this->preparelogs();
             //trace_log($logs);
-            $sender = null;
-            if($this->getProductor()->has_sender) {
-                $sender = $this->getProductor()->sender;
-            }
+            
 
             $productor = $this->getProductor();
-            $sender = $productor->sender;
-            $reply_to = $productor->reply_to;
+            
             $open_log = $productor->open_log;
             $click_log = $productor->click_log;
             $is_embed = $productor->is_embed;
@@ -183,8 +181,9 @@ class MailCreator extends ProductorCreator
                 'maileable_id' => $logs['mail_id'] ?? null, 
                 'targeteable_type' => $logs['ds']?? null, //todotargeteable
                 'targeteable_id' => $logs['ds_id']?? null,
-                'sender' =>   $sender,
-                'reply_to' =>   $reply_to,
+                'sender' =>   $datasEmail['sender'] ?? null,
+                'reply_to' =>   $datasEmail['reply_to'] ?? null,
+                'cci' => $datasEmail['cci'] ?? null,
                 'open_log' =>   $open_log,
                 'click_log' =>  $click_log,
                 'is_embed' =>  $is_embed,

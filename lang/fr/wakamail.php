@@ -10,7 +10,7 @@ return [
     'form_name' => 'Gestion de l\'email',
     'has_log' => 'Enregistrer les logs ?',
     'has_log_com' => 'Permets de faire des statistiques sur les emails envoyés',
-    'has_sender' => 'Personnaliser l\'adresse envoi ou réponse',
+    'has_sender' => 'Personnaliser l\'adresse d\' envoi',
     'has_sender_com' => 'sinon l\'adresse par défaut sera utilisée',
     'html' => 'Éditeur',
     'ids_error' => 'Liste des erreurs',
@@ -63,5 +63,11 @@ return [
     'tests' => 'Tests',
     'title' => 'Gestion des emails',
     'update' => 'Éditer un email',
-    'waka_session' => 'Clef pour LP'
+    'waka_session' => 'Clef pour LP',
+    'cci' => 'CCI',
+    'has_cci' => 'Autoriser CCI',
+    'has_cciss' => 'CCI',
+    'cci_com' => 'Autoriser CCI',
+    'has_reply_to_com' => 'Sinon l\'adresse par defaut sera utilisé',
+    'has_reply_to' => 'Personaliser adresse de réponse'
 ];
