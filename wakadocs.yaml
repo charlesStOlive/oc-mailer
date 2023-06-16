@@ -5,7 +5,7 @@ files:
         group: "03 Edition"
         comment: "Comprendre les fonctions"
         relativePath: waka/mailer/docs
-        permission: waka.mailer.admin
+        permissions: waka.mailer.admin.*
         order: 50
 parts:
     env:
