@@ -23,12 +23,16 @@ class MailgunWebHook
      */
     public function messageType(Request $request, $type)
     {
+        //trace_log('message reception');
+        //trace_log($request->all());
         //trace_log('messageType');
         $logVars = $request->input('event-data.user-variables');
-        //trace_log($logVars);
+        
         if(!$logVars) {
-            \Log::error('Pas de log var on enregistre rien dans MailgunWebHook');
+            //\Log::error('Pas de log var on enregistre rien dans MailgunWebHook');
             return response()->json('Success!', 200);
+        } else {
+            //trace_log($logVars);
         }
         $email = $request->input('event-data.recipient');
         //trace_log($email);
@@ -42,11 +46,11 @@ class MailgunWebHook
             'maileable_type' => $logVars['mail_type'] ?? null,//todotargeteable
             'logeable_type' => $loageableType,
             'logeable_id' => $logVars['ds_id'] ?? null,
-            'meta' => $logVars['meta'] ?? null,
+            'meta' => $request->input('event-data') ?? null,
             'type' => $type,
         ];
         $test = MailLog::create($mailLogData);
-        Event::fire('wcli.mailer.mailgun_web_hook', [$mailLogData]);
+        Event::fire('waka.mailer.mailgun_web_hook', [$mailLogData]);
         return response()->json('Success!', 200);
     }
 

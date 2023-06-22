@@ -208,6 +208,7 @@ class MailCreator extends ProductorCreator
             
 
             \Flash::success(trans('waka.mailer::wakamail.mail_success'));
+            return $mailSendBox->id;
         }
         catch (Exception $ex) {
             \Log::error($ex->getMessage());

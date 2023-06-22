@@ -3,3 +3,8 @@
 # ===================================
 
 fields:
+  meta:
+    label: meta data
+    type: codeeditor
+    valueFrom: metaYaml
+    size: giant

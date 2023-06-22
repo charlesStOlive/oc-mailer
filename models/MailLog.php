@@ -53,6 +53,7 @@ class MailLog extends Model
      */
     protected $jsonable = [
         'tags',
+        'meta',
     ];
 
     /**
@@ -116,6 +117,9 @@ class MailLog extends Model
     /**
      * GETTERS
      **/
+    public function getMetaYamlAttribute() {
+        return \Yaml::render($this->meta);
+    }
 
     /**
      * SCOPES
