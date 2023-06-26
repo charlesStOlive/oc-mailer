@@ -64,3 +64,7 @@
     - 'Ajout des champs has_cci et cci'
     - create_waka_mails_table_u202.php
     - create_send_boxes_table_u202.php
+2.0.3:
+    - 'Ajout de count dans les logs'
+    - create_mail_logs_table_u203.php
+    - create_mail_logs_table_run_count.php
