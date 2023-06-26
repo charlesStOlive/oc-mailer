@@ -118,7 +118,10 @@ class MailLog extends Model
      * GETTERS
      **/
     public function getMetaYamlAttribute() {
-        return \Yaml::render($this->meta);
+        if($this->meta) {
+            return \Yaml::render($this->meta);
+        }
+        
     }
 
     /**

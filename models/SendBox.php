@@ -160,7 +160,7 @@ class SendBox extends Model
         }
     }
     public function getLastLogAttribute() {
-        return $this->mail_logs()->latest('updated_at')->first()->type ?? "Inc";
+        return $this->mail_logs()->where('name', $this->tos)->latest('id')->first()->type ?? "Inc";
     }
 
     // public function getMaileableNameAttribute() {
